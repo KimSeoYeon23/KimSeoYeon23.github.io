@@ -2,33 +2,36 @@
 # Must be the same as `author` in `_config.yml`.
 # Change `author1` to your shortname.
 author1:
-  name:              <firstname> <lastname>
-  email:             <mail@domain.tld>
+  name:              SeoYeon Kim
+  email:             tjdus3431@daum.net
 
   # Used at the bottom of each page and at the top of the `about` layout
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
   about:             |
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    안녕하세요. **프론트엔드 개발자 김서연**입니다.
+
+    React.Js와 Next.Js를 다루고 있으며, 사용자에게 편리한 인터페이스, 아름다운 UI 구현을 위해 노력하고 있습니다. 나 혼자가 아닌, 동료분들의 성장을 위해 항상 노력하는 개발자입니다.
+
+    개발하면서 알아가는 기쁨을 즐깁니다. 기존에 알지 못했던 원리, 코드, 기능, 효율적인 방법 등을 알게 될 때 성장했다고 느낍니다. 유지 보수하기 좋은 코드, 클린 코드를 할 수 있는 개발자로 성장하고 싶습니다.
+
+    블록체인 기술을 이용하고 있는 니아랩스에서 블록체인 개발자로 근무했으며, NFT 마켓, 지갑 시스템을 개발을 진행했습니다. 주로 웹 서비스 개발의 프론트엔드를 담당했으며, 필요에 따라 백엔드 개발에도 참여했습니다.
     
-    Open `_data/authors.yml` to edit this text.
 
   # This photo will be used in the about section
   picture:
-    path:            https://placehold.it/128x128
+    path:            /assets/img/증명사진.jpg
     # srcset is optional, but can be used to provide higher res versions for retina displays
     srcset:
-      1x:            https://placehold.it/128x128
-      2x:            https://placehold.it/256x256
+      1x:            /assets/img/증명사진.jpg
+      2x:            /assets/img/증명사진.jpg
 
   # Social media icons in sidebar
   # Comment/uncommet to show/hide
   # Rearrange to change the order in which they appear
   social:
-    twitter:         <username>
-    github:          <username>
-    # email:           <mail@domain.tld>
+    # twitter:         <username>
+    github:          KimSeoYeon23
+    email:           tjdus3431@daum.net
     # rss:             https://<url>/feed.xml
     # facebook:        <username>
     # google:          <number>
@@ -39,7 +42,7 @@ author1:
     # spotify:         <user>/<number>
     # soundcloud:      <username>
     # lastfm:          <username>
-    # instagram:       <username>
+    instagram:       s.yeon___n
     # flickr:          <string@string>
     # 500px:           <username>
     # dribbble:        <username>
