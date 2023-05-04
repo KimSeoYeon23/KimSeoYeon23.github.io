@@ -6,8 +6,8 @@ categories: Project
 ---
 
 **Skill** : `HTML5`, `CSS3`, `Laravel`, `MySQL`, `Progress Bar`, `AWS`, `Nginx`, `S3`  
-**Date** : 2022년 4월 ~ 2022년 5월
-**Site** : ![ATO](https://ato-nc.com)
+**Date** : 2022년 4월 ~ 2022년 5월  
+**Site** : [ATO](https://ato-nc.com)
 
 
 ## P2P 거래 시스템
