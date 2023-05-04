@@ -34,7 +34,7 @@ categories: Project
 
 마이 페이지
 
-![마이 페이지 - 모달창](../assets/img/ato/마이페이지_내자산%20–DIBO%20입금.png)
+![마이 페이지 모달창](../assets/img/ato/마이페이지_내자산%20–DIBO%20입금.png)
 
 마이 페이지 - 모달창
 
