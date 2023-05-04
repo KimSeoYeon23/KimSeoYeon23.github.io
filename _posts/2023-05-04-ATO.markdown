@@ -41,15 +41,7 @@ categories: Project
 
 **모바일 화면**  
 
-![모바일 로그인](../assets/img/ato/모바일_로그인.png)
-
-모바일 로그인 페이지
-
-![모바일 해동 페이지](../assets/img/ato/모바일_해동.png)
-
-모바일 해동 페이지
-
-![모바일 메뉴 슬라이드](../assets/img/ato/모바일_메뉴슬라이드.png)
+![모바일 로그인](../assets/img/ato/모바일_로그인.png) | ![모바일 해동 페이지](../assets/img/ato/모바일_해동.png) | ![모바일 메뉴 슬라이드](../assets/img/ato/모바일_메뉴슬라이드.png)
 
 모바일 메뉴 슬라이드
 
