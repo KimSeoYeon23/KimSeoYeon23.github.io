@@ -3,7 +3,7 @@
 
 # Uncomment and set the URL of your site (with protocol, e.g. `https://`)
 # NOTE: You don't need to provide this property when hosting on GitHub Pages or Netlify.
-# url:                   https://username.github.io
+url:                   https://kimseoyeon23.github.io
 
 # Uncomment and set the "base URL" of your site.
 # When your site is in a subdirectory, set to `/<name of directory>`,
@@ -143,6 +143,8 @@ defaults:
       type:            posts
     values:
       comments:        true
+      # https://applause-button.com/
+      applause_button:        true    
 
   # `jekyll-seo-tag` will mark collection outputs as `BlogPosting`,
   # but we want them to be `WebPage`s:
@@ -201,11 +203,13 @@ giscus:
   repo:                "KimSeoYeon23/KimSeoYeon23.github.io"
   repo-id:             "R_kgDOJenkeg"
   category:            "Comments"
-  category-id:         "DIC_kwDOJenkes4CWYm8"
+  category-id:         "DIC_kwDOJenkes4CWYm7"
   mapping:             "pathname"
   reaction-enabled:    "1"
   theme:               "dark_dimmed"
   crossorigin:         "anonymous"
+
+lightbox:              true
 
 # Setting a tinyletter username will enable the newsletter subscription box.
 # PRO version only!
