@@ -1,0 +1,33 @@
+---
+layout: post
+title:  "Apple - iPad"
+date:   2023-06-05 15:10:00 +0900
+categories: SideProject
+comments: true
+---
+
+**Skill** : `HTML5`, `CSS3`, `JavaScript`  
+**Date** : 2022년 12월 ~ 2023년 2월  
+**Site** : [Apple - iPad](https://fc-movie-app.vercel.app/#/)  
+
+
+## FastCampus HTML, CSS, JS  강의
+
+![메인페이지](../assets/img/apple/apple-ipad.png)
+
+메인 페이지
+
+![메인 페이지 영상](https://github.com/KimSeoYeon23/KimSeoYeon23.github.io/assets/115128505/7592162d-d815-4f64-9863-bbcb403b3dbc){: width="100%" height="100%"}  
+
+메인 페이지 영상
+
+**모바일 화면**  
+
+![모바일 메인 페이지](../assets/img/apple/apple-ipad_mobile.png) | ![모바일 메인 페이지2](../assets/img/apple/apple-ipad_mobile_2.png) | ![모바일 하단 페이지](../assets/img/apple/apple-ipad_mobile_footer.png)
+
+메인 페이지 & 하단 페이지    
+
+
+1. **Sprite Icon Animation 기법 사용**
+2. IntersectionObserver ( [IntersectionObserver(요소의 가시성 관찰](https://heropy.blog/2019/10/27/intersection-observer/) )
+    1. 브라우저 뷰포트(Viewport)와 설정한 요소(Element)의 교차점을 관찰하여, 요소가 보이는지 보이지 않는지 구별하는 기능.
