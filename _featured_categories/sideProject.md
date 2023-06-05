@@ -2,7 +2,7 @@
 layout: list
 type: category
 title: Side Project
-slug: Side Project
+slug: SideProject
 sidebar: true
 order: 2
 description: >

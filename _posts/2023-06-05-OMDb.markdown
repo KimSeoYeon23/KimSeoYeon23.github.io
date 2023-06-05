@@ -1,0 +1,49 @@
+---
+layout: post
+title:  "OMDb API 사이트"
+date:   2023-06-05 14:20:00 +0900
+categories: SideProject
+comments: true
+---
+
+**Skill** : `HTML5`, `CSS3`, `JavaScript`, `OMDb API`, `Parcel-bundler`, `dotenv`    
+**Date** : 2023년 2월 ~ 2023년 2월  
+**Site** : [OMDb Site](https://fc-movie-app.vercel.app/#/)  
+
+
+## OMDb API를 활용해 VanillaJS 영화 검색 애플리케이션
+
+![메인페이지](../assets/img/omdb/OBDb_API_main.png)
+
+메인 페이지
+
+![검색 페이지](../assets/img/omdb/OBDb_API_search.png)  
+
+검색 페이지
+
+![영화 페이지](../assets/img/omdb/OBDb_API_movie.png) 
+
+영화 페이지
+
+![마이 페이지](../assets/img/omdb/OBDb_API_mypage.png)  
+
+마이 페이지
+
+**모바일 화면**  
+
+![모바일 메인 페이지](../assets/img/omdb/OBDb_API_main_mobile.png) | ![모바일 마이 페이지](../assets/img/omdb/OBDb_API_mypage_mobile.png)
+
+메인 페이지 & 마이 페이지  
+
+![모바일 검색 페이지](../assets/img/omdb/OBDb_API_search_mobile.png) | ![모바일 영화 페이지](../assets/img/omdb/OBDb_API_movie_mobile.png)
+
+검색 페이지 & 영화 페이지  
+
+
+1. 영화 제목 검색 기능 구현
+    1. input에 입력한 영화 제목을 state에 저장하여 일치하는 데이터 출력
+    2. api parmeter를 활용하여 페이지 네이션 구현
+2. 영화 디테일 페이지 구현
+    1. 영화 이미지 클릭 시 해당 영화에 대한 정보 페이지 출력
+    2. api parameter를 활용하여 id값으로 클릭한 데이터 반환
+3. media query 사용하여 반응형 작업
