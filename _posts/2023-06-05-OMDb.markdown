@@ -9,6 +9,7 @@ comments: true
 **Skill** : `HTML5`, `CSS3`, `JavaScript`, `OMDb API`, `Parcel-bundler`, `dotenv`    
 **Date** : 2023년 2월 ~ 2023년 2월  
 **Site** : [OMDb Site](https://fc-movie-app.vercel.app/#/)  
+**Github** : [GitHub](https://github.com/KimSeoYeon23/fc-movie-app)  
 
 
 ## OMDb API를 활용해 VanillaJS 영화 검색 애플리케이션

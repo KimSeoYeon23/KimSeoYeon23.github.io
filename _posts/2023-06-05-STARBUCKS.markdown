@@ -9,6 +9,7 @@ comments: true
 **Skill** : `HTML5`, `CSS3`, `JavaScript`, `gsap`, `ScrollToPlugin`, `Youtube API`, `ScrollMagic`  
 **Date** : 2022년 12월 ~ 2022년 12월  
 **Site** : [STARBUCKS](https://starbucks-demo-sy.netlify.app/)  
+**Github** : [GitHub](https://github.com/KimSeoYeon23/starbucks-vanilla-app)  
 
 
 ## FastCampus HTML, CSS, JS  강의

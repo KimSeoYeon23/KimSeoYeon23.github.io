@@ -9,6 +9,7 @@ comments: true
 **Skill** : `HTML5`, `CSS3`, `JavaScript`  
 **Date** : 2022년 12월 ~ 2023년 2월  
 **Site** : [Apple - iPad](https://fc-movie-app.vercel.app/#/)  
+**Github** : [GitHub](https://github.com/KimSeoYeon23/apple-ipad)  
 
 
 ## FastCampus HTML, CSS, JS  강의

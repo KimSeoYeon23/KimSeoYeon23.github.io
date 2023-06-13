@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "Nwitter"
+date:   2023-06-13 11:30:00 +0900
+categories: SideProject
+comments: true
+---
+
+**Skill** : `React.js`, `Firebase`, `GitHubPage`, `Github`  
+**Date** : 2022년 12월  
+**Site** : [Nwitter](https://kimseoyeon23.github.io/nwitter/)  
+**Github** : [GitHub](https://github.com/KimSeoYeon23/nwitter)  
+
+
+## NomadCoder 트위터 클론코딩  
+
+![로그인, 회원가입 페이지](../assets/img/nwitter/nwitter_login.png) | ![마이 페이지](../assets/img/nwitter/nwitter_mypage.jpg)  
+
+로그인, 회원가입, 마이 페이지
+
+![메인 페이지](../assets/img/nwitter/nwitter_main.jpg) | ![수정 페이지](../assets/img/nwitter/nwitter_edit.jpg)  
+
+메인 및 수정 페이지  
+
+**Front - React.js**
+**Back - Firebase**  
+
+1. 로그인 기능
+    1. 이메일 로그인
+    2. Firebase api이용 소셜 로그인
+        - Github 로그인
+        - Google 로그인
+2. Firebase Database
+    - CRUD 기능
+    - 글을 작성하면 실시간으로 바로 보이며, 작성자 체크 후 글 수정 및 삭제 가능
+3. Firebase Storage
+    - 이미지 저장 가능
+4. 프로필 수정
+    1. Firebase auth api
+        1. displayName 수정 및 실시간 반영
+5. 로그아웃
