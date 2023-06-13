@@ -1,0 +1,39 @@
+---
+layout: post
+title:  "dApp"
+date:   2023-06-13 12:10:00 +0900
+categories: SideProject
+comments: true
+---
+
+**Skill** : `Solidity`, `React.js`, `TypeScript`, `Web3.js`, `ChakraUI`, `BootStrap`   
+**Date** : 2022년 12월  
+**Github** : [GitHub](https://github.com/KimSeoYeon23/Dapp)  
+
+
+## Inflearn DappProject
+
+![민팅 페이지](../assets/img/dapp/minting.png)  
+
+민팅 페이지  
+
+![판매 설정 페이지](../assets/img/dapp/setting.png)  
+
+판매 설정 페이지  
+
+![판매중인 에셋 페이지](../assets/img/dapp/asset.png)  
+
+판매 중인 에셋 페이지  
+
+**Front - React.js, TypeScript, Web3.js**
+**Contract - solidity, OpenZeppelin, Remix**  
+
+1. 메타마스크 로그인
+2. NFT 생성
+    - Minting contract 배포
+    - 판매기능 contract 배포
+3. NFT 판매 및 구매
+    - 판매 승인 상태 체크
+    - 판매자 정보와 로그인한 유저 정보 체크
+    - 판매자 정보와 로그인한 유저가 다를 시 Buy 버튼 활성화
+    - NFT 구매 후 구매한 계정으로 로그인 시 재판매 가능
