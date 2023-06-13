@@ -14,29 +14,29 @@ comments: true
 
 ## OMDb API를 활용해 VanillaJS 영화 검색 애플리케이션
 
-![메인페이지](../assets/img/omdb/OBDb_API_main.png)
+![메인페이지](../../assets/img/omdb/OBDb_API_main.png)
 
 메인 페이지
 
-![검색 페이지](../assets/img/omdb/OBDb_API_search.png)  
+![검색 페이지](../../assets/img/omdb/OBDb_API_search.png)  
 
 검색 페이지
 
-![영화 페이지](../assets/img/omdb/OBDb_API_movie.png) 
+![영화 페이지](../../assets/img/omdb/OBDb_API_movie.png) 
 
 영화 페이지
 
-![마이 페이지](../assets/img/omdb/OBDb_API_mypage.png)  
+![마이 페이지](../../assets/img/omdb/OBDb_API_mypage.png)  
 
 마이 페이지
 
 **모바일 화면**  
 
-![모바일 메인 페이지](../assets/img/omdb/OBDb_API_main_mobile.png) | ![모바일 마이 페이지](../assets/img/omdb/OBDb_API_mypage_mobile.png)
+![모바일 메인 페이지](../../assets/img/omdb/OBDb_API_main_mobile.png) | ![모바일 마이 페이지](../../assets/img/omdb/OBDb_API_mypage_mobile.png)
 
 메인 페이지 & 마이 페이지  
 
-![모바일 검색 페이지](../assets/img/omdb/OBDb_API_search_mobile.png) | ![모바일 영화 페이지](../assets/img/omdb/OBDb_API_movie_mobile.png)
+![모바일 검색 페이지](../../assets/img/omdb/OBDb_API_search_mobile.png) | ![모바일 영화 페이지](../../assets/img/omdb/OBDb_API_movie_mobile.png)
 
 검색 페이지 & 영화 페이지  
 

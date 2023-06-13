@@ -13,15 +13,15 @@ comments: true
 
 ## 블록체인 제갑 서비스
 
-![스플래시페이지](../assets/img/kiss/시작화면.png) | ![로그인페이지](../assets/img/kiss/로그인하기.png)  
+![스플래시페이지](../../assets/img/kiss/시작화면.png) | ![로그인페이지](../../assets/img/kiss/로그인하기.png)  
 
 스플래시 화면 및 로그인 페이지
 
-![메인페이지](../assets/img/kiss/메인화면.png) | ![마이페이지](../assets/img/kiss/내정보.png)  
+![메인페이지](../../assets/img/kiss/메인화면.png) | ![마이페이지](../../assets/img/kiss/내정보.png)  
 
 메인 및 마이 페이지
 
-![추천인페이지](../assets/img/kiss/추천인.png) | ![입금페이지](../assets/img/kiss/입금하기.png)  
+![추천인페이지](../../assets/img/kiss/추천인.png) | ![입금페이지](../../assets/img/kiss/입금하기.png)  
 
 
 추천인 및 입금 페이지

@@ -13,23 +13,23 @@ comments: true
 
 ## ETH 기반의 NFT 마켓 거래 시스템  
 
-![메인페이지](../assets/img/nuseum/Main.jpg)
+![메인페이지](../../assets/img/nuseum/Main.jpg)
 
 메인 페이지
 
-![작품 리스트 페이지](../assets/img/nuseum/Drops.png)  
+![작품 리스트 페이지](../../assets/img/nuseum/Drops.png)  
 
 작품 리스트 페이지
 
-![판매 페이지](../assets/img/nuseum/판매페이지.png) 
+![판매 페이지](../../assets/img/nuseum/판매페이지.png) 
 
 판매 페이지
 
-![아티스트 페이지](../assets/img/nuseum/아티스트.png)  
+![아티스트 페이지](../../assets/img/nuseum/아티스트.png)  
 
 아티스트 페이지
 
-![마이 페이지](../assets/img/nuseum/마이페이지.png)  
+![마이 페이지](../../assets/img/nuseum/마이페이지.png)  
 
 마이 페이지
 

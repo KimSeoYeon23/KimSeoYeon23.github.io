@@ -14,7 +14,7 @@ comments: true
 
 ## FastCampus HTML, CSS, JS  강의
 
-![메인페이지](../assets/img/apple/apple-ipad.png)
+![메인페이지](../../assets/img/apple/apple-ipad.png)
 
 메인 페이지
 
@@ -24,7 +24,7 @@ comments: true
 
 **모바일 화면**  
 
-![모바일 메인 페이지](../assets/img/apple/apple-ipad_mobile.png) | ![모바일 메인 페이지2](../assets/img/apple/apple-ipad_mobile_2.png) | ![모바일 하단 페이지](../assets/img/apple/apple-ipad_mobile_footer.png)
+![모바일 메인 페이지](../../assets/img/apple/apple-ipad_mobile.png) | ![모바일 메인 페이지2](../../assets/img/apple/apple-ipad_mobile_2.png) | ![모바일 하단 페이지](../../assets/img/apple/apple-ipad_mobile_footer.png)
 
 메인 페이지 & 하단 페이지    
 

@@ -15,34 +15,34 @@ comments: true
 
 **PC 화면**  
 
-![메인 페이지](../assets/img/ato/메인화면.png)
+![메인 페이지](../../assets/img/ato/메인화면.png)
 
 메인 페이지
 
-![로그인 페이지](../assets/img/ato/로그인-ato.png)
+![로그인 페이지](../../assets/img/ato/로그인-ato.png)
 
 로그인 페이지
 
-![회원가입 페이지](../assets/img/ato/회원가입-ato.png)
+![회원가입 페이지](../../assets/img/ato/회원가입-ato.png)
 
 회원가입 페이지
 
-![해동 페이지](../assets/img/ato/해동페이지.png)
+![해동 페이지](../../assets/img/ato/해동페이지.png)
 
 해동 페이지 - Progress Bar 적용
 
-![마이 페이지](../assets/img/ato/마이페이지_내자산.png)
+![마이 페이지](../../assets/img/ato/마이페이지_내자산.png)
 
 마이 페이지
 
-![마이페이지모달창](../assets/img/ato/모달창.png)
+![마이페이지모달창](../../assets/img/ato/모달창.png)
 
 마이 페이지 - 모달창  
 
 
 **모바일 화면**  
 
-![모바일 로그인](../assets/img/ato/모바일_로그인.png) | ![모바일 해동 페이지](../assets/img/ato/모바일_해동.png) | ![모바일 메뉴 슬라이드](../assets/img/ato/모바일_메뉴슬라이드.png)
+![모바일 로그인](../../assets/img/ato/모바일_로그인.png) | ![모바일 해동 페이지](../../assets/img/ato/모바일_해동.png) | ![모바일 메뉴 슬라이드](../../assets/img/ato/모바일_메뉴슬라이드.png)
 
 모바일 메뉴 슬라이드
 

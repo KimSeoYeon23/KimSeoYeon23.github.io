@@ -14,19 +14,19 @@ comments: true
 
 ## FastCampus HTML, CSS, JS  강의
 
-![메인 페이지](../assets/img/starbucks/main.png)
+![메인 페이지](../../assets/img/starbucks/main.png)
 
 메인 페이지
 
-![메뉴 호버시](../assets/img/starbucks/menu_hover.png)  
+![메뉴 호버시](../../assets/img/starbucks/menu_hover.png)  
 
 메뉴 호버시
 
-![Youtube 영상 적용](../assets/img/starbucks/main_youtube.png)  
+![Youtube 영상 적용](../../assets/img/starbucks/main_youtube.png)  
 
 Youtube 영상 적용
 
-![하단 페이지](../assets/img/starbucks/footer.png)  
+![하단 페이지](../../assets/img/starbucks/footer.png)  
 
 하단 페이지 - Footer Slide 적용
 

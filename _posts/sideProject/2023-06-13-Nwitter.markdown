@@ -14,11 +14,11 @@ comments: true
 
 ## NomadCoder 트위터 클론코딩  
 
-![로그인, 회원가입 페이지](../assets/img/nwitter/nwitter_login.png) | ![마이 페이지](../assets/img/nwitter/nwitter_mypage.jpg)  
+![로그인, 회원가입 페이지](../../assets/img/nwitter/nwitter_login.png) | ![마이 페이지](../../assets/img/nwitter/nwitter_mypage.jpg)  
 
 로그인, 회원가입, 마이 페이지
 
-![메인 페이지](../assets/img/nwitter/nwitter_main.jpg) | ![수정 페이지](../assets/img/nwitter/nwitter_edit.jpg)  
+![메인 페이지](../../assets/img/nwitter/nwitter_main.jpg) | ![수정 페이지](../../assets/img/nwitter/nwitter_edit.jpg)  
 
 메인 및 수정 페이지  
 

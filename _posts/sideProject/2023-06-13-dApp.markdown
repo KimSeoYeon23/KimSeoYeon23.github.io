@@ -13,15 +13,15 @@ comments: true
 
 ## Inflearn DappProject
 
-![민팅 페이지](../assets/img/dapp/minting.png)  
+![민팅 페이지](../../assets/img/dapp/minting.png)  
 
 민팅 페이지  
 
-![판매 설정 페이지](../assets/img/dapp/setting.png)  
+![판매 설정 페이지](../../assets/img/dapp/setting.png)  
 
 판매 설정 페이지  
 
-![판매중인 에셋 페이지](../assets/img/dapp/asset.png)  
+![판매중인 에셋 페이지](../../assets/img/dapp/asset.png)  
 
 판매 중인 에셋 페이지  
 
