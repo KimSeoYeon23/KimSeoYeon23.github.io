@@ -1,0 +1,35 @@
+---
+layout: post
+title:  "meta 태그"
+date:   2023-06-14 11:35:00 +0900
+categories: 
+  - Dev
+  - html
+tag: html
+comments: true
+---
+
+1. `<meta charset=”UTF-8”>`
+    1. 문자 인코딩 방식을 의미
+2. `<meta http-equiv=”X-UA-Compatible” content=”IE=edge”>`
+    1. 인터넷 익스플로러에 보여지도록 하는 코드
+    2. 익스플로러가 종료됨에 따라 없어도 무방함.
+3. `<meta name=”viewport” content=”widht=device-width, initial-scale=1.0”>`
+    1. 화면에 html코드가 어떻게 출력될 지 지정하는 코드
+    2. viewport는 화면을 의미하는데 pc는 의미가 없고, 모바일에서 동작하는 정보를 지정하는 옵션
+    3. content 의미
+        1. `width=device-width` 는 모바일의 width값과 동일하게 출력
+        2. `initial-scale=1.0` 기본적인 확대 축소의 비율을 설정, 1비율은 확대 축소를 하지 않겠다는 의미(기본값)
+    4. 모바일에서 보여지는 화면이라면 필수로 작성되어있어야 함
+
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+</html>
+```

@@ -1,0 +1,26 @@
+---
+layout: post
+title:  "script 태그"
+date:   2023-06-14 11:30:00 +0900
+categories: 
+  - Dev
+  - html
+tag: html
+comments: true
+---
+
+- `<script>` 태그의 defer 속성은 페이지가 모두 로드된 후에 해당 외부 스크립트가 실행됨을 명시합니다.
+- `type=”module”` 이라는 속성을 추가하면 해당 js 파일에 다른 js파일을 갖고와서 쓸 수 있다는 것을 의미
+    - 해당 js 파일은 다른 js 파일을 갖고와서 쓰는 js 파일
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- 생략 -->
+
+  <!-- JS -->
+  <script src="./js/main.js" type="module" defer></script>
+</head>
+</html>
+```
