@@ -1,0 +1,35 @@
+---
+layout: post
+title:  "작명법"
+date:   2023-06-14 11:50:00 +0900
+categories: 
+  - Dev
+  - html
+tag: html
+comments: true
+---
+
+BEM(Block Element Modifier)  
+
+
+  - 요소__일부분
+      - underscore(Lodash) 기호로 요소의 일부분을 표시
+      
+      ```html
+      <div calss="container">
+      	<div class="container__name">
+      		<div class="item">
+      			<div class="item__name"></div>
+      		</div>
+      	</div>
+      </div>
+      ```
+      
+  - 요소 — 상태
+      - Hyphen(Dahs) 기호로 요소의 상태를 표시
+      
+      ```html
+      <div class="btn btn--primary"></div>
+      <div class="btn btn--success"></div>
+      <div class="btn btn--error"></div>
+      ```
