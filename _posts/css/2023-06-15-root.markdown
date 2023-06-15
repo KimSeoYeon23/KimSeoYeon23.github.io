@@ -1,0 +1,28 @@
+---
+layout: post
+title:  "root 클래스"
+date:   2023-06-15 15:25:00 +0900
+categories: 
+  - Dev
+  - css
+tag: css
+comments: true
+---
+
+- 웹 문서 구조에서 특정 위치에 있는 요소를 선택하는 가상 클래스
+- 웹 문서 구조에서 가장 상위 요소를 선택할 때 사용
+- 최상위 요소에 변수를 선언하면 모든 요소에서 이 변수를 사용할 수 있다.
+
+즉, html에서 root은 항상 html을 가리킨다. 그러나 html보다 `:root` 가상 클래스의 스탕리 적용 우선 순위가 더 높다.
+문서 전반적으로 재사용할 임의가 있는 값을 작성한다.
+
+```css
+:root {
+    --border-color: #d2d2d2;
+    --text-color: #1d1d1d;
+    --header-color: #3a3a3a;
+    --text-white-color: #f5f5f5;
+    --text-blue-color: #0071e3;
+    --dark-gray: #6e6e6e;
+}
+```
