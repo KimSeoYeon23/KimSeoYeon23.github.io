@@ -205,9 +205,61 @@ Tailwind CSS는 HTML 파일, JavaScript 컴포넌트와 클래스네임을 위�
 - 클래스에 유틸리티한 이름(flex, pt-4, ...)을 붙여 HTML 내에서 개발하는 방식이다.
 
 ## 구현
+
+### 메인 페이지
+
+![MainPage](../../assets/img/codestates/plohub/mainPage.gif){:.centered}
+*메인 페이지 화면*
+
+메인 페이지는 유저들이 작성한 게시글 목록이 보이며, 왼쪽의 메뉴 토글 버튼을 클릭하면 카테고리가 보인다. 카테고리를 클릭하면 클릭한 카테고리에 해당하는 게시글이 보이도록 구현했다.  
+또한 메인 페이지의 게시글 리스트는 페이지 초기 렌더링 시 서버 측에서 데이터를 가져와서 해당 데이터와 함께 페이지를 렌더링 할 수 있다고 판단해 SSR을 적용했다.
+
+```jsx
+/**
+ * 서버 사이드 렌더링(SSR)을 위한 함수
+ * 페이지, 제한값, 카테고리를 쿼리 파라미터로 받아 백엔드에서 게시물 리스트를 가져옴
+ * 
+ * @param {object} context - Next.js의 context 객체. 쿼리 파라미터 등 서버 사이드 렌더링에 필요한 정보를 담고 있음
+ * @returns {object} props - 컴포넌트로 전달될 props. 게시물 리스트를 포함
+ */
+export const getServerSideProps = async ({ query }) => {
+    const page = query.page || 1; // Default page is 1
+    const limit = query.limit || 10; // Default limit is 10
+    const { category } = query;
+
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/list`, {
+            params: {
+            page,
+            limit,
+            category,
+            },
+            withCredentials: true
+        });
+    
+        const postList = res.data.posts;
+
+        return {
+            props: {
+                postList,
+            }
+        };
+        } catch (error) {
+        console.error('게시물을 가져오는데 실패했습니다:', error);
+    
+        return {
+            props: {
+                postList: null,
+            }
+        };
+    }
+};
+```
+
 ### 회원 가입
 
 ![SignUp](../../assets/img/codestates/plohub/signup.gif){:.centered}  
+*회원가입 화면*  
 
 회원 가입 시 서버로 중복된 이메일이 있는지 체크를 하고, 중복된 이메일이 있을 경우 에러 문구를 띄워주도록 구현했다.  
 비밀번호는 영어 대소문자, 숫자, 특수 기호가 포함되어야 하며 최소 8자 이상으로 조건을 정했는데, 이 조건이 지켜지지 않을 시 `SignUp` 버튼 클릭은 불가능하다.
@@ -362,8 +414,359 @@ const signUp = async () => {
 ```
 *회원가입 코드*
 
+### 로그인
+
+![SignUp](../../assets/img/codestates/plohub/login.gif)
+*로그인 화면*  
+
+로그인을 하지 않은 상태로 메인 페이지의 `글쓰기` 버튼을 클릭할 경우 `로그인이 필요합니다.`라는 문구가 모달로 띄워지도록 구현했다.  
+로그인이 완료되면 메인 페이지로 자동으로 이동이 된다.  
+
+```jsx
+/**
+ * 행동을 진행하기 전에 사용자가 로그인했는지 확인
+ * 사용자가 로그인하지 않은 경우, 기본 동작을 방지하고 사용자에게 알리는 모달을 띄움
+ *
+ * @param {Event} e - 로그인 확인을 트리거한 이벤트.
+ */
+const loginCheck = (e) => {
+    
+    if (user.email === '') {
+        e.preventDefault();
+        setIsModalOpen(true);
+        setModalTitle('Error');
+        setModalBody('로그인이 필요합니다.');
+        
+        setTimeout(() => {
+            setIsModalOpen(false);
+        }, 3000);
+    }
+}
+```
+*로그인 체크 코드*
+
+```jsx
+/**
+ * 사용자 로그인을 처리하는 비동기 함수
+ * 사용자의 이메일과 비밀번호를 사용하여 서버에 로그인 요청을 보내며,
+ * 응답이 성공적인 경우, 사용자 정보를 받아와 Redux Store에 저장하고,
+ * 홈 화면으로 이동하게 됨, 만약 요청이 실패한 경우, 오류 메시지를 모달로 표시
+ * 모든 모달은 자동적으로 3초 후에 닫히게 됨
+ */
+const signIn = async () => {
+    const formData = new FormData();
+
+    formData.append('email', email);
+    formData.append('password', password);
+
+    try {
+        let response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Accept': 'application/json'
+            },
+            withCredentials: true // Add this line
+        });
+        if (response.status === 200) {
+            setIsModalOpen(true);
+            setModalTitle('Success');
+            setModalBody('로그인 되었습니다.');
+
+            const { email, nickname, level, address, eth_amount, token_amount, daily_token } = response.data.user_info;
+            const { access_token } = response.data;
+
+            dispatch({ type: SET_EMAIL, payload: email });
+            dispatch({ type: SET_ADDRESS, payload: address });
+            dispatch({ type: SET_NICKNAME, payload: nickname });
+            dispatch({ type: SET_LEVEL, payload: level });
+            dispatch({ type: SET_TOKEN_BALANCE, payload: token_amount });
+            dispatch({ type: SET_DAILY_TOKEN_BALANCE, payload: daily_token });
+            dispatch({ type: SET_ETH_BALANCE, payload: eth_amount });
+            
+            setTimeout(() => {
+                setIsModalOpen(false);
+                router.push('/');
+            }, 3000);
+        }
+    } catch (error) {
+        console.log('Error', error.message);
+        setIsModalOpen(true);
+        setModalTitle('Error');
+        setModalBody(error.message);
+
+        setTimeout(() => {
+            setIsModalOpen(false);
+        }, 3000)
+    }
+}
+```
+*로그인 코드*
+
+
+### 게시글 작성
+
+![PostCreate](../../assets/img/codestates/plohub/post_create_lv1.gif){:.centered}
+*게시글 작성 화면 Lv.1*  
+![PostCreate_2](../../assets/img/codestates/plohub/post_create.gif){:.centered}
+*게시글 작성 화면*  
+![PostCreate_2](../../assets/img/codestates/plohub/post_create_lv2.gif){:.centered}
+*게시글 작성 화면 Lv.2*  
+
+게시글 작성의 경우 유저의 등급에 따라 작성할 수 있는 카테고리가 나뉜다. 레벨 1인 경우 `코스 정보`를 제외한 `행사 정보`, `참여 후기`를 작성할 수 있고, 레벨 2인 경우에는 모든 카테고리에서 게시글 작성이 가능하다.
+유저의 레벨은 서버에서 데이터를 받아 Redux를 사용하여 체크하도록 구현했다.  
+
+```jsx
+/**
+ * 사용자 레벨을 확인하여 'courseinfo' 카테고리가 선택되었지만 
+ * 사용자 레벨이 2가 아닌 경우 에러 메시지를 보여주는 함수
+ */
+const userLevelCheck = () => {
+    if(user.level !== 2 && selectCategory === 'courseinfo') {
+        setIsModalOpen(true);
+        setModalTitle('Error');
+        setModalBody('해당 카테고리는 2레벨만 작성 가능합니다.');
+
+        setTimeout(() => {
+            setIsModalOpen(false);
+        }, 3000);
+    }
+}
+
+/**
+ * selectCategory가 변경될 때마다 userLevelCheck 함수를 호출하여 사용자 레벨을 확인
+ */
+useEffect(() => {
+    userLevelCheck()
+}, [selectCategory]);
+```
+*카테고리 유저 레벨 체크*  
+
+```jsx
+/**
+ * 사용자가 파일을 선택하면 이를 처리하는 함수
+ * 이 함수는 선택한 파일의 확장자를 확인하고,
+ * 확장자에 따라 이미지 또는 비디오를 각각의 상태에 저장
+ * @param {Event} e - 파일 입력 이벤트 객체
+ */
+const handleFileChange = (e) => {
+    const files = Array.from(e.target.files)
+
+    files.forEach((file) => {
+        const extension = file.name.split('.').pop().toLowerCase();
+    
+        if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+            setImages((prevImages) => [...prevImages, file]);
+        } else if (extension === 'mp4' || extension === 'avi' || extension === 'mov') {
+            setVideos((prevVideos) => [...prevVideos, file]);
+        }
+    });
+    setSelectedFile(files)
+};
+
+/**
+ * 사용자가 작성한 제목, 내용, 카테고리, 이미지, 비디오를 이용하여 새 게시글을 생성하는 함수
+ * 이 함수는 사용자가 제공한 정보를 FormData 객체에 저장하고,
+ * 해당 객체를 이용하여 서버에 POST 요청을 보냄
+ */
+const createPost = async () => {
+    const formData = new FormData();
+
+    formData.append('title', title);
+    formData.append('content', content);
+    if (selectCategory === 'all') {
+        formData.append('category', 0);
+    } else if(selectCategory === 'eventinfo') {
+        formData.append('category', 1);
+    } else if (selectCategory === 'courseinfo') {
+        formData.append('category', 2);
+    } else if (selectCategory === 'review') {
+        formData.append('category', 3);
+    }
+
+    images.forEach((image) => {
+        formData.append('images', image);
+    });
+
+    videos.forEach((video) => {
+        formData.append('videos', video);
+    });
+    
+    try {
+        let response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/create`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // 파일 업로드 시 Content-Type 설정
+            },
+            withCredentials: true
+        });
+
+        if (response.data.status === 200) {
+            setIsModalOpen(true);
+            setModalTitle('Success');
+            setModalBody('게시글이 등록되었습니다.');
+
+            setTimeout(() => {
+                setIsModalOpen(false);
+                router.push('/users/mypage');
+            }, 3000);
+        }
+    } catch (e) {
+        console.log('Error: ', e.message);
+        setIsModalOpen(true);
+        setModalTitle('Error');
+        setModalBody(e.message);
+
+        setTimeout(() => {
+            setIsModalOpen(false);
+        }, 3000);
+    }
+}
+```
+*게시글 생성 코드*
+
+```jsx
+<div className='w-full flex gap-3 justify-end mt-16'>
+    <button className='
+        w-[15%] 
+        border 
+        rounded-2xl 
+        p-3 
+        bg-blue-main 
+        text-white 
+        hover:bg-blue-dark 
+        transition 
+        duration-300'
+        onClick={() => router.push('/')}>
+        Cancel
+    </button>
+    <button className='
+        w-[15%] 
+        border 
+        rounded-2xl 
+        p-3 
+        bg-blue-dark 
+        text-white 
+        hover:bg-blue-main 
+        transition 
+        duration-300'
+        onClick={createPost}>
+        Create
+    </button>
+</div>
+```
+*게시글 생성 취소 시 메인 페이지로 이동하는 코드*
+
+### 게시글 상세 페이지
+
+![PostDetail](../../assets/img/codestates/plohub/post_detail.gif)
+*게시글 상세 페이지*  
+
+게시글 상세 페이지의 경우 서버 측에서 `Amazon S3`를 사용하여 저장한 이미지를 불러올 수 있도록 구현했다.
+게시글을 작성한 유저 본인일 경우 게시글 삭제가 가능하며, 본인이 아닐 경우 삭제 버튼은 보이지 않는다.  
+게시글 상세 페이지의 경우에도 서버에서 가져온 데이터를 페이지와 함께 렌더링 할 수 있도록 SSR을 사용했다.
+
+```jsx
+/**
+ * 서버 사이드 렌더링(SSR)을 위한 함수
+ * 주어진 게시물 ID(pid)에 해당하는 게시물의 상세 정보와, 해당 게시물에 달린 댓글들을 가져옴
+ * 
+ * @param {object} context - Next.js의 context 객체. 쿼리 파라미터, 쿠키 등 서버 사이드 렌더링에 필요한 정보를 담고 있음
+ * @returns {object} - props 객체를 반환, 
+ * 'postDetail' 키에는 게시물 상세 정보가, 'commentList' 키에는 해당 게시물에 달린 댓글들의 목록이 담겨 있음
+ */
+export const getServerSideProps = async ({ query }) => {
+    const { pid } = query;
+
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/detail/${pid}`, {
+            withCredentials: true
+        });
+    
+        const postDetail = res.data;
+
+        const res2 = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/list/${postDetail.post_info.id}`, {
+            withCredentials: true
+        });
+
+        const commentList = res2.data.comments;
+
+        return {
+            props: {
+                postDetail,
+                commentList
+            }
+        };
+        } catch (error) {
+        console.error('게시물을 가져오는데 실패했습니다:', error);
+    
+        return {
+            props: {
+                postList: null,
+                commentList: null
+            }
+        };
+    }
+};
+```
+*게시글 상세 페이지 코드*
+
+```jsx
+/**
+ * 게시글을 삭제하는 함수입니다. 삭제 성공 시 성공 메시지를, 
+ * 실패 시 에러 메시지를 모달로 표시
+ */
+const deletePost = async () => {
+    try {
+        let response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${postDetail.post_info.id}`, {
+            withCredentials: true
+        });
+        
+        if (response.data.status === 200) {
+            setIsModalOpen(true);
+            setModalTitle('Success');
+            setModalBody('게시글이 삭제되었습니다.');
+
+            setTimeout(() => {
+                setIsModalOpen(false);
+                router.push('/');
+            }, 3000);
+        }
+    } catch (error) {
+        console.log('Error: ', error.message);
+        setIsModalOpen(true);
+        setModalTitle('Error');
+        setModalBody(error.message);
+
+        setTimeout(() => {
+            setIsModalOpen(false);
+        }, 3000);
+    }
+}
+```
+*게시글 삭제 코드*
+
+```jsx
+const isPostAuthor = user && user.email === postDetail.post_info.author.email;
+
+{isPostAuthor && 
+    <button className='
+        w-28 
+        h-12 
+        rounded-xl 
+        bg-red-400 
+        hover:bg-red-500 
+        text-white 
+        text-white 
+        transition 
+        duration-300'
+        onClick={deletePost}>
+        Delete
+    </button>
+}
+```
+*저자 확인하여 게시글 삭제 버튼 구현 코드*
 
 **작성 진행중....**
+
 
 <!-- > 슬라이드 구현
 
