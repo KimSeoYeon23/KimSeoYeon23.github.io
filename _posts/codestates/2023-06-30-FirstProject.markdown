@@ -11,6 +11,8 @@ comments: true
 
 ![OpenSea](../../assets/img/codestates/opensea.png)
 
+### 프로젝트 기간 : 2023.06.23 ~ 2023.06.30
+
 ### CodeStates에서의 첫 프로젝트
 
 **프로젝트 시작하기에 앞서**  
