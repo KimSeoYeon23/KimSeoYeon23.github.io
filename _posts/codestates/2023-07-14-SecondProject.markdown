@@ -11,6 +11,8 @@ comments: true
 
 ![Community](../../assets/img/codestates/plohub/community.jpeg){:.centered}
 
+## 프로젝트 기간 : 2023.07.03 ~ 2023.07.14
+
 ## 개요  
 **인센티브 기반 커뮤니티란?**  
 
@@ -255,6 +257,7 @@ export const getServerSideProps = async ({ query }) => {
     }
 };
 ```
+*게시글 리스트 SSR 코드*
 
 ### 회원 가입
 
@@ -667,11 +670,11 @@ const createPost = async () => {
 ```jsx
 /**
  * 서버 사이드 렌더링(SSR)을 위한 함수
- * 주어진 게시물 ID(pid)에 해당하는 게시물의 상세 정보와, 해당 게시물에 달린 댓글들을 가져옴
+ * 주어진 게시물 ID(pid)에 해당하는 게시물의 상세 정보들을 가져옴
  * 
  * @param {object} context - Next.js의 context 객체. 쿼리 파라미터, 쿠키 등 서버 사이드 렌더링에 필요한 정보를 담고 있음
  * @returns {object} - props 객체를 반환, 
- * 'postDetail' 키에는 게시물 상세 정보가, 'commentList' 키에는 해당 게시물에 달린 댓글들의 목록이 담겨 있음
+ * 'postDetail' 키에는 게시물 상세 정보가 담겨 있음
  */
 export const getServerSideProps = async ({ query }) => {
     const { pid } = query;
@@ -683,16 +686,9 @@ export const getServerSideProps = async ({ query }) => {
     
         const postDetail = res.data;
 
-        const res2 = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/list/${postDetail.post_info.id}`, {
-            withCredentials: true
-        });
-
-        const commentList = res2.data.comments;
-
         return {
             props: {
                 postDetail,
-                commentList
             }
         };
         } catch (error) {
@@ -701,13 +697,12 @@ export const getServerSideProps = async ({ query }) => {
         return {
             props: {
                 postList: null,
-                commentList: null
             }
         };
     }
 };
 ```
-*게시글 상세 페이지 코드*
+*게시글 상세 페이지 SSR 코드*
 
 ```jsx
 /**
@@ -765,535 +760,384 @@ const isPostAuthor = user && user.email === postDetail.post_info.author.email;
 ```
 *저자 확인하여 게시글 삭제 버튼 구현 코드*
 
-**작성 진행중....**
 
+### 댓글 기능
 
-<!-- > 슬라이드 구현
+![Comment](../../assets/img/codestates/plohub/comment.gif){:.centered}
+*댓글 작성 후 토큰 보상*
 
-![메인슬라이드](../../assets/img/codestates/firstSlide.png){:.centered}
-*메인 슬라이드*  
-![하단슬라이드](../../assets/img/codestates/secondSlide.png){:.centered}
-*하단 슬라이드*  
-랜딩 페이지의 슬라이드는 `react-slick` 라이브러리를 사용하여 구현했다.  
-슬라이드 안의 이미지는 민팅이 완료된 NFT 이미지들이다. 이미지는 `IPFS`에 저장이 되는데 우리는 DB를 따로 사용하지 않아 IPFS의 메타데이터를 직접 가져오는 방법을 써야 했다.
+게시글에 댓글을 작성 하면 토큰을 보상 받을 수 있으며, 마이페이지에서 확인이 가능하다. 
+댓글은 작성자인 경우, 삭제 버튼이 보이고 작성자가 아닌 경우에는 삭제 버튼이 보이지 않는다.  
 
 ```jsx
 /**
-   * 사용자의 토큰 목록을 가져오는 비동기 함수.
-   * 
-   * @async
-   * @throws {Error} 토큰 목록을 가져오는 중 에러가 발생한 경우.
-   * @returns {void} 토큰 목록을 설정하고 상태에 저장다.
-   */
-  const getUserToken = async () => {
-    let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS;
+ * 새로운 댓글을 생성하는 함수
+ * 게시글 ID와 댓글 내용을 서버에 POST 요청으로 보냄
+ * 댓글 생성 성공 시 성공 메시지를, 실패 시 에러 메시지를 모달로 표시
+ */
+const createComment = async () => {
+    const formData = new FormData();
+
+    formData.append('post_id', postDetail.post_info.id);
+    formData.append('content', comment);
 
     try {
-      // const response = await get721Contract(contractAddress).methods.getNftTokenList(user.account).call();
-      const response = await get721Contract(contractAddress).methods.getAllNftList().call();
-      console.log('response', response)
-      // setNftList(prevList => [...prevList, ...response]);
-      setNftList(response.map(nft => [Number(nft[0]), nft[1]]));
+        let response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/create`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // 파일 업로드 시 Content-Type 설정
+            },
+            withCredentials: true
+        });
+
+        if (response.data.status === 200) {
+            setIsModalOpen(true);
+            setModalTitle('Success');
+            setModalBody('댓글이 등록되었습니다.');
+            
+            setTimeout(() => {
+                setIsModalOpen(false);
+                setComment('');
+                router.reload();
+            }, 3000);
+        }
     } catch (error) {
-      console.error(error);
-    }
-  }
-  
-  useEffect(() => {
-    getUserToken()
-  }, []);
-
-  /**
-   * 주어진 URL을 IPFS 주소로 변환하는 함수.
-   * 
-   * @param {string} url 변환할 URL.
-   * @returns {string | undefined} IPFS 주소로 변환된 URL입니다. URL이 주어지지 않은 경우 `undefined`를 반환.
-   */
-  const IpfsParser = (url) => {
-    const cid = url.slice(7,url.length)
-    const ipfsUrl = "https://ipfs.io/ipfs/" + cid
-    console.log(ipfsUrl)
-    return ipfsUrl
-  }
-    
-  /**
-   * 모든 NFT 데이터를 가져오는 비동기 함수.
-   * 
-   * @async
-   * @throws {Error} 데이터를 가져오는 중 에러가 발생한 경우.
-   * @returns {void} NFT 데이터를 설정하고 상태에 저장.
-   */
-  useEffect(() => {
-    const fetchData = async (url) => {
-        try {
-          const response = await fetch(IpfsParser(url));
-          const data = await response.json();
-          setInfoNft(prevList => [...prevList, ...(Array.isArray(data) ? data : [data])]);
-          // return data;  
-        } catch (error) {
-            console.error(error);
-        }
-      };
-  
-    const fetchAllData = async () => {
-      try {
-        const allData = await Promise.all(NftList.map(data => fetchData(data[1])));
-        setJsonData(allData);  // allData는 'image' 속성의 값의 배열입니다.
-        console.log('jsonData', allData);
-      } catch (error) {
-          console.error(error);
-      }
-      };
-  
-      fetchAllData();
-    }, [NftList]);
-```
-*생성된 NFT 정보를 가져오는 함수*
-우선 우리가 배포한 컨트랙트를 이용해 생성된 NFT를 모두 받아오고 `useState`를 사용하여 데이터를 저장했다. `useState`에 저장한 데이터 중 image url만 받아와 `IpfsParser` 함수를 만들어 주어진 URL을 IPFS 주소로 변환하여 이미지를 출력했다.
-메인 슬라이드의 이미지만 NFT 이미지이고, 하단 슬라이드의 이미지는 Dummy 이미지이다.
-
-> Create Page
-
-![CreatePage](../../assets/img/codestates/createPage.png)  
-*Create Page*  
-민팅 페이지는 생성할 NFT의 정보를 입력할 수 있는데, 필수 항목으로 이미지와 NFT의 타이틀, 가격을 입력하지 않으면 생성할 수 없도록 예외 처리를 했다.  
-
-
-![이미지가 없을 경우](../../assets/img/codestates/file.png){: width="350" height="350"} | ![타이틀을 입력하지 않았을 경우](../../assets/img/codestates/title.png){: width="350" height="350"} | ![가격을 입력하지 않았을 경우](../../assets/img/codestates/price.png){: width="350" height="350"}
-
-
-*각 필수 항목을 입력하지 않았을 경우 경고 화면*
-*각 이미지를 클릭하면 크게 볼 수 있습니다.*
-
-각 항목들을 모두 입력한 후 `Mint` 버튼을 클릭하면 민팅을 진행할 수 있다.  
-서명 요청을 하면 서버에서 서명을 검증을 하게 된다. 검증이 완료되면 가스비를 지불할 수 있는 창이 뜨며, 가스비까지 지불이 완료되면 민팅이 완료된다.
-민팅이 완료되면, 자동으로 마이페이지로 이동하여 민팅한 NFT를 바로 확인할 수 있다.
-
-
-![Signature](../../assets/img/codestates/signature.png) | ![GasFee](../../assets/img/codestates/gasFee.png)
-
-
-*서명 요청, 가스비 지불 창*
-*각 이미지를 클릭하면 크게 볼 수 있습니다.*
-
-```jsx
-/**
-   * 주어진 메타데이터 URL을 사용하여 비동기적으로 새 NFT 토큰을 발행다.
-   *
-   * @async
-   * @param {string} metadata_url - 토큰 메타데이터의 URL.
-   * @throws {Error} 토큰 발행 중 에러가 발생한 경우.
-   * @returns {void} 토큰 발행이 성공하면 '/mypage'로 이동
-   */
-  const mintToken = async (metadata_url) => {
-    let minter = user.account;
-    let lastTokenId = tokenId;
-    let tokenURI = metadata_url;
-    let zeroWord = '0x0000000000000000000000000000000000000000000000000000000000000000';
-    let gasPrice = await web3.eth.getGasPrice();
-    let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS;
-  
-    try {
-      const receipt = await get721Contract(contractAddress).methods.mintNFT(tokenURI).send({
-        from: minter,
-        gasPrice: gasPrice,
-        gasLimit: 500000
-      });
-  
-      console.log('ERC_721 Success!');
-      navigate('/mypage'); 
-      setIsModalOpen(true);
-      setMessage('Minting completed.');
-      setTimeout(() => {
-        setIsModalOpen(false);
-        setMessage('');
-      }, 5000);
-    }
-    catch (e) {
-      console.log(e);
-      setModalTitle('Error');
-      setMessage(e.message); // Set the error message here
-      setIsModalOpen(true);  // And open the modal with the error
-      setLoading(false);  // Stop loading
-    }
-  }
-  
-  /**
-   * NFT 토큰을 발행하는 비동기 함수다.
-   *
-   * @async
-   * @throws {Error} 파일, 타이틀, 가격 중 하나라도 입력하지 않은 경우, 또는 토큰 발행 중 에러가 발생한 경우.
-   * @returns {void} 발행이 성공하면 토큰 ID를 1 증가시키고 토큰 발행 함수(mintToken)를 호출합니다.
-   */
-  const mint = async () => {
-    
-    if(nftItem == null) { 
-      setModalTitle('Error');
-      setMessage('파일을 선택해 주세요.'); 
-      setIsModalOpen(true); 
-    } else if (title.length === 0) {
-      setModalTitle('Error');
-      setMessage('타이틀을 입력해 주세요.'); 
-      setIsModalOpen(true); 
-    } else if (price.length === 0) {
-      setModalTitle('Error');
-      setMessage('가격을 입력해 주세요.'); 
-      setIsModalOpen(true); 
-    } else {
-
-      // 민팅 중 상태로 설정
-      setLoading(true); 
-      setModalTitle('Minting');
-      setMessage('Minting...'); 
-      setIsModalOpen(true); 
-      let from = user.account;
-      let params = [localStorage.getItem('Sign'), from];
-      let method = 'personal_sign'
-      console.log(params);
-      try {
-        web3.currentProvider.sendAsync({
-          method,
-          params,
-          from
-        }, function (err, result) {
-          if (!err) {
-            const signature = result.result;
-  
-            const formData = new FormData();
-            formData.append('img', nftItem);
-            formData.append('title', title);
-            formData.append('exLink', externalLink);
-            formData.append('description', description);
-            formData.append('category', category);
-            formData.append('price', price);
-            formData.append('signature', signature);
-            formData.append('message', localStorage.getItem('Sign'));
-            formData.append('userAddress', user.account);
-  
-            axios(`http://localhost:8082/create`, {
-              method: 'POST',
-              data: formData,
-              headers: {
-                'Content-Type': 'multipart/form-data',
-                'Accept': '*/*',
-              }
-            }).then(res => {
-              console.log(res);
-              // Here you can call the mintToken function and pass the metadata url.
-              let metadata_url = res.data.resultUri; // assuming this is the format of the response
-  
-              mintToken(metadata_url);
-              setTokenId(tokenId + 1);    // 토큰이 발행된 후 토큰 ID 증가
-            })
-          }
-        })
-      } catch (error) {
-        console.log(error);
+        console.log('Error: ', error.message);
+        setIsModalOpen(true);
         setModalTitle('Error');
-        setMessage(error.message); // Set the error message here
-        setIsModalOpen(true);  // And open the modal with the error
-        setLoading(false);  // Stop loading
-      }
+        setModalBody(error.message);
+
+        setTimeout(() => {
+            setIsModalOpen(false);
+        }, 3000);
     }
-  }
-```
-*Mining 코드*
-
-> My Page
-
-
-![MyPage](../../assets/img/codestates/MyPage.png)
-
-
-*My Page*
-
-마이 페이지에서는 내가 발행하고 소유한 NFT 리스트를 볼 수 있다. 또한 나의 지갑 주소도 확인할 수 있다.
-지갑 주소는 `Header`에서 로그인한 지갑 주소를 가져오는 것인데, `props`로 던져주는 방식이 아닌 `Context` 상태 관리 라이브러리를 사용했다.
-일반적으로 React 애플리케이션에서 데이터는 위에서 아래로 (즉, 부모로부터 자식에게) props를 통해 전달되지만, 애플리케이션 안의 여러 컴포넌트들에 전해줘야 하는 `props`의 경우 이 과정이 번거로울 수 있다. `Context`를 이용하면, 트리 단계마다 명시적으로 `props`를 넘겨주지 않아도 많은 컴포넌트가 이러한 값을 공유할 수 있도록 할 수 있다.
-```jsx
-// Context 폴더 ActionTypes.js
-
-export const SET_ACCOUNT = "SET_ACCOUNT";
-export const SET_PROFILE = "SET_PROFILE";
-export const SET_BANNER = "SET_BANNER";
-export const SET_BALANCE = "SET_BALANCE";
-export const SET_LOGOUT = "SET_LOGOUT";
-```
-*사용할 변수 설정*  
-
-```jsx
-// Context 폴더 index.js
-
-import { createContext, useReducer } from "react";
-import { SET_ACCOUNT, SET_BALANCE, SET_LOGOUT, SET_PROFILE, SET_BANNER } from "./ActionTypes";
-
-// 초기 상태
-//initial state
-const initialState = {
-  user: {
-    account: '',
-    balance: '',
-    name: '',
-    profile: '',
-    banner: '',
-  }
-};
-
-// Context 생성
-/**
- * 빈 객체를 기본값으로 가지는 새로운 Context를 생성.
- * @type {React.Context<{}>}
- */
-const Context = createContext({});    // 빈 객체가 기본값
-
-/**
- * 사용자의 데이터를 관리하기 위한 리듀서 함수.
- * 
- * @param {Object} state - 현재 상태.
- * @param {Object} action - 수행할 액션을 나타내는 객체. `type`과 `payload`를 포함.
- * 
- * @returns {Object} 새로운 상태.
- * 
- * @case {SET_LOGOUT} 모든 사용자 데이터를 초기 상태로 재설정.
- * @case {SET_ACCOUNT} 사용자 데이터 중 `account`를 업데이트.
- * @case {SET_PROFILE} 사용자 데이터 중 `profile`을 업데이트.
- * @case {SET_BANNER} 사용자 데이터 중 `banner`를 업데이트.
- */
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_LOGOUT:
-            return {
-              ...state,
-              user: {
-                account: '',
-                balance: '',
-                name: '',
-                profile: '',
-                banner: '',
-              },
-            }
-    case SET_ACCOUNT:
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            account: action.payload
-          }
-        }
-    case SET_BALANCE:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          balance: action.payload
-        }
-      }
-
-    case SET_PROFILE:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          profile: action.payload
-        }
-      }
-
-    case SET_BANNER:
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            banner: action.payload
-          }
-        }
-  }
 }
 
-// value 객체를 Context.Provider에 제공, value 객체는 state와 dispatch를 포함
 /**
- * @param {Object} props - 자식 요소를 props로 받음
- * @returns {Object} Context.Provider - value 값을 가진 Context.Provider를 반환, value는 state와 dispatch를 포함한 객체
- * 
- * @function useReducer
- * @param {function} reducer - 상태를 변환하는 데 사용되는 reducer 함수
- * @param {object} initialState - 초기 상태 값
- * @returns {Array} state와 dispatch - 현재 상태와 상태를 업데이트하는 dispatch 함수를 반환
+ * 댓글을 삭제하는 함수입니다. 삭제 성공 시 성공 메시지를, 실패 시 에러 메시지를 모달로 표시
+ * @param {string} id - 삭제할 댓글의 ID
  */
-const Provider = ({ children }) => {
-  // reducer 함수와 initialState를 인수로 받아 상태와 상태를 업데이트하는 dispatch를 반환
-  const [state, dispatch] = useReducer(reducer, initialState);
-  // Context.Provider에 제공되는 값으로, 상태(state)와 상태를 업데이트하는 함수(dispatch)를 포함한 객체
-  const value = { state, dispatch };
-  return <Context.Provider value={value}>{children}</Context.Provider>
-};
-
-export { Context, Provider };
-```
-*Context 초기 설정*
-
-```jsx
-import React, { useContext } from 'react';
-import { Context } from '../../Context/index';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-
-const UserInfo = () => {
-    const { state: { user }, dispatch } = useContext(Context);
-
-    return (
-        <div className={styles.walletAddress}>
-            <AccountBalanceWalletIcon className={styles.walletIcon}/>
-            <p className={styles.address}>
-                {`${user.account.slice(0,6)}...${user.account.slice(-5)}`}
-            </p>
-        </div>
-    )
-};
-```
-*Context 사용 예시*  
-
-내가 발행한 NFT를 가져오는 방식은 메인 페이지와 비슷하게 구현했다. 조금 다른 것은 컨트랙트 메소드인데, `getNftTokenList` 메소드이다. 이 메소드는 로그인한 유저의 지갑 주소를 전달하여 해당 지갑 주소로 발행한 NFT 목록만 받아올 수 있다.
-
-```jsx
-    /**
-     * 사용자의 토큰을 가져오는 함수다.
-     */
-    const getUserToken = async () => {
-        let contractAddress = process.env.REACT_APP_ERC_721_ADDRESS;
+const deleteComment = async (id) => {
     try {
-        const response = await get721Contract(contractAddress).methods.getNftTokenList(cookies.address).call();
-        console.log('response', response)
-        setNftList(response.map(nft => [Number(nft[0]), nft[1]]));
+        let response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/${id}`, {
+            withCredentials: true
+        });
+
+        if (response.data.status === 200) {
+            setIsModalOpen(true);
+            setModalTitle('Success');
+            setModalBody('댓글이 삭제되었습니다.');
+
+            const updatedComments = comments.filter(comment => comment.id !== commentId);
+            setComments(updatedComments);
+            
+            setTimeout(() => {
+                setIsModalOpen(false);
+                router.reload();
+            }, 3000);
+        }
     } catch (error) {
-        console.error(error);
-    }
-    }
-    useEffect(() => {
-        getUserToken()
-    }, []);
+        console.log('Error: ', error.message);
+        setIsModalOpen(true);
+        setModalTitle('Error');
+        setModalBody(error.message);
 
-    /** 
-   * 주어진 URL을 IPFS 주소로 변환하는 함수.
-   * 
-   * @param {string} url 변환할 URL.
-   * @returns {string | undefined} IPFS 주소로 변환된 URL입니다. URL이 주어지지 않은 경우 `undefined`를 반환.
-   */
-  const IpfsParser = (url) => {
-    const cid = url.slice(7,url.length)
-    const ipfsUrl = "https://ipfs.io/ipfs/" + cid
-    return ipfsUrl
-  }
+        setTimeout(() => {
+            setIsModalOpen(false);
+        }, 3000);
+    }
+}
+```
+*댓글 생성 및 삭제 코드*
+
+```jsx
+/**
+ * 서버 사이드 렌더링(SSR)을 위한 함수
+ * 주어진 게시물 ID(pid)에 해당하는 게시물의 상세 정보와, 해당 게시물에 달린 댓글들을 가져옴
+ * 
+ * @param {object} context - Next.js의 context 객체. 쿼리 파라미터, 쿠키 등 서버 사이드 렌더링에 필요한 정보를 담고 있음
+ * @returns {object} - props 객체를 반환, 
+ * 'postDetail' 키에는 게시물 상세 정보가, 'commentList' 키에는 해당 게시물에 달린 댓글들의 목록이 담겨 있음
+ */
+export const getServerSideProps = async ({ query }) => {
+    const { pid } = query;
+
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/detail/${pid}`, {
+            withCredentials: true
+        });
     
+        const postDetail = res.data;
 
-useEffect(() => {
-    const fetchData = async (url) => {
-      try {
-        const response = await fetch(IpfsParser(url));
-        const data = await response.json();
-        return Array.isArray(data) ? data : [data];
-      } catch (error) {
-          console.error(error);
-      }
-    };
-  
-    const fetchAllData = async () => {
-      try {
-        const allData = await Promise.all(NftList.map(async data => fetchData(data[1])));
-        setInfoNft(prevList => [...prevList, ...allData.flat()]);
-        console.log('jsonData', allData);
-      } catch (error) {
-          console.error(error);
-      }
-    };
-  
-    fetchAllData();
-  }, [NftList]);
+        const res2 = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/list/${postDetail.post_info.id}`, {
+            withCredentials: true
+        });
+
+        const commentList = res2.data.comments;
+
+        return {
+            props: {
+                postDetail,
+                commentList
+            }
+        };
+        } catch (error) {
+        console.error('게시물을 가져오는데 실패했습니다:', error);
+    
+        return {
+            props: {
+                postList: null,
+                commentList: null
+            }
+        };
+    }
+};
 ```
-*소유한 NFT 목록을 가져오는 코드*
+*댓글 리스트 SSR 코드*
 
-> Detail Page
+### 토큰 전송
 
-![DetailPage](../../assets/img/codestates/detailPage.png)  
-*Detail Page*
+![TokenSend](../../assets/img/codestates/plohub/token_send.gif){:.centered}
+*토큰 전송*  
+![Change counterparty balance after token transfer](../../assets/img/codestates/plohub/token_send_amount.gif)
+*토큰 전송 후 상대방 잔액 변화*
 
-상세 페이지는 메인 페이지나 마이 페이지에서 각 NFT를 클릭하면 진입할 수 있다. 상세 페이지에서는 NFT의 정보가 출력이 되는데 NFT의 타이틀, 이미지, 가격, 설명, 카테고리, 작가의 링크 등을 볼 수 있다.
-현재 구매 버튼은 구현을 해놨으나 기능은 연결하지 않은 상태이다. 이 부분까지는 시간이 부족해서 하지 못했다..ㅠ
-상세 페이지에서 NFT의 정보를 가져오는 부분은 정말 많이 헤맸는데, 새벽이어서 그런건지 머리가 정말 안돌아갔다. DB가 있었으면 `id` 를 이용해 쉽게 가져올 수 있었을 텐데, 우리는 DB를 사용하지 않아 `id`를 매칭하여 가져오는 부분이 계속 해결이 되지 않았다. 그러던 중 찾은 방법이 `Link` 엘리먼트를 사용하여 데이터를 전달해주는 방법이었다. 이 방법을 보고 정말 유레카를 외치고 싶은 심정이었다.
+게시물 상세 페이지에서 유저의 닉네임을 클릭하면 해당 유저의 지갑 주소가 복사된다. 복사한 지갑 주소로 마이페이지에서 토큰 전송이 가능하다.
 
 ```jsx
-{infoNft.map((data, i) => {
-  console.log("data", data, i)
-  return (
-    <div className={`${styles.imgWrap} ${styles.nftImage}`} key={i}>
-      {/* {console.log(NftList[i][0])} */}
-      <Link to={`/detail/${i}`} state={{ info: data }}>
-        <img src={IpfsParser(data.image)} alt={`Image ${i}`}/>
-      </Link>
-    </div>
-  )
-})}
+/**
+ * 토큰 전송을 처리하는 비동기 함수
+ * 사용자가 입력한 주소와 토큰 양을 사용하여 서버에 토큰 전송 요청을 보내며,
+ * 응답이 성공적인 경우, 토큰 전송 성공 메시지를 모달로 표시하고 페이지를 새로 고침
+ * 만약 요청이 실패한 경우, 오류 메시지를 모달로 표시
+ * 모든 모달은 자동적으로 3초 후에 닫히게 됨
+ */
+const tokenSend = async () => {
+    const token = cookie.parse(document.cookie || '');
+    const formData = new FormData();
+
+    formData.append('to_address', toAddr);
+    formData.append('token_amount', tokenAmount);
+
+    try {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/token/transfer`, formData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            withCredentials: true
+        });
+
+        if (response.status === 200) {
+            setModalOpen(true);
+            setModalTitle('Success');
+            setModalBody('토큰 전송이 완료되었습니다.');
+
+            setTimeout(() => {
+                setModalOpen(false);
+                router.reload();
+            }, 3000);
+        }
+    } catch (error) {
+        console.log('Error', error.message);
+        setModalOpen(true);
+        setModalTitle('Error');
+        setModalBody(error.message);
+
+        setTimeout(() => {
+            setModalOpen(false);
+        }, 3000);
+    }
+}
 ```
-*메인 페이지에서 Link의 state를 사용하여 상세 페이지로 NFT 정보를 전달하는 코드*
+*토큰 전송 코드*
+
+### 토큰 스왑
+
+![Token Swap](../../assets/img/codestates/plohub/token_swap.gif){:.centered}
+*토큰 -> ETH 교환*
+
+마이 페이지에서 토큰 교환 버튼을 클릭하면 토큰을 ETH로 교환할 수 있는 모달 창이 뜬다.  
+교환하고 싶은 토큰의 수량을 입력하면 토큰과 이더의 비율을 계산하여 토큰의 수량에 비례한 이더의 양이 자동으로 입력이 된다.
 
 ```jsx
-import { useLocation } from 'react-router-dom'
+/**
+ * 사용자가 입력한 토큰의 양에 따라 상응하는 이더리움의 양을 계산하고 설정하는 함수
+ * 이 함수는 입력 이벤트에서 호출되며, 토큰과 이더리움의 교환 비율을 기반으로 계산
+ * 이 경우, 토큰 1000개당 이더리움 1개로 계산
+ *
+ * @param {object} e - 이벤트 객체
+ */
+const tokenAmountChange = (e) => {
+    const inputTokenAmount = e.target.value;
+    setTokenAmount(inputTokenAmount);
 
-const location = useLocation();
-const info = location.state.info;
+    // 토큰 스왑 비율 계산
+    const tokenToEthRatio = 1000; // 토큰 1000개당 이더 1개로 가정
+    const calculatedEthAmount = inputTokenAmount / tokenToEthRatio;
+    setEthAmount(calculatedEthAmount);
+};
 
-<>
-  <div className={styles.detailContainer}>
-    <div className={styles.left}>
-        <div className={styles.imageContainer}>
-          <img src={IpfsParser(info.image)} alt="NFT image" className={styles.squareImage} />
-        </div>
-        
-        
-    </div>
-    <div className={styles.right}>
-        <div className={styles.titleContainer}>
-            <h1 className={`${styles.title} ${styles.owned} ${styles.titleSize}`}>{info.name}</h1>
-            <p className={`${styles.title} ${styles.owned}`}>Owned by {owned}</p>
-        </div>
-        
+/**
+ * 토큰과 이더리움 간의 교환을 처리하는 비동기 함수
+ * 사용자가 입력한 토큰 양을 사용하여 서버에 토큰 교환 요청을 보내며,
+ * 응답이 성공적인 경우, 토큰 교환 성공 메시지를 모달로 표시하고 페이지를 새로 고침
+ * 만약 요청이 실패한 경우, 오류 메시지를 모달로 표시
+ * 모든 모달은 자동적으로 3초 후에 닫히게 됨
+ */
+const tokenSwap = async () => {
+    const formData = new FormData();
+    const token = cookie.parse(document.cookie || '');
 
-        <div className={styles.priceContainer}>
-            <div>
-                <span>Current price</span>
-                <h1 className={styles.priceVal}>{Number(info.price)}ETH</h1>
-            </div>
-            <button className={styles.buyBtn}><h3>Buy now</h3></button>
-        </div>
+    formData.append('token_amount', tokenAmount);
 
-        <div className={styles.Description}>
-            <h3 className={styles.DescriptionH3}>Description</h3>
-            <div className={styles.DescriptionLine}></div> {/* Add a separate div for the line */}
-            <p className={styles.DescriptionP}>{info.description}</p>
-            <div className={styles.DescriptionLine}></div>
-            <h3 className={styles.DescriptionDitails}>Details</h3>
-            <div className={styles.DescriptionLine}></div>
-            <div className={styles.DescriptionVal}>
-                <div >
-                Category
-                <span className={styles.rightAlign}>{info.properties.category}</span>
-                </div>
-                <div>
-                ExLink
-                <span className={styles.rightAlign}>{info.properties.exLink}</span>
-                </div>
-            </div>
-        </div>
-        
-    </div>
-  </div>
-</>
+    try {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/token/swap`, formData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            withCredentials: true
+        });
+
+        if (response.status === 200) {
+            setModalOpen(true);
+            setModalTitle('Success');
+            setModalBody('토큰 교환이 완료되었습니다.');
+
+            setTimeout(() => {
+                setModalOpen(false);
+                router.reload();
+            }, 3000);
+        }
+    } catch (error) {
+        console.log('Error', error.message)
+        setModalOpen(true);
+        setModalTitle('Error');
+        setModalBody(error.message);
+
+        setTimeout(() => {
+            setModalOpen(false);
+        }, 3000);
+    }
+}
 ```
-*전달 받은 NFT 정보를 사용하는 상세 페이지 코드*
+*토큰 스왑 코드*  
 
-React Router 라이브러리의 `Link` 컴포넌트는 `state` prop을 제공하여 라우트 간에 상태를 전달 할 수 있다. `useLocation`을 사용하여 현재 위치의 상태를 읽는다. `state` prop은 이동된 위치에만 적용된다.
+### NFT 민팅
 
-### 마무리
-이렇게 첫 프로젝트는 마무리가 됐다. 정말 우여곡절이 많았는데, 이번에 챗 지피티의 도움을 정말 많이 받았다. 질문이 너무 많아서 여기에 정리하기에는 내용이 너무 많아서 힘들지만 웬만한 것은 다 물어본 것 같다. 이번에 프로젝트를 하면서 팀장이라는 역할이 정말 힘들다는 것도 깨달았다. 이전에 회사를 다니면서 팀장님께 정말 많이 질문을 하면서 괴롭혔는데, 그 나날들을 반성하게 되면서 다시 한 번 팀장님들을 존경하게 됐다. 팀장님들이 맨날 본인이 맡은 일을 하기가 시간이 부족하다고 했는데 어떤 말인지 완전히 깨닫게 되는 순간들이었다. 그리고 좀 더 많은 것들을 다양하게 시도해보고 싶었는데 시간이 부족해서 그러지 못한 것도 아쉽고, 처음에 시작할 때 제대로 규칙이나 기획을 정하지 않아서 시간이 더 소요된 것 같아 그 부분도 많이 아쉽다. 짧은 시간이었지만 그럼에도 결과물을 잘 만들어주고 같이 밤새면서 열심히 노력해준 팀원분들께 정말 감사했다고 전하고 싶다.  
-다음 프로젝트에서는 상태 관리 라이브러리나 CSS 라이브러리 등 좀 더 다양한 것들을 시도해 볼 생각이다.
+![NFT Minting](../../assets/img/codestates/plohub/NFT_minting.gif){:.centered}
+*NFT 민팅*
 
-> [Git Hub Repository](https://github.com/KimSeoYeon23/beb-09-miumiu)
- -->
+유저가 소유하고 있는 토큰의 수량이 20개 이상인 경우 NFT 민팅이 가능하다.  
+이미지와 이름, 설명 등을 입력 후 민팅 버튼을 클릭하면 Spinner와 함께 민팅이 되었다는 모달이 뜨며 바로 마이 페이지로 이동하여 민팅된 NFT를 확인할 수 있다.  
+NFT의 가격 또한 20 PH(토큰) 이다.
+
+
+```jsx
+/**
+ * NFT를 민팅하는 함수
+ * 사용자가 입력한 이름(name), 설명(desc), 그리고 업로드한 파일(uploadFile)을 사용하여 민팅을 진행
+ * 민팅이 진행되는 동안 모달을 열어 민팅 상태를 사용자에게 알림
+ * 민팅이 성공적으로 완료되면 성공 메시지를 표시하고, 
+ * 일정 시간 후에 사용자의 마이페이지로 리다이렉트
+ * 민팅이 실패하면 오류 메시지를 표시
+ */
+const minting = async () => {
+    const formData = new FormData();
+
+    formData.append('name', name);
+    formData.append('description', desc);
+    formData.append('image', uploadFile);
+
+    setIsModalOpen(true);
+    setModalTitle('Minting');
+    setModalBody(<FaSpinner size={50} className="animate-spin" />);
+
+    try {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/nft/mint`, formData, {
+            withCredentials: true,
+        });
+
+        if (response.status === 200) {
+            setIsModalOpen(true);
+            setModalTitle('Success');
+            setModalBody('민팅되었습니다.');
+
+            setTimeout(() => {
+                setIsModalOpen(false);
+                router.push('/users/mypage');
+            }, 3000);
+        }
+        if (response.status === 200) {
+
+        }
+    } catch (error) {
+        console.log('Error', error.message)
+        setIsModalOpen(true);
+        setModalTitle('Error');
+        setModalBody(error.message);
+
+        setTimeout(() => {
+            setIsModalOpen(false);
+        }, 3000);
+    }
+}
+```
+*NFT Minting 코드*
+
+### NFT 상세 페이지
+
+![NFT Detail](../../assets/img/codestates/plohub/NFT_detail.gif){:.centered}
+*NFT 상세 페이지*
+
+현재 우리는 NFT 거래는 구현하지 않아 마이 페이지에서만 민팅된 NFT를 확인할 수 있다.  
+NFT 카드를 클릭하면 해당 NFT에 대한 상세 페이지로 이동하며 이미지와 이름, 설명, 민팅 날짜, 지갑 주소 등을 확인할 수 있다.  
+
+```jsx
+/**
+ * 서버 사이드 렌더링(SSR)을 위한 함수
+ * 주어진 NFT ID(pid)에 해당하는 NFT의 상세 정보를 가져옴
+ * 또한 사용자가 로그인 상태가 아니면 로그인 페이지로 리디렉션
+ * 
+ * @param {object} context - Next.js의 context 객체. 쿼리 파라미터, 쿠키 등 서버 사이드 렌더링에 필요한 정보를 담고 있음
+ * @returns {object} - props 객체를 반환 'nftInfo' 키에는 NFT 상세 정보가 담겨 있음
+ */
+export const getServerSideProps = async (context) => {
+    const { pid } = context.query;
+    const cookies = cookie.parse(context.req.headers.cookie || '');
+    let nftInfo;
+    if (!cookies.access_token) {
+        return {
+            redirect: {
+                destination: '/users/signin',
+                permanent: false,
+            },
+        }
+    }
+
+    try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/nft/detail/${pid}`, {
+            withCredentials: true
+        });
+
+        nftInfo = response.data.nft;
+    } catch (error) {
+        console.log('Error', error.message)
+    }
+    
+    return {
+        props: { nftInfo },
+    }
+}
+```
+*NFT 상세 페이지 SSR 코드*
+
+
+## 마무리
+이렇게 두 번째 프로젝트도 마무리가 됐다. 앞서 말했듯이 이번에는 처음부터 규칙과 기획을 확실하게 정하고 프로젝트를 시작해서 첫 번째 프로젝트에 비해 수월했다. 정규 시간이 끝난 후에도 조금씩 부지런히 프로젝트를 진행하다 보니 밤샐 일도 없이 기간에 딱 맞게 끝낼 수 있었다. 완전한 완성이라고는 볼 수 없지만, 그래도 기간에 비해 많이 했다고 생각해 좀 뿌듯한 감정도 있다.  
+이번에는 팀장님이 `Next.js`를 사용을 할 수 있느냐 라고 먼저 물어봐주셔서 감사했다. 안그래도 `SSR`을 써보고 싶었는데 혼자서는 어떻게 해야 할지 막막해 그저 생각만 하고 속에 담아만 두고 있던 상태였었는데, 먼저 제안을 해주셔서 바로 승낙하고 이번 프로젝트에 적용을 시킬 수 있었다. CSS 라이브러리는 `Tailwind CSS`와 `Chakra UI` 중 고민이 많았는데 선호도가 `Tailwind CSS`가 더 높은 것 같고 위에 작성한 특징들을 보고 결정하게 되었다. 처음에는 Docs랑 계속 왔다갔다 하며 진행해서 조금 시간이 걸렸던 것 같은데, 사용하는 것이 일정하다 보니 나중에는 조금 외워서 금방 코드를 작성할 수 있어서 좋았다. 게다가 반응형도 완벽하지는 않지만 어느 정도 작동을 해서 좋은 라이브러리인 것 같다. 세 번째 프로젝트에서도 사용을 할 지는 잘 모르겠지만 고려는 해볼만 한 것 같다.  
+그리고 이번에 팀장님의 캐리로 `Docker`까지 사용을 해봤는데 정말 편리했다. 아직 뭐가 뭔지는 잘은 모르지만, 컨테이너를 실행하면 팀장님이 설정해주신 서버들이 모두 한 번에 실행이 되며, 로그까지 같이 볼 수 있고 각자 컴퓨터의 환경 설정과 관계 없이 실행할 수 있다는 점이 가장 큰 장점 같다. 여러 회사에서도 `Docker`를 꽤나 사용하고 있으니 나도 좀 더 공부해서 실행되는 과정과 설정들을 좀 익혀야 될 필요성을 느꼈다.  
+세 번째 프로젝트는 드디어 마지막 프로젝트인데, 이번 프로젝트에서 진행한 팀원들과 첫 번째 프로젝트에서 같이 진행했던 한 분과 같이 마지막 프로젝트를 진행하게 되었는데 나는 개인적으로 나만의 드림팀이다.! 진짜로, 다들 잘하시는 분들만 모여서 마지막 프로젝트는 꽤나 기대된다.  
+
+
+---
+> [Git Hub Repository](https://github.com/codestates-beb/beb-09-PloHub)
+
