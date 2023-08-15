@@ -12,6 +12,9 @@ comments: true
 > Cascading Style Sheets의 약자로 HTML과 같은 마크업 언어가 표현되는 방법을 결정한다.
 > HTML이 웹 페이지의 구졸르 담당한다면, CSS는 구조의 외부와 내부를 꾸미는 역할을 담당한다.
 
+* this unordered seed list will be replaced by the toc
+{:toc}
+
 # CSS 소개
 
 ## CSS는 스타일링을 위한 도구이다.

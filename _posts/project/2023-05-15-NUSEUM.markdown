@@ -10,6 +10,8 @@ comments: true
 **Date** : 2022년 9월 ~ 2022년 11월  
 **Site** : [NUSEUM](https://nuseum.kr/)  
 
+* this unordered seed list will be replaced by the toc
+{:toc}
 
 ## ETH 기반의 NFT 마켓 거래 시스템  
 

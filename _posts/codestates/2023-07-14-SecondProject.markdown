@@ -11,6 +11,9 @@ comments: true
 
 ![Community](../../assets/img/codestates/plohub/community.jpeg){:.centered}
 
+* this unordered seed list will be replaced by the toc
+{:toc}
+
 ## 프로젝트 기간 : 2023.07.03 ~ 2023.07.14
 
 ## 개요  

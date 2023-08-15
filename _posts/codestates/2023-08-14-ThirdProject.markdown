@@ -13,11 +13,17 @@ toc_sticky: true
 
 ![CleanMile](../../assets/img/codestates/cleanmile/clean_mile_logo_2.png){:.centered}
 
+* this unordered seed list will be replaced by the toc
+{:toc}
+
 ## 프로젝트 기간 : 2023.07.17 ~ 2023.08.11
+{:toc}
 
 ## 개요  
+{:toc}
 
 ### 프로젝트 명  
+{:toc}
 
 **Clean Mile**  
 배포 링크
@@ -25,12 +31,14 @@ toc_sticky: true
 - [관리자](https://admin.clean-mile.co/)
 
 ### 📝 서비스 소개
+{:toc}
 
  환경 보호 행사에 대한 정보를 한 곳에 모아서 접근성과 사용자 편의성을 증진시키고, 행사에 참여하는 사용자들에게 인증 배지(NFT)를 발급하여 수집욕을 자극함으로써 활발한 행사 참여를 유도하는 것을 목표로 하는 환경 캠페인 플랫폼이자 온라인 커뮤니티 서비스입니다.
 
  이 프로젝트는 환경과 관련된 이슈에 관심이 있는 사람들 간의 상호작용을 촉진하고, 참여자들이 환경 보호를 위한 다양한 활동에 자발적으로 참여하도록 유도하여 도시 미관 훼손, 배수 시설 훼손, 생물 다양성 훼손, 대기 오염, 자원 고갈 등의 환경 문제를 해결하고 개선하는 데 기여하고자 하는 아이디어에서 시작하였습니다.
 
 ### 🚗 주요 기능
+{:toc}
 
 - **이벤트 관리**: 다양한 환경과 관련된 행사를 하나의 플랫폼에서 관리하여 사용자들에게 접근성과 편의성을 제공합니다.
 - **커뮤니티**: 서비스 사용자들에게 정보 교환 및 소통의 장을 제공합니다.
@@ -41,32 +49,38 @@ toc_sticky: true
 - **관리자** : 관리자는 별도의 관리자 페이지를 통해 행사, 유저, 댓글을 관리합니다.
 
 ### 🎯서비스 대상
+{:toc}
 
  Clean Mile 프로젝트는 [플로깅](https://namu.wiki/w/%ED%94%8C%EB%A1%9C%EA%B9%85) 및 [비치코밍](https://gscaltexmediahub.com/esg/gsc-esg/beachcoming/)과 같은 환경 보호와 운동을 동반하는 활동들을 중점적으로 다루고 있습니다. 이러한 활동들은 최근 SNS을 통해 국내에 전파되고 있으며 강변 지역에서 청년들을 중심으로 활발한 활동이 이루어지고 있습니다. 국내외 기업들은 이러한 MZ세대를 겨냥해 플로깅과 비치코밍 등의 행사를 주최하고 SNS에 업로드할 수 있는 인증샷을 찍을 수 있는 장소를 마련하거나 행사에 참여한 것을 기념하기 위한 기념품을 지급하고 있습니다. 이러한 트렌드에 합류하기 위해 저희는 주요 서비스 대상을 국내에 거주하는 청년 및 청소년층으로 지정하였습니다.
 
  한편 저희 플랫폼은 NFT, FT같은 블록체인에 기반한 인센티브를 지급하고 있으므로 서비스의 사용자는 블록체인 기반 기술에 대한 기본적인 이해가 필요합니다. 따라서 주된 사용자 계층은 블록체인과 관련된 개념을 빠르게 습득할 수 있거나 이미 블록체인에 익숙한 청년 및 청소년 계층이 될 것입니다. 그렇다고 NFT나 블록체인에 대한 개념을 알아야만 저희 플랫폼의 서비스를 이용하고 흥미를 느낄 수 있는 것은 아닙니다. 추후에 서비스가 더욱 발전해감에 따라 환경과 건강에 관심이 있는 모든 사람들이 저희의 서비스의 사용자가 될 가능성을 염두에 두고 있습니다.
 
 ### 🍀플랫폼 지속 가능성
+{:toc}
 
  프로젝트의 주제가 ‘환경’과 관련된 만큼 선한 의도와 선한 영향력을 가진 사람들에게 저희 프로젝트의 가치를 이해시킬 수 있어야 합니다. 그런데 봉사하는 마음으로 선뜻 손을 내밀어 준 이에게 수수료를 부담하게 한다면 이것은 과연 옳은 일일까요? 이에 저희는 서비스 주체로서 서비스 내에서 발생하는 모든 트랜잭션 비용을 저희가 부담을 하고 사용자들에게는 비용을 청구하지 않는 방향으로 나아가기로 했습니다.
 
  그런데 한 편으로 모든 트랜잭션 비용을 부담한다는 것이 상당한 부담이 될 것이라 판단했습니다. 이에 저희는 온체인 데이터 최소화, 트랜잭션 회수 최소화 등 여러 부분에서 비용을 최소화하기 위해 고민했습니다. 나아가 운영에 필요한 비용들은 행사 주최자들 또는 사용자들의 후원, 추후에 플랫폼에 많은 사용자들이 유입된다면 그로부터 발생하는 여러 광고 비용으로 충당하기로 결정했습니다.
 
 ### 🌐Blockchain Network
+{:toc}
 
 저희 팀은 저희 프로젝트에 어떤 블록체인 네트워크가 가장 잘 맞을지 고민했습니다. 그 중에서도 이더리움 사용량이 많아지면서 이더리움 메인넷의 성능을 올리고 높은 수수료 문제를 해결하기 위해 이더리움 블록체인에 레이어 2 스케일링 솔루션을 도입하여 사용자들이 보다 저렴한 수수료로 편리하게 서비스를 이용할 수 있도록 한 폴리곤 네트워크가 가장 적당하고 생각했습니다. 그리고 **폴리곤 네트워크**가 가진 주된 가치도 web3 기술의 발전과 함께 환경에 대한 문제도 항상 고민하는 방향이기 때문에 저희 프로젝트와 잘 맞다고 생각했습니다.
 
 ****
 
 ## 포지션
+{:toc}
 
 마지막 프로젝트는 내가 원하던 드림팀이 되었다고 생각한다. 그렇지만 나를 제외하고 다른 팀원 분들은 모두 백엔드나 컨트랙트 포지션이라 프론트엔드는 나 혼자인건 마찬가지였다. 이번 프로젝트는 두 번째 프로젝트의 연장선 이지만 기획을 바꿔 Back Office가 추가되어 할 일이 배로 늘어났다. 그래서 내가 Front Office의 프론트엔드를 맡게 되고 팀장님이 Back Office의 프론트엔드 포지션을 맡게 되었다.
 
 ***
 
-## 팀 규칙  
+## 팀 규칙 
+{:toc} 
 
-### 그라운드 룰  
+### 그라운드 룰 
+{:toc} 
 
 1. 10시 스탠드 업 미팅 (전날 작성한 코드 설명, 오늘 목표)
 2. 5시 진행도 공유 (카메라 ON)
@@ -76,6 +90,7 @@ toc_sticky: true
 6. 오류 발생 시, 일단 해결하려고 노력해보고 30분 이상 붙들고 있지 말 것. 그리고 오류 제보 채널에 오류 로그를 복사 붙여넣기 또는 화면 캡쳐하여 올리고 줌으로 호출
 
 ### 깃허브 브랜치 관리 규칙  
+{:toc}
 
 1. main, dev 브랜치는 팀장이 직접 관리 (팀장 허가 필요)
 2. pull request를 작성하면 디스코드 또는 줌으로 팀장 호출
@@ -87,6 +102,7 @@ toc_sticky: true
     4. Submit new issue → `feat/[이슈 번호]`이름으로 새로운 브랜치 자동 생성
 
 ### 커밋 메시지 규칙
+{:toc}
 
 ```
 Fix: 올바르지 않은 동작을 고친 경우
@@ -100,6 +116,7 @@ Rename: 이름 변경 (디렉토리, 파일, 함수, 변수 등)
 > git commit -m "Add 영어로 제목 적기"
 
 ### 커밋 순서
+{:toc}
 
 ```
 1. git add .
@@ -111,6 +128,7 @@ Rename: 이름 변경 (디렉토리, 파일, 함수, 변수 등)
 ```
 
 ### .gitignore 기본 설정
+{:toc}
 
 ```
 node_modules
@@ -123,6 +141,7 @@ package-lock.json
 > .env를 ignore하는 대신 .env.example로 어떤 값이 필요한지 명시
 
 ### node, npm 버전 정보
+{:toc}
 
 ```
 1. node - 16.14.0
@@ -130,6 +149,7 @@ package-lock.json
 ```
 
 ### Linter
+{:toc}
 
 ```
 - VSCode Prettier extension 사용
@@ -139,8 +159,10 @@ package-lock.json
 ***
 
 ## 구현 목표  
+{:toc}
 
 ### 사용자
+{:toc}
 
 **Bare Minimum**  
 
@@ -174,6 +196,7 @@ package-lock.json
 - 토큰으로 배지 교환 (소규모 행사 참여자들은 배지를 보상으로 받는 대신 구매)  
 
 ### 관리자
+{:toc}
 
 **Bare Minimum**  
 
@@ -202,6 +225,7 @@ package-lock.json
 ---
 
 ## 프로젝트 기획
+{:toc}
 
 ![서비스아키텍쳐](../../assets/img/codestates/cleanmile/service_archtecture.png){:.centered}
 *서비스 아키텍쳐*  
@@ -223,6 +247,7 @@ package-lock.json
 보시다시피 처음의 기획 단계 에서는 기업형 관리자 계정이 따로 있었다. 그러나 멘토 분과 면담 중 현재 굳이 기업형 관리자가 따로 필요하지 않다고 정했고, 프로젝트의 볼륨을 조금 줄이기 위해 기업형 관리자는 우선 없애기로 정했다. 따라서 이벤트나 유저에 관한 것은 모두 관리자가 관리하고, 기업형 관리자는 Advanced로 분류하기로 했다.
 
 ## 기술 스택
+{:toc}
 
 **Front-end**  
 <img alt="HTML" src="https://img.shields.io/badge/HTML-E34F26.svg?style=for-the-badge&logo=HTML5&logoColor=white"/>
@@ -271,6 +296,7 @@ package-lock.json
 <img src="https://img.shields.io/badge/amazon_aws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">
 
 ### Next.js
+{:toc}
 
 Next.js는 리액트를 위해 만든 **오픈소스 자바스크립트 웹 프레임워크**로, 리액트에는 없는 **서버 사이드 렌더링(Server Side Rendering, SSR), 검색 엔진 최적화(Search Engine Optimization)**이 가능하다.
 
@@ -280,6 +306,7 @@ Next.js는 리액트를 위해 만든 **오픈소스 자바스크립트 웹 프�
   - **서버 사이드 렌더링(Server Side Rendering, SSR)**은 서버에서 자바스크립트를 로딩함으로써 클라이언트 측에서는 자바스크립트를 로딩하는 시간이 줄어들게 된다. 그리고 검색 엔진이 자바스크립트를 읽는 것이 아닌 서버측에서 자바스크립트, html, css를 만들어 컨텐츠에 직접 업로드 함으로 검색 엔진에 게시글이 걸리게 된다. 또한 meta 태그를 자유롭게 추가함으로 SEO를 용이하게 할 수 있다.
 
 ### Redux
+{:toc}
 
 - 애플리케이션의 state를 관리하기 위한 오픈소스 JavaScript 라이브러리이다.
 - Redux는 원리가 간단하고 모든 수정 사항을 기록한다.
@@ -288,6 +315,7 @@ Next.js는 리액트를 위해 만든 **오픈소스 자바스크립트 웹 프�
 - Redux를 사용하면 애플리케이션 전체에 걸쳐 상태를 공유할 수 있다. 이는 React의 prop drilling 문제를 해결하는 데 도움이 된다.
   
 ### Redux Saga  
+{:toc}
 
 리액트/리덕스 애플리케이션에서 비동기적으로 API를 호출하여 데이터를 가져오는 일과 같은 부수 효과(Side Effect)를 쉽게 처리하기 위해 사용하는 라이브러리이다.
 
@@ -298,6 +326,7 @@ Next.js는 리액트를 위해 만든 **오픈소스 자바스크립트 웹 프�
 > 참고: <https://tech.trenbe.com/2022/05/25/Redux-Saga.html>
 
 ### Tailwind CSS
+{:toc}
 
 Tailwind CSS는 HTML 파일, JavaScript 컴포넌트와 클래스네임을 위한 다른 템플릿 모두를 스캐닝해서 대응하는 스타일을 생성하고 그것들을 정적인 CSS 파일에 입력하여 동작한다.
 
@@ -311,6 +340,7 @@ Tailwind CSS는 HTML 파일, JavaScript 컴포넌트와 클래스네임을 위�
 - 클래스에 유틸리티한 이름(flex, pt-4, ...)을 붙여 HTML 내에서 개발하는 방식이다.
 
 ### React Query  
+{:toc}
 
 React-Query는 React앱에서 비동기 로직을 쉽게 다루게 해주는 라이브러리이다.
 
@@ -327,7 +357,8 @@ React-Query는 React앱에서 비동기 로직을 쉽게 다루게 해주는 라
 > <https://maintainhoon.vercel.app/blog/post/react_query>  
 > <https://velog.io/@dormahd114/React-Query%EB%9E%80>
 
-### Next Translate  
+### Next Translate 
+{:toc} 
 
 Next.js 프레임워크를 사용하여 만들어진 웹 애플리케이션 다국어(i18n) 지원을 추가하기 위한 도구이다.
 
@@ -338,14 +369,17 @@ Next.js 프레임워크를 사용하여 만들어진 웹 애플리케이션 다�
 > 참고: <https://dev-yakuza.posstree.com/ko/react/nextjs/localization/>
 
 ### SweetAlert2
+{:toc}
 
 SweetAlert2 라이브러리는 기존의 alert 창보다 다양한 디자인과 색감으로 디자인이 된 alert 창이다. 한 종류만 있는게 아니라 **alert, confirm, prompt** 입력창 역시 지원하며, 여러 주제에 따라 다양한 예쁜 알림창을 따로 CSS 작업 없이 고퀄리티의 애니메이션 창을 구성할 수 있다.
 
 > 참고: <https://inpa.tistory.com/entry/SweetAlert2-%F0%9F%93%9A-%EC%84%A4%EC%B9%98-%EC%82%AC%EC%9A%A9>
 
 ## 구현
+{:toc}
 
 ### 메인 페이지
+{:toc}
 
 ![MainPage](../../assets/img/codestates/cleanmile/Info.png){:.centered}
 *메인 페이지 화면*
@@ -382,6 +416,7 @@ return (
 *Get Started 버튼 로그인 확인 코드*
 
 ### 회원 가입
+{:toc}
 
 ![SignUp](../../assets/img/codestates/cleanmile/signup.gif){:.centered}  
 *회원가입 화면*  
@@ -759,6 +794,7 @@ return (
 *회원가입 코드*
 
 ### 로그인
+{:toc}
 
 ![SignUp](../../assets/img/codestates/cleanmile/login.gif)
 *로그인 화면*  
@@ -864,6 +900,7 @@ return (
 `onError` 옵션은 `Mutation Error`를 콘솔에 출력한다.  
 
 ### Notice, General 게시글 리스트
+{:toc}
 
 ![공지사항 리스트](../../assets/img/codestates/cleanmile/notice.png){: width="550" height="550"} | ![자유 게시글 리스트](../../assets/img/codestates/cleanmile/general.png){: width="550" height="550"}
 
@@ -1020,6 +1057,7 @@ export const getServerSideProps = async (
 > 공지사항과 자유 게시글 SSR 코드는 비슷하여 이 중 하나만 블로그에 작성했습니다.
 
 ### Event, Review 게시글 리스트
+{:toc}
 
 ![이벤트 리스트](../../assets/img/codestates/cleanmile/event.png){: width="550" height="550"} | ![리뷰 리스트](../../assets/img/codestates/cleanmile/review.png){: width="550" height="550"}
 
@@ -1181,6 +1219,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 `IntersectionObserver`는 타겟 요소와 그 부모 요소나 최상위 `document`의 `viewport`사이의 교차점을 비동기적으로 관찰하는 방법을 제공한다. `observer`라는 이름의 `useRef`훅을 사용하여 `IntersectionObserver`의 인스턴스를 참조한다. `lastElementRef`는 콜백 함수로, 페이지의 마지막 요소에 바인딩된다. 이 함수는 스크롤이 마지막 요소까지 도달했는지 관찰한다. 만약 스크롤이 마지막 요소에 도달했고, 다음 페이지의 데이터가 있을 경우 (`hasNextPage`가 `true`일 경우) `fetchNextPage` 함수를 호출하여 다음 페이지의 데이터를 가져온다.
 
 ### 게시글 상세 페이지
+{:toc}
 
 ![공지사항 상세 페이지](../../assets/img/codestates/cleanmile/notice_detail.png){: width="550" height="550"} | ![자유 게시글 상세 페이지](../../assets/img/codestates/cleanmile/general_detail.png){: width="550" height="550"}  
 ![리뷰 게시글 상세 페이지](../../assets/img/codestates/cleanmile/review_detail.png){: width="550" height="550"} | ![이벤트 상세 페이지](../../assets/img/codestates/cleanmile/event_detail.png){: width="550" height="550"}
@@ -1433,6 +1472,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 > 상세 페이지의 SSR 코드는 공지사항, 자유, 리뷰, 이벤트 모두 비슷하여 이 중 하나의 코드만 블로그에 작성했습니다.
 
 ### 게시글 작성
+{:toc}
 
 ![자유 게시글 작성 페이지](../../assets/img/codestates/cleanmile/post_create.png){: width="550" height="550"} | ![리뷰 게시글 작성 페이지](../../assets/img/codestates/cleanmile/review_create.png){: width="550" height="550"}
 
@@ -1531,6 +1571,7 @@ const [selectEvent, setSelectEvent] = useState('');
 *게시글 생성 코드*
 
 ### 게시글 수정
+{:toc}
 
 ![자유 게시글 수정 페이지](../../assets/img/codestates/cleanmile/post_edit.png){: width="550" height="550"} | ![리뷰 게시글 수정 페이지](../../assets/img/codestates/cleanmile/review_edit.png){: width="550" height="550"}
 
@@ -1621,6 +1662,7 @@ return (
 > 자유, 리뷰 게시글 수정 코드는 비슷하여 이 중 하나만 블로그에 작성했습니다.
 
 ### 유저 페이지
+{:toc}
 
 ![마이 페이지](../../assets/img/codestates/cleanmile/mypage.png){: width="550" height="550"} | ![유저 페이지](../../assets/img/codestates/cleanmile/userpage.png){: width="550" height="550"}
 
@@ -1884,6 +1926,7 @@ export const getServerSideProps = async (
 
 
 ### QR Code 스캔
+{:toc}
 
 ![QR Code 스캔](../../assets/img/codestates/cleanmile/qr_code_scan.png)
 
@@ -2027,6 +2070,7 @@ export default QRScan;
 *QR Code 스캔 코드*
 
 ### 헤더 상태 변경
+{:toc}
 
 ![로그인하지 않은 경우의 헤더](../../assets/img/codestates/cleanmile/header.png)  
 *로그인하지 않은 경우의 헤더*  
@@ -2128,6 +2172,7 @@ const logout = async () => {
 *로그아웃 코드*
 
 ### 댓글 기능
+{:toc}
 
 ![댓글 작성자가 아닌 경우](../../assets/img/codestates/cleanmile/comment.png)  
 *댓글 작성자가 아닌 경우*  
@@ -2281,8 +2326,10 @@ const deleteComment = async (commentId: string) => {
 ---
 
 ## 라이브러리 코드
+{:toc}
 
 ### Redux
+{:toc}
 
 ```bash
 npm i redux
@@ -2534,6 +2581,7 @@ const editPost = async () => {
 *`dispatch` 사용 예시*
 
 ### React Query
+{:toc}
 
 ```bash
 npm i react-query
@@ -2630,6 +2678,7 @@ npm i react-query
 
 
 ### 다국어 기능
+{:toc}
 
 ```bash
 npm i --save next-translate
@@ -3040,6 +3089,7 @@ export default Header;
 
 
 ## 마무리
+{:toc}
 
 드디어 마지막 프로젝트가 끝났다. 이번에는 마지막 프로젝트인 만큼 기획도 오래 걸렸고 오래 걸린 만큼 할 일도 많았다. 게다가 새로운 기술들을 시도해서 더욱 어려웠던 것 같다. 특히 이번에는 타입스크립트를 사용해봤는데, 옛날에 강의 들었다가 안들은지 오래돼서 다 까먹은 상태로 진행을 해 솔직히 GPT한테 부탁한 게 태반이다. 그래도 후반에 되서야 조금 감을 잡았는데, 함수들 쪽에서 타입을 지정하는 부분이 아직은 좀 어려운 것 같다. 게다가 빌드 하는 과정에서 타입을 지정하지 않으면 오류가 난다는 것도 처음 알았다. 솔직히 좀 귀찮고 작업 속도가 오래 걸리기도 해서 아직은 크게 장점을 잘 모르겠다. 그래도 자바스크립트 메소드를 사용하는 부분이나 서버로 데이터를 전송하는 부분에서 타입을 확실하게 지정하니 좀 편한 부분도 있는 것 같다. 다른 여러 장점들은 타입스크립트를 계속해서 써봐야 체감이 될 것 같다.  
 그리고 리덕스를 쓰는 과정에서 리덕스가 동기적으로 작업한다는 것을 사실 이번에 처음 알았다. 이전에는 그저 '상태 관리 라이브러리, 전역적으로 상태를 관리할 수 있음' 정도로만 썼는데 미들웨어를 사용해서 비동기적으로 처리하는 등 이번에야 제대로 조금 사용한 것 같다. 리덕스 역시 앞으로 공부할 부분이 많고 계속해서 써야 어떤식으로 동작이 되는지 확실히 이해할 수 있을 것 같다. 지금은 그저 GPT한테 물어보면서 사용해서 제대로 알고 사용했다고 할 수 없는 상태이다. 프로젝트를 끝내기 급급한데다가 프로젝트 시간도 짧다 보니 파악할 시간이 부족했다. 리액트 쿼리 또한 동일하다. 특히 `userInfo` API를 연결하는 부분에서 `session`에 데이터를 저장 후 가져오다 보니 헤더에서 유저 정보가 새로고침을 해야 불러오는 상황이 발생했는데, 일단은 `useState`를 사용하여 데이터를 직접 저장 후 불러오는 형식을 사용했다. 이렇게 하니 새로고침을 하지 않더라도 로그인 후 메인페이지로 이동하면 `userInfo`의 데이터를 바로 받아오는 것을 확인할 수 있었다. 이런 처리 방법이 맞는 것인지, 아닌지는 좀 더 찾아봐야 알 수 있을 것 같다.  
@@ -3051,5 +3101,3 @@ export default Header;
 > [Git Hub Repository](https://github.com/codestates-beb/beb-09-clean-mile)  
 > [Team Notion](https://codestates.notion.site/4-6ec71403fea14dac8864eebae1c38370)  
 > <a href='/assets/download/Clean-mile.pdf' download>발표 PPT 파일</a>
-
-{:toc}

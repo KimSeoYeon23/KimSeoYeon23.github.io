@@ -11,6 +11,8 @@ comments: true
 **Site** : [Nwitter](https://kimseoyeon23.github.io/nwitter/)  
 **Github** : [GitHub](https://github.com/KimSeoYeon23/nwitter)  
 
+* this unordered seed list will be replaced by the toc
+{:toc}
 
 ## NomadCoder 트위터 클론코딩  
 

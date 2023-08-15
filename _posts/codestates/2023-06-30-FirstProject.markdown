@@ -11,6 +11,9 @@ comments: true
 
 ![OpenSea](../../assets/img/codestates/opensea.png)
 
+* this unordered seed list will be replaced by the toc
+{:toc}
+
 ### 프로젝트 기간 : 2023.06.23 ~ 2023.06.30
 
 ### CodeStates에서의 첫 프로젝트

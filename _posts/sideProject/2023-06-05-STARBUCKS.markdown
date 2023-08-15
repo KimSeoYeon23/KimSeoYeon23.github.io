@@ -11,6 +11,8 @@ comments: true
 **Site** : [STARBUCKS](https://starbucks-demo-sy.netlify.app/)  
 **Github** : [GitHub](https://github.com/KimSeoYeon23/starbucks-vanilla-app)  
 
+* this unordered seed list will be replaced by the toc
+{:toc}
 
 ## FastCampus HTML, CSS, JS  강의
 
