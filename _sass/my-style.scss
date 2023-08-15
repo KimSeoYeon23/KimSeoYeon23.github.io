@@ -67,6 +67,14 @@ img.centered {
 }
 // Fancy Codeblock Scrollbar
 
+// Table centering
+table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 pre {
   border-color: transparent;
   transition: border-color 0.5s ease;

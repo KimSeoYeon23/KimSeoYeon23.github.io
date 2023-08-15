@@ -637,7 +637,7 @@ useEffect(() => {
   return (
     <div className={`${styles.imgWrap} ${styles.nftImage}`} key={i}>
       {/* {console.log(NftList[i][0])} */}
-      <Link to={`/detail/${i}`} state={{ info: data }}>
+      <Link to={`/detail/${i}`} state={ info: data }>
         <img src={IpfsParser(data.image)} alt={`Image ${i}`}/>
       </Link>
     </div>

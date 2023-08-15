@@ -135,7 +135,7 @@ Refactor: 전면 수정
 
 ## 프로젝트 기획
 ![서비스아키텍쳐](../../assets/img/codestates/plohub/service_archtecture.png){:.centered}
-*와이어 프레임*  
+*서비스 아키텍쳐*  
 
 ![FlowChart](../../assets/img/codestates/plohub/flow_chart.png){:.centered}
 *플로우 차트*  
