@@ -97,3 +97,14 @@ pre {
     border-right-width: calc(100vw + 100vh);
   }
 }
+
+.toc {
+  position: fixed;
+  top: 20%; 
+  right: 0; 
+  width: 20%; 
+  overflow-y: auto; 
+  height: 60%; 
+  border-left: 1px solid #ddd;
+  padding-left: 1rem;
+}

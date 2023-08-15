@@ -7,6 +7,8 @@ categories:
   - codestates
 tag: codestates
 comments: true
+toc: true
+toc_sticky: true
 ---
 
 ![CleanMile](../../assets/img/codestates/cleanmile/clean_mile_logo_2.png){:.centered}
@@ -18,6 +20,9 @@ comments: true
 ### 프로젝트 명  
 
 **Clean Mile**  
+배포 링크
+- [사용자](https://www.clean-mile.co/)
+- [관리자](https://admin.clean-mile.co/)
 
 ### 📝 서비스 소개
 
@@ -3043,4 +3048,8 @@ export default Header;
 마무리는 두서 없이 생각나는 대로 쓰다 보니 말이 이리저리 안맞고 왔다 갔다 할 수도 있지만, 이번 프로젝트에 대한 솔직한 생각이다.
 
 ---
-> [Git Hub Repository](https://github.com/codestates-beb/beb-09-clean-mile)
+> [Git Hub Repository](https://github.com/codestates-beb/beb-09-clean-mile)  
+> [Team Notion](https://codestates.notion.site/4-6ec71403fea14dac8864eebae1c38370)  
+> <a href='/assets/download/Clean-mile.pdf' download>발표 PPT 파일</a>
+
+{:toc}
