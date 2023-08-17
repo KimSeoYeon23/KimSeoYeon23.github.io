@@ -1,0 +1,38 @@
+---
+layout: post
+title:  "비트코인"
+date:   2023-08-17 11:10:00 +0900
+categories: 
+  - Dev
+  - blockchain
+tag: blockchain
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 비트코인
+
+> Bitcoin uses peer-to-peer technology to operate with no central authority or banks; managing transactions and the issuing of bitcoins is carried out collectively by the network. Bitcoin is open-source; its design is public, nobody owns or controls Bitcoin and everyone can take part. Through many of its unique properties, Bitcoin allows exciting uses that could not be covered by any previous payment system.
+> 
+> 
+> (비트코인은 중앙 권한이나 은행 없이 운영되기 위해 P2P 기술을 사용한다. 트랜잭션을 다루고 비트코인을 발행하는 일들은 네트워크의 협력을 통해 이루어진다. 비트코인은 오픈 소스로, 모두에게 공개되어 있고, 그 누구도 비트코인 네트워크를 소유하거나 통제할 수 없으며, 모두가 네트워크의 일부로 참여할 수 있다. 비트코인은 여러 독특한 특징들을 통해 이전의 어떤 결제 시스템에서도 하지 못했던 흥미로운 기능들을 제공한다.)
+> 
+> [출처] [bitcoin.org/en](https://bitcoin.org/en/)
+
+비트코인은 중개자 업시 직접 화폐를 사거나, 팔고, 환전할 수 있는 **탈중앙화된 디지털 화폐 시스템**이다.  
+
+기존 전자 금융 시스템에서는 자산을 거래하기 위해서는 **은행**이라는 중개자를 통해서 신원 증명과 소유권 증명을 해야 했다. 따라서 은행이 자산과 신원에 관한 모든 정볼르 보관하고 있었다. 그러나 우리는 2008년 금융위기를 보면서 은행이 늘 올바른 선택을 하지 않으며, 자신들의 이익을 위해 경제를 악화시킬 수 있다는 것을 알게 되었다. 글로벌 금융위기를 통해 많은 사람들이 사토시 나카모토의 말에 공감하며, 비트코인이 주목받았다.  
+
+사토시 나카모토는 역사적으로 은행에 대한 신뢰의 위반이 여러 번 있었다는 내용으로 기존 금융을 비판했다. 이런 이유로 **신뢰가 아닌 암호화 증명에 기반한 전자 결제 시스템**이 필요하다고 생각하여 비트코인을 만들었다. 은행이라는 중개자에게 신뢰를 담보로 우리의 자산을 맡기지 않고, 블록체인과 암호화 기술을 사용한 분산 원장을 통해 **네트워크에 있는 사용자들이 직접 거래(P2P)**를 할 수 있게 된 것이다.
+
+> P2P(Peer-to-Peer) : 중개자 없이 사용자들이 직접 자산이나 데이터를 주고 받는 것을 의미한다.  
+
+비트코인은 블록체인 기술을 통해 구축되어 있다. 비트코인 블록체인은 퍼블릭 블록체인(Public Blockchain)으로, 누구든지 네트워크에 참여하면 트랜잭션 기록에 접근할 수 있다. 또한 누구든지 트랜잭션을 생성하거나 블록을 만들어 블록체인을 업데이트 할 수 있다. 반면에, 블록체인에 기록된 트랜잭션을 수정하거나 삭제하기는 매우 어렵다. 각 블록은 난수로 저장되며, 블록 내에 있는 트랜잭션이 조금이라도 변경되면 블록의 난수 역시 변경되기 때문이다. 모든 사용자는 암호화 기술을 통해 난수를 검증하기 때문에 악의적인 사용자가 임의로 트랜잭션을 변경하는 것은 불가능에 가깝다. 이를 통해 비트코인은 정부나 은행과 같은 중앙 기관 없이도 트랜잭션의 진위를 보장한다.  
+
+2009년 처음 공개된 이후, 비트코인의 가치는 급격하게 상승했다. 초기에는 1BTC의 가치가 100원도 채 되지 않았으나, 2022년 12월 29일 기준으로 1BTC는 약 $16,536으로 2,090만원이다. 또한 비트코인의 총 공급량은 약 2,100만 코인으로 제한되어 있기 때문에, 비트코인의 히소성은 시간이 지남에 따라 계속 오를 것으로 예상된다. 이러한 특성과 비트코인의 우상향하는 가격으로 인해 몇몇 개인이나 기관 투자자들은 비트코인을 일종의 디지털 금으로 취급하기도 한다.
+
+![비트코인의 가격 그래프](../../assets/img/blockchain/bitcoin_graph.png){:.centered}
+
+*비트코인의 가격 그래프(단위: 원화)*
