@@ -22,7 +22,7 @@ Geth를 처음 시작하면 네트워크 내의 다른 이더리움 클라이언
 
 > 블록체인에 연결할 수 있는 자바스크립트 클라이언트(Geth Console)도 있다.
 
-![Geth Console을 사용한 이더리움 블록체인 네트워크](../../assets/img/blockchain/geth_console.png){:.cetnered}
+![Geth Console을 사용한 이더리움 블록체인 네트워크](../../assets/img/blockchain/geth_console.png){:.centered}
 *Geth Console을 사용한 이더리움 블록체인 네트워크*
 
 ## Parity
