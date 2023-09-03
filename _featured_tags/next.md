@@ -5,6 +5,7 @@ title: Next
 slug: next
 category: Dev
 sidebar: true
-order: 5
+order: 6
 description: >
-   Next.js Study  
+   Next.js Study
+---
