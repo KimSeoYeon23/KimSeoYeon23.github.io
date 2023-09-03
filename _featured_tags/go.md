@@ -1,10 +1,11 @@
 ---
 layout: tag-list
 type: tag
-title: Golang
-slug: golang
+title: Go
+slug: go
 category: Dev
 sidebar: true
 order: 6
 description: >
-   Golang Study  
+   Golang Study
+---

@@ -5,7 +5,7 @@ title: React
 slug: react
 category: Dev
 sidebar: true
-order: 5
+order: 4
 description: >
    React.js Study
 ---
