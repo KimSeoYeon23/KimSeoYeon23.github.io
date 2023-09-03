@@ -28,7 +28,9 @@ description: >
 
 # A shorter description for the sidebar.
 tagline: >
-  블록체인 프론트엔드 개발자가 되기 위해 공부 중입니다.!
+  블록체인 프론트엔드 개발자가 되기 위해 공부 중입니다.  
+
+  현재 백엔드도 관심이 많아 공부 중 입니다.
 
 # A list of keywords for your blog
 keywords: ['Development', 'Blockchain', 'Study']

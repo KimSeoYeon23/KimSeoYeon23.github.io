@@ -1,11 +1,11 @@
 ---
 layout: tag-list
 type: tag
-title: CodeStates
-slug: codestates
+title: React
+slug: react
 category: Dev
 sidebar: true
-order: 8
+order: 5
 description: >
-   CodeStates BootCamp Study
+   React.js Study
 ---
