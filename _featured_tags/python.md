@@ -1,11 +1,11 @@
 ---
 layout: tag-list
 type: tag
-title: CodeStates
-slug: codestates
+title: Python
+slug: python
 category: Dev
 sidebar: true
-order: 9
+order: 7
 description: >
-   CodeStates BootCamp Study
+   Python Study
 ---
