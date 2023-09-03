@@ -67,5 +67,5 @@ comments: true
 6. 초기 성장 장벽: 표준 라이브러리와 커뮤니티가 제공하는 다양한 패키지와 툴이 많아, 초보자가 처음에 어떤 것을 선택해야 할지 혼란스러울 수 있다.
 
 > 출처  
-> <https://m.blog.naver.com/rlarbtjq7913/221719844361>
+> <https://m.blog.naver.com/rlarbtjq7913/221719844361>  
 > <https://wikidocs.net/6>
