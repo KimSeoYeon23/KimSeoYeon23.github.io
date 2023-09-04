@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "리액트란?"
+title:  "React(리액트)란?"
 date:   2023-09-03 20:40:00 +0900
 categories: 
   - Dev

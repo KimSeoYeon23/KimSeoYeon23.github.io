@@ -1,0 +1,247 @@
+---
+layout: post
+title:  "JSX"
+date:   2023-09-04 22:10:00 +0900
+categories: 
+  - Dev
+  - react
+tag: react
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## JSX
+
+### JSX
+
+JavaScript XML의 줄임말로 문자열도 아니고 HTML도 아니다.  
+React에서 UI를 구성할 때 사용하는 문법으로 **JavaScript를 확장한 문법**이다. 이 문법을 이용해서 React 엘리먼트를 만들 수 있다.
+
+![JSX란 무엇인가?](../../assets/img/react/jsx.png){:.centered}
+
+JSX는 JavaScript가 확장된 문법이지만, 브라우저가 실행할 수 있는 JavaScript 코드가 아니다. 그렇기 때문에 브라우저가 이해할 수 있는 JavaScript 코드로 변환을 해줘야 하는데 이 때 이용하는 것이 **"Babel"**이다. **Babel**은 **JSX를 브라우저가 이해할 수 있는 JavaScript로 컴파일**한다. 컴파일 후, JavaScript를 브라우저가 읽고 화면에 렌더링할 수 있다.
+
+![DOM 그리고 React JSX](../../assets/img/react/jsx_2.png){:.centered}
+
+React에서는 DOM과 다르게 CSS, JSX 문법만을 가지고 웹 애플리케이션을 개발할 수 있다. 즉, 컴포넌트 하나를 구현하기 위해서 필요한 파일이 줄어들었고, 한눈에 컴포넌트를 확인할 수 있게 되었다.  
+
+JSX를 사용하면 JavaScript만으로 마크업(markup) 형태의 코드를 작성하여 DOM에 배치할 수 있게 되는 것이다.
+
+![왜 JSX를 써야할까?](../../assets/img/react/why_jsx.png){:.centered}
+
+JSX를 이용해 DOM코드보다 명시적으로 코드를 작성할 수 있다. JavaScript 문법과 HTML 문법을 동시에 이용해 기능과 구조를 한눈에 확인할 수 있다.  
+
+이렇게 구조와 동작에 대한 코드를 한 뭉치로 적은 코드셋을 컴포넌트라고 한다.
+
+![JSX 없이 React를 쓸 수 있을까?](../../assets/img/react/jsx_3.png){:.centered}
+
+JSX 없이도 React 요소를 만들 수는 있지만, 코드가 복잡해지고 가독성이 떨어진다는 단점이 있다.
+
+## JSX 활용
+
+### JSX 활용
+
+JSX에서 여러 엘리먼트를 작성하고자 하는 경우, 최상위에서 **opening tag**와 **closing tag**로 감싸주어야 한다.
+
+```jsx
+<div>
+  <div>
+    <h1>Hello</h1>
+  </div>
+  <div>
+    <h2>World</h2>
+  </div>
+</div>
+```  
+
+HTML class 속성을 지정하려면 **className**으로 표기해야 한다.
+
+```jsx
+<div className="greeting">Hello!</div>
+```  
+
+JavaScript를 쓰고자 한다면 꼭 **중괄호**를 이용해야 한다. 중괄호를 사용하지 않으면 일반 텍스트로 인식한다.
+
+```jsx
+function App() {
+  const name = "Josh Perez";
+
+  return (
+    <div>
+      Hello, {name}
+    </div>
+  )
+}
+```
+
+엘리먼트가 JSX로 작성되면 **"대문자"로 시작**(PascalCase)해야 한다. 소문자로 시작하게 되면 일반적인 HTML 엘리먼트로 인식을 하게 된다.  
+이렇게 대문자로 작성된 JSX 컴포넌트를 따로 사용자 정의 컴포넌트라고 부른다.
+
+```jsx
+function Hello() {
+  return <div>Hello!</div>
+}
+
+function HelloWorld() {
+  return <Hello />
+}
+```  
+
+조건부 렌더링은 if문이 아닌 **삼항연산자**를 이용해야 한다.
+
+```jsx
+<div>
+  {
+    (1+1 === 2) ? (<p>정답</p>) : (<p>탈락</p>)
+  }
+</div>
+```
+
+여러 개의 HTML 엘리먼트를 표시할 때는 **"map()"** 함수를 사용한다.  
+map 함수를 사용할 때 반드시 **"key" JSX** 속성을 넣어야 한다.  
+**"key" JSX** 속성을 넣지 않으면 리스트의 각 항목에 key를 넣어야 한다는 경고가 표시된다.
+
+```jsx
+const posts = [
+ {id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
+ {id: 2, title: 'Installation', content: 'You can install React from npm.'},
+];
+
+function Blog() {
+ const content = posts.map((post) => {
+  <div key={post.id}>
+   <h3>{post.title}</h3>
+   <p>{post.content}</p>
+  </div>
+ });
+ return (
+  <div>
+   {content}
+  </div>
+ );
+}
+```
+
+---
+
+## map을 이용한 반복 Hands-on
+
+이번 Hands-on에서는 React에서 여러 데이터를 렌더링할 때 사용하는 `map` 메서드에 대해서 알아보도록 하겠다. 빠른 이해를 위해 코드스테이츠 수강생 김코딩의 React TIL 블로그 개발을 예시로 들겠다.
+
+김코딩의 블로그 포스트가 두 개밖에 없다면 아래 코드로 충분하다. 이렇게 직접 모은 데이터를 코드에 작성하는 것을 하드코딩(hard coding)이라고 부른다.
+
+```jsx
+const posts = [
+ { id: 1, title: "Hello World", content: "Welcome to learning React!" },
+ { id: 2, title: "Installation", content: "You can install React via npm" },
+];
+
+function Blog() {
+ return (
+  <div>
+   <div>
+    <h3>{posts[0].title}</h3>
+    <p>{posts[0].content}</p>
+   </div>
+   <div>
+    <h3>{posts[1].title}</h3>
+    <p>{posts[1].content}</p>
+   </div>
+  </div>
+ );
+}
+```
+*데이터가 두 개 밖에 없을 때*
+
+하지만 김코딩의 블로그 포스트가 100개인 경우를 상상해 본다. 김코딩은 부지런한 수강생이기 때문에 하루에 글을 하나 이상 작성한다. 이런 상황에서는 블로그 포스팅이 늘어날 때마다 매일 코드를 변경해야만 한다. 데이터가 변경될 때마다, 알아서 렌더링할 수는 없을까? React에서는 이런 문제를 해결하기 위해서 배열 메서드 map을 활용한다.
+
+```jsx
+const posts = [
+ { id: 1, title: "Hello World", content: "Welcome to learning React!" },
+ { id: 2, title: "Installation", content: "You can install React via npm" },
+ { id: 3, title: "reusable component", content: "render easy with reusable component." },
+ // ...
+ { id: 100, title: "I just got hired!", content: "OMG!" },
+];
+
+function Blog() {
+ return (
+  <div>
+   <div>
+    <h3>{posts[0].title}</h3>
+    <p>{posts[0].content}</p>
+   </div>
+   <div>
+    <h3>{posts[1].title}</h3>
+    <p>{posts[1].content}</p>
+   </div>
+   {// ...}
+   <div>
+    <h3>{posts[99].title}</h3>
+    <p>{posts[99].content}</p>
+   </div>
+   {// ... 98 * 4 more lines !!}
+  </div>
+ );
+}
+```
+*데이터가 100개 이상일 때*
+
+### map을 이용한 반복
+
+**map의 특성**
+
+- 배열의 각 요소를
+- 특정 논리(함수)에 의해
+- 다른 요소로 지정(map)한다.
+
+현재 `posts`의 요소는 블로그 포스트 id, title, content로 나눌 수 있다. 이 정볼르 브라우저에서 React로 보여 주려면 여러 HTML 엘리먼트에 이 데이터를 적절히 넣어야 한다. 단순한 문자열에 불과했던 `posts`의 요소를 HTML 엘리먼트로 이 정보의 구조를 잘 짜놓은 모습으로 매핑하면 되겠다. 수도코드로 작성해 본다.
+
+> 배열의 각 요소(post)를 특정 논리(postToElement 함수)에 의해 다른 요소로 지정(map) 한다.
+
+React에서는 위 수도코드를 아래와 같이 적을 수 잇다. 반복적으로 작성해야 하는 부분만 골라서 배열의 요소로 넣으면 React가 이를 인지하고 모든 요소를 렌더링한다.
+
+```jsx
+function Blog() {
+ const postToElement = (post) => (
+  <div>
+   <h3>{post.title}</h3>
+   <p>{post.content}</p>
+  </div>
+ );
+
+ const blogs = posts.map(postToElement);
+
+ return <div className="post-wrapper">{blogs}</div>
+}
+```
+*배열 메서드 map 활용*
+
+> **return 문 안에서 `map`메서드를 사용할 수는 없을까?**
+> 사용할 수 있다. JSX를 사용하면 중괄호 안에 모든 표현식을 포함할 수 있기 때문에 map 메서드의 결과를 return문 안에 인라인으로 처리할 수 있다. 코드 가독성을 위해 **변수로 추출할지** 아니면 **인라인에 넣을지는** 개발자가 판단해야 할 몫이다.
+
+### key 속성
+
+React에서 `map` 메서드 사용 시, **key 속성**을 넣지 않으면 아래와 같이 리스트이 각 항목에 key를 넣어야 한다는 경고가 표시된다. **key 속성**의 위치는 `map` 메서드 내부에 있는 엘리먼트 즉, 첫 엘리먼트에 넣어 준다.
+
+![key를 넣어야 한다는 경고 표시](../../assets/img/react/map_key_error.png){:.centered}
+*key를 넣어야 한다는 경고가 표시*
+
+> **key 속성 값이 반드시 id가 되어야 하나요? id가 존재하지 않으면 어떻게 해야 하나요?**
+> key 속성 값은 가능하면 데이터에서 제공하는 id를 할당해야 한다. key 속성 값은 id와 마찬가지로 변하지 않고, 예상 가능하며, 유일해야 하기 때문이다. 정 고유한 id가 없는 경우에만 배열 인덱스를 넣어서 해결할 수 있다. 배열 인덱스는 최후의 수단(as a last resort)으로만 사용한다. [리액트 공식문서의 key](https://ko.legacy.reactjs.org/docs/lists-and-keys.html#keys)에서 추가로 공부한다.
+
+```jsx
+function Blog() {
+ // postToElement라는 함수로 나누지 않고 아래와 같이 써도 무방하다.
+ const blogs = posts.map((post) => (
+  <div key={post.id}>
+   <h3>{post.title}</h3>
+   <p>{post.content}</p>
+  </div>
+ ));
+ return <div className="post-wrapper">{blogs}</div>
+}
+```
+*바른 key 속성 값 할당의 예*
