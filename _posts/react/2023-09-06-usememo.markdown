@@ -1,0 +1,45 @@
+---
+layout: post
+title:  "useMemo"
+date:   2023-09-06 22:30:00 +0900
+categories: 
+  - Dev
+  - react
+tag: react
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## useMemo를 이용한 결과 값 최적화
+
+### Memoization이란?
+
+메모이제이션은 비용이 많이 드는 함수 호출의 결과를 저장하고 동일한 입력이 다시 발생할 때 캐시된 결과를 반환하여 컴퓨터 프로그램의 속도를 높이는 데 주로 사용되는 최적화 기술이다.
+
+```js
+function Component({ a, b }) {
+  const result = compute(a, b);
+  return <div>{result}</div>
+}
+```
+
+`Component` 내의 `compute` 함수가 만약 복합한 연산을 수행하면 결과 값을 리턴하는데 오랜 시간이 걸리게 된다. 이럴 시에 컴포넌트가 계속 리 렌더링 된다면 연산을 계속 수항하는데 오랜 시간이 걸려서 성능에 안좋은 영향을 미치게 되며, UI 지연 현상도 일어나게 될 것이다.  
+
+이러한 현상을 해결해주기 위해서 사용하는 것이 `useMemo`이다.  
+`compute` 함수에 넘겨주는 `a`, `b`의 값이 이전과 동일하다면 컴포넌트가 리 렌더링 되더라도 연산을 다시 하지 않고 이전 렌더링 때 저장해두었던 값을 재활용하게 된다.
+
+### useMemo 적용하기
+
+`useMemo`로 감싸준 후에 첫 번째 인수에 의존성 배열에 `compute` 함수에서 사용하는 값을 넣어 준다.
+
+```js
+function Component({ a, b }) {
+  const result = useMemo(() => compute(a, b));
+  return <div>{result}</div>
+}
+```
+
+`useCallback`과 `useMemo`는 거의 비슷한 것이다.  
+하지만 다른 것은 `useCallback`은 **메모이제이션된 함수**를 반환하며, `useMemo`는 **메모이제이션된 값**을 반환한다.

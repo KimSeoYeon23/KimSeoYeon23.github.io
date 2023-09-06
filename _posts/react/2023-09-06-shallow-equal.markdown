@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "얕은 비교와 깊은 비교"
-date:   2023-09-06 20:40:00 +0900
+title:  "useCallback"
+date:   2023-09-06 22:10:00 +0900
 categories: 
   - Dev
   - react
@@ -12,44 +12,96 @@ comments: true
 * this unordered seed list will be replaced by the toc
 {:toc}
 
-## 얕은 비교(Shallow Compare) 란?
+## useCallback을 이용한 함수 최적화
 
-숫자, 문자열 등 원시 자료형은 값을 비교한다.  
-배열, 객체 등 ㅊ마조 자료형은 값 혹은 속성을 비교하지 않고, **참조되는 위치**를 비교한다.
+원래 컴포넌트가 렌더링 될 때 그 안에 있는 함수도 다시 만들게 된다. 하지만 똑같은 함수를 컴포넌트가 리 렌더링된다고 해서 **계속 다시 만드는 것**은 좋은 현상은 아니다. 그리고 이렇게 컴포넌트가 리 렌더링 될 때마다 함수를 계속 다시 만든다고 하면 만약 이 함수가 자식 컴포넌트에 `props`로 내려 준다면 함수를 포함하고 있는 컴포넌트가 리 렌더링 될 때마다 **자식 컴포넌트도 함수가 새롭게 만들어지니 계속 리 렌더링** 하게 된다.
 
-```js
-const obj1 = { a: 1, b: 2 };
-const obj2 = { a: 1, b: 2 };
+![useCallback 1](../../assets/img/react/usecallback_1.png){:.centered}
 
-console.log(obj1 === obj2); // false
-```
-*값 대신 참조되는 위치를 비교하기 때문에 `false`가 나온다.*
+### 리렌더링 테스트
 
-## 깊은 비교란?
-
-얕은 비교와 달리 깊은 비교는 **객체의 경우에도 값**으로 비교한다.  
-
-깊은 비교 방법은 아래와 같다.
-
-1. Object depth가 깊지 않은 경우: `JSON.stringify()` 사용
-2. Object depth가 깊은 경우: `lodash` 라이브러리의 `isEqual()` 사용
+**함수 생성하기**
 
 ```js
-const obj1 = { a: 1, b: 2 };
-const obj2 = { a: 1, b: 2 };
+const B = ({ message, posts }) => {
+  console.log('B Component is Rendering');
+  const testFunction = () => {};
+  return (
+    <div>
+      <h1>B Component</h1>
+      <Message message={message} />
+      <List posts={posts} />
+    </div>
+  );
+};
 
-console.log(JSON.stringify(obj1) === JSON.stringify(obj2)); // true
+export default B;
+```
+*console.log로 어떤 컴포넌트가 렌더링 되는지 확인*
+
+**props로 함수 넘겨주기**
+```js
+const List = React.memo(({ posts, testFunction }) => {
+  console.log('List Component is Rendering');
+  return (
+    <ul>
+      {posts.map((post) => {
+        return <ListItem key={post.id} post={post} />;
+      })}
+    </ul>
+  );
+});
+
+const B = ({ message, posts }) => {
+  console.log('B Component is Rendering');
+  const testFunction = () => {};
+  return (
+    <div>
+      <h1>B Component</h1>
+      <Message message={message} />
+      <List posts={posts} testFunction={testFunction} />
+    </div>
+  );
+};
 ```
 
-### 얕은 비교를 사용할 때
+### Input에 입력
 
-- `React.memo()`에서 `props`를 비교할 때
-- 리액트 컴포넌트가 리 렌더링을 하기 전
-  - `state` 변경이 있을 때
-  - 부모 컴포넌트가 렌더링 될 때
+텍스트 입력으로 어떤 컴포넌트가 렌더링 되는지 확인한다.
 
-> 리액트가 리 렌더링이 되는 경우
-> `state` 변경이 있을 때
-> 부모 컴포넌트가 렌더링 될 때
-> 새로운 `props`이 들어올 때
-> `shouldComponentUpdate`에서 `true`가 반환될 때
+![텍스트](../../assets/img/react/test_text.JPG) | ![console.log](../../assets/img/react/console.JPG)
+
+원래 React.memo로 감싸줘서 리 렌더링이 되지 않던 컴포넌트들이 한 글자 입력 시마다 `List` 컴포넌트까지 다시 리 렌더링 되는 걸 볼 수 있다.
+
+### React.useCallback 적용으로 문제 해결
+
+`useCallback`은 **메모이제이션 된 함수**를 반환하는 함수이다.
+
+`useCallback` 적용은 `useCallback` 안에 콜백함수와 의존성 배열을 순서대로 넣어주면 된다.
+
+```js
+const testFunction = useCallback(() => {}, []);
+```
+
+함수 내에서 참조하는 `state, props`가 있다면 의존성 배열에 추가하면 된다.  
+
+`useCallback`으로 인해서 의존성 배열에 추가된 `state` 혹은 `props`가 변하지 않는다면 함수는 새로 생성되지 않는다.  
+새로 생성되지 않기 때문에 메모리에 새로 할당되지 않고 동일 참조 값을 사용하게 된다.  
+
+의존성 배열에 아무것도 없다면 컴포넌트가 최초 렌더링 시에만 함수가 생성되며 그 이후에는 동일한 참조 값을 사용하는 함수가 된다.
+
+### 적용 후 다시 타이핑 시
+
+![console.log](../../assets/img/react/console_2.JPG){:.centered}
+
+이제는 렌더링이 필요치 않은 `List` 컴포넌트가 없는 것을 볼 수 있다.
+
+
+## useCallback을 사용하기 좋은 때
+
+`useCallback`도 모든 함수에 다 사용하기 보다는 사용하는 자체로서 비용이 들기 때문에 정말 필요할 때에 사용하는 게 좋다.
+
+1. 자식 컴포넌트가 `React.memo()`로 최적화 되어 있고
+2. 그 자식 컴포넌트에게 해당 함수를 `props`로 넘겨줄 때
+  
+`useCallback`을 사용하는 것이 유용하다.
