@@ -1,11 +1,11 @@
 ---
 layout: tag-list
 type: tag
-title: CodeStates
-slug: codestates
+title: Vue
+slug: vue
 category: Dev
 sidebar: true
-order: 10
+order: 8
 description: >
-   CodeStates BootCamp Study
+   vue Study
 ---
