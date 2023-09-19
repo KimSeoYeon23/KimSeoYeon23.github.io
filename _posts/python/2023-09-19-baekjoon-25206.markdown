@@ -1,0 +1,153 @@
+---
+layout: post
+title:  "백준 알고리즘 25206번"
+date:   2023-09-19 19:45:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 25206번 너의 평점은
+
+### 문제
+
+인하대학교 컴퓨터공학과를 졸업하기 위해서는, 전공평점이 3.3 이상이거나 졸업고사를 통과해야 한다. 그런데 아뿔싸, 치훈이는 깜빡하고 졸업고사를 응시하지 않았다는 사실을 깨달았다!
+
+치훈이의 전공평점을 계산해주는 프로그램을 작성해보자.
+
+전공평점은 전공과목별 (학점 x 과목평점)의 합을 학점의 총합으로 나눈 값이다.
+
+인하대학교 컴퓨터공학과의 등급에 따른 과목평점은 다음 표와 같다.
+
+
+| A+ |	4.5 |
+| A0 |	4.0 |
+| B+ |	3.5 |
+| B0 |	3.0 |
+| C+ |	2.5 |
+| C0 |	2.0 |
+| D+ |	1.5 |
+| D0 |	1.0 |
+| F |	0.0 |
+
+P/F 과목의 경우 등급이 `P` 또는 `F`로 표시되는데, 등급이 `P` 인 과목은 계산에서 제외해야 한다.
+
+과연 치훈이는 무사히 졸업할 수 있을까?
+
+### 입력
+
+**20**줄에 걸쳐 치훈이가 수강한 전공과목의 과목명, 학점, 등급이 공백으로 구분되어 주어진다.
+
+### 출력
+
+치훈이의 전공평점을 출력한다.
+
+정답과의 절대오차 또는 상대오차가 10의 4승 이하이면 정답으로 인정한다.
+
+### 제한
+
+- 1 <= 과목명의 길이 <= 50
+- 과목명은 알파벳 대소문자 또는 숫자로만 이루어져 있으며, 띄어쓰기 없이 주어진다. 입력으로 주어지는 모든 과목명은 서로 다르다.
+- 학점은 `1.0`, `2.0`, `3.0`, `4.0` 중 하나이다.
+- 등급은 `A+`, `A0`, `B+`, `B0`, `C+`, `C0`, `D+`, `D0`, `F`, `P` 중 하나이다.
+- 적어도 한 과목은 등급이 `P`가 아님이 보장된다.
+
+### 예제
+
+<div style="display: flex; justify-content: space-between;">
+  <div style="width: 45%;">
+    <pre>
+      <code>
+        ObjectOrientedProgramming1 3.0 A+
+        IntroductiontoComputerEngineering 3.0 A+
+        ObjectOrientedProgramming2 3.0 A0
+        CreativeComputerEngineeringDesign 3.0 A+
+        AssemblyLanguage 3.0 A+
+        InternetProgramming 3.0 B0
+        ApplicationProgramminginJava 3.0 A0
+        SystemProgramming 3.0 B0
+        OperatingSystem 3.0 B0
+        WirelessCommunicationsandNetworking 3.0 C+
+        LogicCircuits 3.0 B0
+        DataStructure 4.0 A+
+        MicroprocessorApplication 3.0 B+
+        EmbeddedSoftware 3.0 C0
+        ComputerSecurity 3.0 D+
+        Database 3.0 C+
+        Algorithm 3.0 B0
+        CapstoneDesigninCSE 3.0 B+
+        CompilerDesign 3.0 D0
+        ProblemSolving 4.0 P
+      </code>
+    </pre>
+  </div>
+  <div style="width: 45%;">
+    <pre>
+      <code>
+        3.284483
+      </code>
+    </pre>
+  </div>
+</div>
+<div style="display: flex; justify-content: space-between;">
+  <div style="width: 45%;">
+    <pre>
+      <code>
+        BruteForce 3.0 F
+        Greedy 1.0 F
+        DivideandConquer 2.0 F
+        DynamicProgramming 3.0 F
+        DepthFirstSearch 4.0 F
+        BreadthFirstSearch 3.0 F
+        ShortestPath 4.0 F
+        DisjointSet 2.0 F
+        MinimumSpanningTree 2.0 F
+        TopologicalSorting 1.0 F
+        LeastCommonAncestor 2.0 F
+        SegmentTree 4.0 F
+        EulerTourTechnique 3.0 F
+        StronglyConnectedComponent 2.0 F
+        BipartiteMatching 2.0 F
+        MaximumFlowProblem 3.0 F
+        SuffixArray 1.0 F
+        HeavyLightDecomposition 4.0 F
+        CentroidDecomposition 3.0 F
+        SplayTree 1.0 F
+      </code>
+    </pre>
+  </div>
+  <div style="width: 45%;">
+    <pre>
+      <code>
+        0.000000
+      </code>
+    </pre>
+  </div>
+</div>
+
+### 풀이
+
+```py
+n = 20
+grade_dict = {'A+':4.5, 'A0':4.0, 'B+':3.5, 'B0':3.0, 'C+':2.5, 'C0':2.0, 'D+':1.5, 'D0':1.0, 'F':0}
+
+total = 0
+result = 0
+
+for _ in range(n):
+  subject, credit, grade = input().split()
+  credit = float(credit)
+  if grade != "P":
+    total += credit
+    result += credit * grade_dict[grade]
+print('{:.6f}'.format(result / total))
+```
+
+반복문을 통해 각 과목 이름, 학점 등급을 받는다. 등급이 만약 `P`인 경우에는 포함시키지 않으니 반복문 안에 `if` 문을 만들어 `P`가 아닌 경우에만 학점 * 등급을 계산하여 `result`에 넣어준다.  
+`total` 은 학점을 모두 더한 값을 넣어준다. `F`인 경우에는 이미 `0`으로 정의했으므로 따로 `if`문을 작성하진 않아도 된다.  
+마지막으로 소수점 6자리까지 출력하도록 한다.
