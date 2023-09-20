@@ -1,0 +1,47 @@
+---
+layout: post
+title:  "백준 알고리즘 2744번"
+date:   2023-09-20 22:35:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 2744번 대소문자 바꾸기
+
+### 문제
+
+영어 소문자와 대문자로 이루어진 단어를 입력받은 뒤, 대문자는 소문자로, 소문자는 대문자로 바꾸어 출력하는 프로그램을 작성하시오.
+
+### 입력
+
+첫째 줄에 영어 소문자와 대문자로만 이루어진 단어가 주엊니다. 단어의 길이는 최대 100이다.
+
+### 출력
+
+첫째 줄에 입력으로 주어진 단어에서 대문자는 소문자로, 소문자는 대문자로 바꾼 단어를 출력한다.
+
+### 예제
+
+| 입력 | 출력 |
+| --- | --- |
+| `WrongAnswer` | `wRONGaNSWER` |
+
+### 풀이
+
+```py
+word = input()
+result = ""
+
+for i in word:
+  if i.isupper():
+    result += i.lower()
+  else:
+    result += i.upper()
+print(result)
+```
