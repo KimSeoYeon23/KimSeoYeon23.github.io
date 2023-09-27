@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "프로그래머스 원소드의 곱과 합"
+title:  "프로그래머스 원소들의 곱과 합"
 date:   2023-09-27 23:21:00 +0900
 categories: 
   - Dev
