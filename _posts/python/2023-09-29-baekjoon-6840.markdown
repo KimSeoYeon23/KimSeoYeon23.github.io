@@ -1,0 +1,38 @@
+---
+layout: post
+title:  "백준 알고리즘 6840번"
+date:   2023-09-29 20:51:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 6840번 Who is in the middle?
+
+### 문제
+
+동화 '골디락스와 곰 세 마리'에서 각 곰은 자신이 가장 좋아하는 의자에 앉아 죽을 한 그릇씩 먹었습니다. 이 이야기에서 알려지지 않은 사실은 골디락스가 식탁 위에서 그릇을 이리저리 옮겨서 그릇이 더 이상 올바른 자리에 있지 않게 되었다는 것입니다. 가장 가벼운 그릇은 아기 곰의 그릇, 중간 그릇은 엄마 곰의 그릇, 가장 무거운 그릇은 아빠 곰의 그릇으로 무게에 따라 그릇을 분류할 수 있습니다. 세 개의 무게를 읽고 엄마 곰의 그릇의 무게를 출력하는 프로그램을 작성하십시오. 모든 무게는 100보다 작은 양의 정수라고 가정할 수 있습니다.
+
+### 예제
+
+| 입력 | 출력 |
+| --- | --- |
+| `10` <br/> `5` <br/> `8` | `8` |
+
+### 풀이
+
+```py
+baby = int(input())
+mother = int(input())
+father = int(input())
+
+family = [baby, mother, father]
+family.sort()
+print(family[1])
+
+```
