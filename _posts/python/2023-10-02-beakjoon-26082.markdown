@@ -1,0 +1,57 @@
+---
+layout: post
+title:  "백준 알고리즘 26082번"
+date:   2023-10-02 21:44:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 26082번 WARBOY
+
+### 문제
+
+![WARBOY](../../assets/img/python/baekjoon_26082.png){:.centered}
+
+> Furiosa AI에선느 AI 연산에 최적화된 반도체인 WARBOY란 이름의 NPU(Neural Processing Unit)를 만들고 있다. NPU는 인공지능 모델의 학습 및 추론을 기존의 처리 유닛보다 훨씬 빠르게 할 수 있다.
+
+WARBOY는 글로벌 AI 반도체 벤치마크 대회의 이미지 분류, 객체 검출 처리 속도 면에서 가장 좋은 성적을 받았다. 특히, WARBOY는 가격 대비 성능이 경쟁사 제품의 **3배**나 되어 많은 관심을 이끌엇다.
+
+가격 대비 성능은 아래와 같은 수식으로 계산된다.
+
+*가격 대비 성능 = <sup>성능</sup>&frasl;<sub>가격</sub>*
+
+경쟁사 제품의 가격 A, 경쟁사 제품의 성능 B, WARBOY의 가격 C가 주어질 때, WARBOY의 성능을 구해보자.
+
+### 입력
+
+첫째 줄에 세 양의 정수 A, B, C(1 <= A, B, C <= 1,000)가 공백으로 구분되어 주어진다.
+
+B는 항상 A의 배수이다.
+
+### 출력
+
+첫째 줄에 WARBOY의 성능을 출력한다.
+
+### 예제
+
+| 입력 | 출력 |
+| --- | --- |
+| `10` `100` `7` | `210` |
+
+### 풀이
+
+```py
+A, B, C = map(int, input().split())
+print(B // A * 3 * C)
+```
+
+WARBOY의 가격 대비 성능은 경쟁사 제품의 3배이다.  
+즉, WARBOY의 가격 대비 성능 = 경쟁사 제품의 가격 대비 성능 B / A *3
+
+따라서 WARBOY의 성능 = 경쟁사 제품의 가격 대비 성능 * WARBOY의 가격이므로, B / A * 3 * C이다.
