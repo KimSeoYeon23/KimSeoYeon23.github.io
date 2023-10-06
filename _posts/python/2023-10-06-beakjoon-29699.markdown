@@ -1,0 +1,48 @@
+---
+layout: post
+title:  "백준 알고리즘 29699번"
+date:   2023-10-06 20:35:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 29699번 Welcome to SMUPC!
+
+### 문제
+
+화은이는 제3회 SMUPC를 맞이하여 환영의 의미로 "WelcomeToSMUPC"가 반복적으로 적혀 있는 라벨지를 프린트했다. 라벨지에는 공백 없이 글자들이 이어져 있고 "WelcomeToSMUPC"의 마지막 글자인 C 이후에는 W부터 다시 "WelcomeToSMUPC"가 반복된다. N번째 글자가 있는 곳까지 라벨지를 자르려 할 때, N번째에는 어떤 글자가 있을지 구해보자.
+
+![WelcomeToSMUPC](../../assets/img/python/baekjoon_29699.png){:.centered}
+
+*[N=15일 때 라벨지를 자르는 위치]*
+
+### 입력
+
+첫째 줄에 N(1 <= N <= 1,000,000)이 주어진다.
+
+### 출력
+
+첫째 줄에 N번째에 해당하는 글자를 출력한다.
+
+### 예제
+
+| 입력 | 출력 |
+| --- | --- |
+| `2` | `e` |
+| `15` | `W` |
+
+### 풀이
+
+```py
+s = "WelcomeToSMUPC"
+N = int(input())
+
+index = (N%14) - 1
+print(s[index])
+```
