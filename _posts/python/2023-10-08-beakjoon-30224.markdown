@@ -1,0 +1,63 @@
+---
+layout: post
+title:  "백준 알고리즘 30224번"
+date:   2023-10-08 00:53:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 30224번 Lucky 7
+
+### 문제
+
+사실이든 허구든, 어떤 사람들은 7을 행운의 숫자라고 생각합니다.
+
+숫자가 주어지면 네 가지 값 중 하나를 출력하여 그 숫자가 얼마나 행운의 숫자인지 알아보세요.
+
+- 숫자가 7을 포함하지 않고 7로 나눌 수 없는 경우 0을 출력합니다.
+- 숫자가 7을 포함하지 않지만 7로 나눌 수 있으면 1을 출력합니다.
+- 숫자에 7이 포함되어 있지만 7로 나눌 수 없는 경우 2를 출력합니다.
+- 숫자에 7이 포함되어 있고 7로 나눌 수 있으면 3을 출력합니다.
+
+### 입력
+
+입력은 한 줄뿐이며, 1에서 10<sup>9</sup> 사이의 정수를 포함합니다.
+
+### 출력
+
+위에 설명된 대로 네 가지 메시지 중 하나를 인쇄합니다.
+
+### 예제
+
+| 입력 | 출력 |
+| --- | --- |
+| `25` | `0` |
+| `42` | `1` |
+| `170` | `2` |
+| `777` | `3` |
+| `1` | `0` |
+| `70` | `3` |
+
+### 풀이
+
+```py
+n = int(input())
+
+contains_7 = '7' in str(n)
+divisible_by_7 = n % 7 == 0
+
+if not contains_7 and not divisible_by_7:
+  print(0)
+elif not contains_7 and divisible_by_7:
+  print(1)
+elif contains_7 and not divisible_by_7:
+  print(2)
+else:
+  print(3)
+```
