@@ -17,6 +17,22 @@ React.Js와 Next.Js를 다루고 있으며, 사용자에게 편리한 인터페�
 
 ## 💼Work Experience.
 
+## 2023.12 ~ ing
+
+- **포그리트**
+    - 포그리트는 ‘모두가 데이터를 자유자재로 다루는 세상을 만든다!’는 미션을 가지고 있는 기업입니다.
+    - Project List
+        - UX Heatmap
+        - Journey Map
+        - Forum
+        - Beeagle
+        - Back Office
+    - Tech Stack
+        - Front
+            - Javascript, Vue, Nuxt, Vuex, HTML5, CSS3, SCSS, Axios
+        - Back
+            - Python, Node.js, MySQL, MongoDB
+
 ## 2021.12 ~ 2023.02
 
 - **니아랩스**
@@ -138,7 +154,7 @@ React.Js와 Next.Js를 다루고 있으며, 사용자에게 편리한 인터페�
 
 ## 🎓Education
 
-## 2023.03 ~ 진행중
+## 2023.03 ~ 2023.08
 
 - 코드스테이츠 블록체인 부트캠프
     - **Week 1-3**
