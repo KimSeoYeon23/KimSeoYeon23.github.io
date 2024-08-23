@@ -74,7 +74,6 @@ React.Js와 Next.Js를 다루고 있으며, 사용자에게 편리한 인터페�
   - **pm2를 이용하여 데이터를 전송**한 경험이 있습니다.
   </div>
   </details>
-  </details>
   <details>
   <summary>Python</summary>
   <div markdown="1">
@@ -131,7 +130,6 @@ React.Js와 Next.Js를 다루고 있으며, 사용자에게 편리한 인터페�
   - MVC 패턴에 대해 이해하고 있습니다.
   - **Telegram API 연동을 하여 기능을 개발한 경험**이 있습니다.
   </div>
-  </details>
   </details>
   <details>
   <summary>Vue.js</summary>
