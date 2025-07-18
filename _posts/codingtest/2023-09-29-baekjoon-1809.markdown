@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "백준 알고리즘 1809번"
+date:   2023-09-29 20:46:00 +0900
+categories:
+  - Dev
+  - codingtest
+tag: codingtest
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 1809번 Moo
+
+### 문제
+
+농장을 사서 새로운 삶을 시작하기로 결정했습니다. 토지 소유권 이전이 완료되기를 기다리는 동안 시간을 보내기 위해 다음 Ascii 소를 생산하세요.
+
+### 예제
+
+```text
+(___)
+(o o)____/
+ @@      \
+  \ ____,/
+  //   //
+ ^^   ^^
+```
+
+### 풀이
+
+```Golfscript
+"(___)
+(o o)____/
+ @@      \\
+  \\ ____,/
+  //   //
+ ^^   ^^"
+```

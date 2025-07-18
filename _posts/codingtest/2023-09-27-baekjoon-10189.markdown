@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "백준 알고리즘 10189번"
+date:   2023-09-27 18:51:00 +0900
+categories:
+  - Dev
+  - codingtest
+tag: codingtest
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 10189번 Hook
+
+### 문제
+
+아래와 같이 Hook이라는 단어를 출력합니다.
+
+### 출력
+
+아래와 같이 Hook이라는 단어를 출력합니다.
+
+### 예제
+
+```
+#  # #### #### #  #
+#### #  # #  # # #
+#### #  # #  # # #
+#  # #### #### #  #
+```
+
+### 풀이
+
+```py
+print('''#  # #### #### #  #
+#### #  # #  # # #
+#### #  # #  # # #
+#  # #### #### #  #''')
+```

@@ -1,0 +1,53 @@
+---
+layout: post
+title:  "백준 알고리즘 2675번"
+date:   2023-09-15 23:30:00 +0900
+categories:
+  - Dev
+  - codingtest
+tag: codingtest
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 2675번 문자열 반복
+
+### 문제
+
+문자열 S를 입력받은 후에, 각 문자를 R번 반복해 새 문자열 P를 만든 후 출력하는 프로그램을 작성하시오. 즉, 첫 번째 문자를 R번 반복하고, 두 번째 문자를 R번 반복하는 식으로 P를 만들면 된다. S에는 QR Code "alphanumeric" 문자만 들어있다.
+
+QR Code "alphanumeric" 문자는 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\$%*+-./: 이다.
+
+### 입력
+
+첫째 줄에 테스트 케이스의 개수 T(1 <= T <= 1,000)가 주어진다. 각 테스트 케이스는 반복 횟수 R(1 <= R <= 8), 문자열 S가 공백으로 구분되어 주어진다. S의 길이는 적어도 1이며, 20글자를 넘지 않는다.
+
+### 출력
+
+각 테스트 케이스에 대해 P를 출력한다.
+
+### 예제
+
+| 입력 | 출력 |
+| :--: | :--: |
+| `2` <br/> `3 ABC` <br/> `5 /HTP` | `AAABBBCCC` <br/> `/////HHHHHTTTTTPPPPP` |
+
+### 풀이
+
+```py
+T = int(input())
+
+for _ in range(T):
+    R, S = input().split()
+    for i in S:
+        print(i*int(R), end="")
+    print()
+```
+
+1. `for`문 코드에서 입력받는 문자를 변수에 저장한다.
+2. 두 번째 `for`문에서 입력받은 문자열을 분리한다.
+   1. `*`연산자를 이용하여 `i` 변수를 입력받은 숫자 `R`만큼 반복한다.
+   2. 문자열을 붙여서 출력해야 하기 때문에, `end=""`를 입력하여 문자열이 붙어서 출력하도록 한다.
+3. 빈 `print()` 함수를 출력하여 줄넘김을 한다.

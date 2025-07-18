@@ -1,0 +1,53 @@
+---
+layout: post
+title:  "백준 알고리즘 24082번"
+date:   2023-09-27 18:34:00 +0900
+categories:
+  - Dev
+  - codingtest
+tag: codingtest
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 24082번 立方体 (Cube)
+
+### 문제
+
+한 변의 길이가 x cm인 입장체의 부피는 (X x X x X) cm<sup>3</sup>이다.
+
+정수 X가 주어진다. 한 변의 길이가 X cm인 정육면체의 부피는 몇 cm<sup>3</sup>인지 구하시오.
+
+### 입력
+
+입력은 표준 입력에서 다음과 같은 형식으로 제공된다.
+
+```
+X
+```
+
+### 출력
+
+한 변의 길이가 X cm인 입장체의 부피가 몇 cm<sup>3</sup>인지 단위(cm<sup?>3</sup>)를 생략하고 출력하시오.
+
+### 제한
+
+- 100 <= X <= 1000/
+- X는 정수이다.
+
+### 예제
+
+| 입력 | 출력 |
+| --- | --- |
+| `4` | `64` |
+| `1` | `1` |
+| `999` | `997002999` |
+
+### 풀이
+
+```py
+X = int(input())
+print(X*X*X)
+```

@@ -1,0 +1,45 @@
+---
+layout: post
+title:  "백준 알고리즘 7287번"
+date:   2023-09-18 21:20:00 +0900
+categories:
+  - Dev
+  - codingtest
+tag: codingtest
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 7287번 등록
+
+### 문제
+
+자신이 잭준 온라인 저지(BOJ)에서 맞은 문제의 수와 아이디를 그대로 출력하는 프로그램을 작성하시오.
+
+### 입력
+
+이 문제는 입력이 없다.
+
+### 출력
+
+첫 줄에 자신이 맞은 문제의 수, 둘째 줄에 아이디를 출력한다.
+
+### 예제
+
+| 입력 | 출력 |
+| --- | --- |
+|  | `123` <br/> `Your_ICPC_Team_Name` |
+
+### 풀이
+
+```py
+print("62")
+print("kim7510")
+```
+
+![백준 맞은 문제의 수, 아이디](../../assets/img/python/baekjoon_7287.png){:.centered}
+
+백준 홈페이지의 마이페이지에서 내가 맞은 문제의 수와 아이디를 출력하면 된다.  
+현재의 문제까지 포함해서 63개이지만, 이 문제를 제외하면 62개이다.

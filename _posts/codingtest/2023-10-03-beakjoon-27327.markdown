@@ -1,0 +1,56 @@
+---
+layout: post
+title:  "백준 알고리즘 27327번"
+date:   2023-10-03 23:20:00 +0900
+categories:
+  - Dev
+  - codingtest
+tag: codingtest
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 27327번 時間 (Hour) 
+
+### 문제
+
+1일은 24시간이다.
+
+정수 X가 주어진다. X일의 시간을 구하시오.
+
+### 입력
+
+입력은 표준 입력에서 다음과 같은 형식으로 제공된다.
+
+```text
+X
+```
+
+### 출력
+
+X 일은 몇 시간인지, 단위(시간)를 생략하고 출력하라.
+
+### 제한
+
+- 1 <= X <= 365
+- X는 정수이다.
+
+### 예제
+
+| 입력 | 출력 |
+| --- | --- |
+| `3` | `72` |
+| `100` | `2400` |
+
+### 풀이
+
+```py
+day = int(input())
+print(day * 24)
+
+# or
+
+print(int(input()) * 24)
+```

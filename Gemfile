@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+ruby "~> 2.6.0"
+
 # Hello! This is where you manage which Jekyll version is used to run.
 # When you want to use a different version, change it below, save the
 # file and run `bundle install`. Run Jekyll with `bundle exec`, like so:
@@ -14,12 +16,12 @@ gem "jekyll", "~> 3.8"
 gem "webrick"
 
 group :jekyll_plugins do
-  gem "github-pages"
+  gem "github-pages", "~> 225"
   gem "jekyll-include-cache"
   gem "jekyll-compose"
 end
 
 gem 'wdm' if Gem.win_platform?
 gem 'tzinfo-data' if Gem.win_platform?
-gem 'jekyll-theme-hydejack'
+gem 'jekyll-theme-hydejack', "~> 9.1"
 

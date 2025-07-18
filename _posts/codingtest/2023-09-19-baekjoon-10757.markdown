@@ -1,0 +1,40 @@
+---
+layout: post
+title:  "백준 알고리즘 10757번"
+date:   2023-09-19 20:35:00 +0900
+categories:
+  - Dev
+  - codingtest
+tag: codingtest
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## 백준 알고리즘 10757번 큰 수 A+B
+
+### 문제
+
+두 정수 A와 B를 입력받은 다음, A+B를 출력하는 프로그램을 작성하시오.
+
+### 입력
+
+첫째 줄에 A와 B가 주어진다. (0 < A, B < 10<sup>10000</sup>)
+
+### 출력
+
+첫째 줄에 A+B를 출력한다.
+
+### 예제
+
+| 입력 | 출력 |
+| --- | --- |
+| `9223372036854775807 9223372036854775808` | `18446744073709551615` |
+
+### 풀이
+
+```py
+a, b = map(int, input().split())
+print(a+b)
+```
