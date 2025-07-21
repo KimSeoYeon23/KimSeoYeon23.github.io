@@ -162,6 +162,13 @@ defaults:
         type: WebPage
 
 kramdown:
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  input: GFM
+  hard_wrap: false
+  footnote_nr: 1
+  entity_output: as_char
+  enable_coderay: false
   math_engine: mathjax
   math_engine_opts: {}
   footnote_backlink: '&#x21a9;&#xfe0e;'

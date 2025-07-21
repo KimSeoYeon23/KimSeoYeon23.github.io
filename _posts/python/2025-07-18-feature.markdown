@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "파이썬(Python)의 특징"
-date:   2025-07-18 11:55:00 +0900
+title: "파이썬(Python)의 특징"
+date: 2025-07-18 11:55:00 +0900
 categories: 
   - Dev
   - python
@@ -11,7 +11,6 @@ comments: true
 
 * this unordered seed list will be replaced by the toc
   {:toc}
-
 
 ## 파이썬은 인간다운 언어이다
 
