@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Valid Parentheses"
-date:   2025-07-21 15:25:00 +0900
+title:  "Longest Common Prefix"
+date:   2025-07-24 11:36:00 +0900
 categories:
   - Dev
   - codingtest
@@ -12,72 +12,41 @@ comments: true
 * this unordered seed list will be replaced by the toc
 {:toc}
 
-## LeetCode Valid Parentheses
+## LeetCode Longest Common Prefix
 
 ### 문제
 
-Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+Write a function to find the longest common prefix string amongst an array of strings.
 
-An input string is valid if:
-
-Open brackets must be closed by the same type of brackets.
-Open brackets must be closed in the correct order.
-Every close bracket has a corresponding open bracket of the same type.
+If there is no common prefix, return an empty string "".
 
 
 ### 예시
 
 Example 1:
 
-Input: s = "()"
-
-Output: true
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
 
 Example 2:
 
-Input: s = "()[]{}"
-
-Output: true
-
-Example 3:
-
-Input: s = "(]"
-
-Output: false
-
-Example 4:
-
-Input: s = "([])"
-
-Output: true
-
-Example 5:
-
-Input: s = "([)]"
-
-Output: false
+Input: strs = ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
 
 ## 풀이
 
 ```py
 class Solution:
-  def isValid(self, s: str) -> bool:
-    valid = {
-      ')': '(',
-      '}': '{',
-      ']': '['
-    }
-    stack = []
-
-    for string in s:
-      if string in valid.values():
-        stack.append(string)
-      else:
-        if stack and valid[string] == stack[-1]:
-          stack.pop()
-        else:
-          return False
-    if stack:
-      return False
-    return True
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs:
+            return ''
+        
+        prefix = strs[0]
+        for s in strs[1:]:
+            while not s.startswith(prefix):
+                prefix = prefix[:-1]
+                if not prefix:
+                    return ''
+        return prefix
 ```
