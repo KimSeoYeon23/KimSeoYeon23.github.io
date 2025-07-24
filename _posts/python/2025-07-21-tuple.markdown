@@ -10,7 +10,7 @@ comments: true
 ---
 
 * this unordered seed list will be replaced by the toc
-  {:toc}
+{:toc}
 
 
 튜플(tuple)은 몇 가지 점을 제외하곤 리스트와 거의 비슷하며 리스트와 다른 점은 다음과 같다.
