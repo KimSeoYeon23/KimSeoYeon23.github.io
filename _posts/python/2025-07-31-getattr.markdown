@@ -1,0 +1,280 @@
+---
+layout: post
+title: "변수가 있는지 확인하기(hasattr - getattr - setattr )"
+date: 2025-07-31 15:14:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+> [!important] ojbect와 attribute에 대한 처리가 필요할 때 사용
+
+  
+
+## getattr()
+
+기본 형식은 다음과 같다.
+
+`getattr(object, attribute_name [, default])`
+
+```Python
+getattr(...)
+	getattr(object, name[, default]) -> value
+	
+	Get a named attribute from an obejct; getattr(x, 'y') is equivalent to x.y.
+	When a default argument is given, it its returned when the attribute doesn't exit; without it, an exception is raised in that case.
+```
+
+object 안에 찾고자 하는 attribute의 값을 출력한다. (만약 없을 경우 default이 출력된다.)
+
+  
+
+- 예시 코드
+    
+    ```Python
+    class Employee:
+    	emp_comp = 'Amazon'
+    	emp_age = 30
+    	default_age = 50
+    	
+    	def defaultMethod(self):
+    		print("This is a default method")
+    
+    e = Employee()
+    print(getattr(e, 'emp_age'))       # e에 emp_age 라는 attribute가 있는지? 있다. 30
+    print(getattr(e, 'emp_age', 45))   # e에 emp_age 라는 attribute가 있는지? 있다. 30 출력, 45 [default] 무시
+    print(getattr(e, 'emp_age_other', 45))     # e에 emp_age_other 라는 attribute가 있는지? 없다. 45 [default] 출력
+    print(getattr(e, 'emp_age_other', e.default_age))    # e에 emp_age_other 라는 attribute가 있는지? 없다. e.default_age [default] 출력
+    							# e.default_age의 값이 return
+    ```
+    
+- 출력
+    
+    ```Python
+    30
+    30
+    45
+    50
+    ```
+    
+
+  
+
+## setattr()
+
+기본 형식은 다음과 같다.
+
+`setattr(object, attribute_name, value)`
+
+```Python
+setattr(obj, name, value, /)
+	Sets the named attribute on the given object to the specified value.
+
+	setattr(x, 'y', v) is equivalent to ''x.y = v''
+```
+
+object에 새로운 attribute를 추가하고 값은 value를 준다.
+
+  
+
+- 예시 코드
+    
+    ```Python
+    class Employee:
+    	emp_comp = 'Amazon'
+    	emp_age = 30
+    	default_age = 50
+    	
+    	def defaultMethod(self):
+    		print("This is a default method")
+    
+    e = Employee()
+    
+    print(getattr(e, 'emp_age'))            # e 에 emp_age 라는 attribute가 있는지? 있다. 30 출력
+    setattr(e, 'emp_age', 100)            # setattr를 통해 emp_age를 100으로 변경 
+    print(getattr(e, 'emp_age', 45))          # e 에 emp_age 라는 attribute가 있는지? 있다. 30 출력, 45 [default] 무시
+    
+    setattr(e, 'emp_sex', "man")            # setattr를 통해 emp_sex 생성 및 man 입력
+    print(getattr(e, 'emp_sex', 'woman'))      # e 에 emp_sex 라는 attribute가 있는지? 있다. man 출력, woman 무시
+    ```
+    
+- 출력
+    
+    ```Python
+    30
+    100
+    man
+    ```
+    
+
+  
+
+## hasattr()
+
+기본 형식은 다음과 같다.
+
+`hasattr(object, attribute_name)`
+
+```Python
+hasattr(obj, name, /)
+	Return Whether the object has an attribute with the given name.
+
+	This is done by calling getattr(obj, name) and catching AttributeError.
+```
+
+object에 attribute_name이 있는지 확인한다. 그리고 True or False를 출력한다.
+
+  
+
+- 예시 코드
+    
+    ```Python
+    class Employee:
+    	emp_comp = 'Amazon'
+    	emp_age = 30
+    	default_age = 50
+    	
+    	def defaultMethod(self):
+    		print("This is a default method")
+    
+    e = Employee()
+    e1 = Employee()
+    
+    print(hasattr(e, 'emp_address'))     # e에 emp_address가 있는지? 없다. False
+    setattr(e, 'emp_address', 'Korea')   # e에 emp_address 생성 및 Korea 
+    print(hasattr(e, 'emp_address'))     # e에 emp_address가 있는지? 있다. True
+    print(hasattr(e1, 'emp_address'))    # e1에 emp_address가 있는지? 없다. False
+    ```
+    
+- 출력
+    
+    ```Python
+    False
+    True
+    False
+    ```
+    
+
+  
+
+## delattr()
+
+기본 형식은 다음과 같다.
+
+`delattr(object, attribute_name)`
+
+```Python
+delattr(obj, name, /)
+	Deletes the named attribute from the given object.
+	
+	delatrr(x, 'y') is equivalent to ``del x.y''
+```
+
+object 내부의 attribute_name과 같은 attribute를 삭제한다.
+
+- 예시 코드
+    
+    ```Python
+    class Employee:
+    	emp_comp = "Amazon"
+    	emp_age = 30
+    	default_emp_age = 50
+    
+    	def defaultMethod(self):
+    		print("This is a defualt method")
+    
+    e = Employee()
+    e1 = Employee()
+    
+    print(hasattr(e, 'emp_comp'))      # e 에 emp_comp가 있는지? 있다. True
+    print(hasattr(e1, 'emp_comp'))      # e 에 emp_comp가 있는지? 있다. True
+    delattr(Employee, 'emp_comp')    # Employee에서 emp_comp 삭제
+    print(hasattr(e, 'emp_comp'))      # e 에 emp_comp가 있는지? 없다. False
+    print(hasattr(e1, 'emp_comp'))      # e 에 emp_comp가 있는지? 없다. False
+    
+    print(hasattr(e, 'emp_age'))      # e 에 emp_age가 있는지? 있다. True
+    print(hasattr(e1, 'emp_age'))      # e 에 emp_age가 있는지? 있다. True
+    del Employee.emp_age          # Employee에서 emp_age 삭제/delattr(Employee, 'emp_age')와 동일
+    print(hasattr(e, 'emp_age'))      # e 에 emp_age가 있는지? 없다. False
+    print(hasattr(e1, 'emp_age'))      # e 에 emp_age가 있는지? 없다. False
+    ```
+    
+- 출력
+    
+    ```Python
+    True
+    True
+    False
+    False
+    True
+    True
+    False
+    False
+    ```
+    
+
+  
+
+---
+
+참고로 dir() 명령어를 통해 해당 object의 전체 attribute를 확인할 수 있다.
+
+```Python
+class Employee:
+	emp_comp = "Amazon"
+	emp_age = 30
+	default_age = 50
+
+	def defaultMethod(self):
+		print("This is a default method")
+
+e = Employee()
+dir(e)
+```
+
+- 출력
+    
+    ```Python
+    ['__class__',
+     '__delattr__',
+     '__dict__',
+     '__dir__',
+     '__doc__',
+     '__eq__',
+     '__format__',
+     '__ge__',
+     '__getattribute__',
+     '__gt__',
+     '__hash__',
+     '__init__',
+     '__init_subclass__',
+     '__le__',
+     '__lt__',
+     '__module__',
+     '__ne__',
+     '__new__',
+     '__reduce__',
+     '__reduce_ex__',
+     '__repr__',
+     '__setattr__',
+     '__sizeof__',
+     '__str__',
+     '__subclasshook__',
+     '__weakref__',
+     'defaultMethod',
+     'default_age',
+     'emp_age',
+     'emp_comp']
+    ```
+    
+
+  
+
+  
+
+> 출처: [https://jeonghyeokpark.netlify.app/python/2020/12/11/python1.html](https://jeonghyeokpark.netlify.app/python/2020/12/11/python1.html)
