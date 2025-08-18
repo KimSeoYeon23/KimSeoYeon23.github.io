@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "FastAPI 란?"
-date: 2025-08-18 17:05:00 +0900
+date: 2025-08-18 16:05:00 +0900
 categories: 
   - Dev
   - python
