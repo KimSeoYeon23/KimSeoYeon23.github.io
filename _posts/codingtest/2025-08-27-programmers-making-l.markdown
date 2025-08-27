@@ -51,6 +51,10 @@ function solution(myString) {
     
     return myString;
 }
+
+function solution(myString) {
+    return myString.replace(/[a-k]/g, 'l');
+}
 ```
 
 
