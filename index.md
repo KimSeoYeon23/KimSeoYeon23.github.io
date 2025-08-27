@@ -98,9 +98,9 @@ AI 플랫폼과 데이터 분석 도구를 개발하는 회사에서 프론트�
   <details style="margin-left: 20px;">
   <summary>Javascript</summary>
   <div markdown="1">
-    - **AJAX 통신 (서버 측과 클라이언트 측간의 데이터교환**을 할 수 있습니다.
-    - ES6 이상 문법을 적극적으로 사용합니다.
-    - Vanilla JS를 이용해 DOM을 조작할 수 있습니다.
+  - **AJAX 통신 (서버 측과 클라이언트 측간의 데이터교환**을 할 수 있습니다.
+  - ES6 이상 문법을 적극적으로 사용합니다.
+  - Vanilla JS를 이용해 DOM을 조작할 수 있습니다.
   </div>
   </details>
   <details style="margin-left: 20px;">
@@ -114,9 +114,9 @@ AI 플랫폼과 데이터 분석 도구를 개발하는 회사에서 프론트�
   <details style="margin-left: 20px;">
   <summary>Vue.js</summary>
   <div markdown="1">
-    - 기본적인 CRUD가능
-    - Vue.js 2/3 모두 능숙하게 사용할 수 있습니다.
-    - watch/computed를 적절히 활용할 수 있습니다.
+  - 기본적인 CRUD가능
+  - Vue.js 2/3 모두 능숙하게 사용할 수 있습니다.
+  - watch/computed를 적절히 활용할 수 있습니다.
   </div>
   </details>
 </div>
