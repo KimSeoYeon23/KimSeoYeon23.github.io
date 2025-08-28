@@ -22,11 +22,11 @@ comments: true
 
 ## 제한 사항
 
-1 ≤ `board`의 길이 ≤ 100
-1 ≤ `board[i]`의 길이 ≤ 100
-1 ≤ ``board[i]`[j]` ≤ 10,000
-모든 `board[i]`의 길이는 같습니다.
-0 ≤ `k` < `board`의 길이 + `board[i]`의 길이
+- 1 ≤ `board`의 길이 ≤ 100
+- 1 ≤ `board[i]`의 길이 ≤ 100
+- 1 ≤ ``board[i]`[j]` ≤ 10,000
+- 모든 `board[i]`의 길이는 같습니다.
+- 0 ≤ `k` < `board`의 길이 + `board[i]`의 길이
 
 ### 예시
 

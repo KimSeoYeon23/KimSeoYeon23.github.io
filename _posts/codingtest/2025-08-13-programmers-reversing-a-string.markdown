@@ -12,7 +12,6 @@ comments: true
 * this unordered seed list will be replaced by the toc
 {:toc}
 
-
 ## 프로그래머스 문자열 뒤집기
 
 ### 문제

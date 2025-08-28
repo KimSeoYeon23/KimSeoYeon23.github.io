@@ -51,6 +51,9 @@ function solution(num_list, n) {
 - python
 
 ```python
-def solution(names):
-    return names[::5]
+def solution(num_list, n):
+    answer = []
+    answer.append(num_list[n:])
+    answer.append(num_list[:n])
+    return sum(answer, [])
 ```

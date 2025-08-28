@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "리스트 자르기"
-date:   2025-08-19 12:17:00 +0900
+title:  "2의 영역"
+date:   2025-08-19 17:00:00 +0900
 categories:
   - Dev
   - codingtest
@@ -12,62 +12,47 @@ comments: true
 * this unordered seed list will be replaced by the toc
 {:toc}
 
-## 프로그래머스 리스트 자르기
+## 프로그래머스 2의 영역
 
 ### 문제
 
-정수 `n`과 정수 3개가 담긴 리스트 `slicer` 그리고 정수 여러 개가 담긴 리스트 `num_list`가 주어집니다. `slicer`에 담긴 정수를 차례대로 a, b, c라고 할 때, `n`에 따라 다음과 같이 `num_list`를 슬라이싱 하려고 합니다.
+정수 배열 `arr`가 주어집니다. 배열 안의 2가 모두 포함된 가장 작은 연속된 부분 배열을 return 하는 solution 함수를 완성해 주세요.
 
-- `n` = 1 : `num_list`의 0번 인덱스부터 `b`번 인덱스까지
-- `n` = 2 : `num_list`의 `a`번 인덱스부터 마지막 인덱스까지
-- `n` = 3 : `num_list`의 `a`번 인덱스부터 `b`번 인덱스까지
-- `n` = 4 : `num_list`의 `a`번 인덱스부터 `b`번 인덱스까지 c 간격으로
-
-올바르게 슬라이싱한 리스트를 return하도록 solution 함수를 완성해주세요.
+단, `arr`에 2가 없는 경우 [-1]을 return 합니다.
 
 ## 제한 사항
 
-- `n` 은 1, 2, 3, 4 중 하나입니다.
-- `slicer`의 길이 = 3
-- `slicer`에 담긴 정수를 차례대로 a, b, c라고 할 때
-    - 0 ≤ a ≤ b ≤ `num_list`의 길이 - 1
-    - 1 ≤ c ≤ 3
-- 5 ≤ `num_list`의 길이 ≤ 30
-- 0 ≤ `num_list`의 원소 ≤ 100
+- 1 ≤ `arr`의 길이 ≤ 100,000
+    - 1 ≤ `arr`의 원소 ≤ 10
 
 ### 예시
 
 입출력 예 #1
 
-- [1, 2, 3, 4, 5, 6, 7, 8, 9]에서 1번 인덱스부터 5번 인덱스까지 자른 리스트는 [2, 3, 4, 5, 6]입니다.
+- 2가 있는 인덱스는 1번, 5번 인덱스뿐이므로 1번부터 5번 인덱스까지의 부분 배열인 [2, 1, 4, 5, 2]를 return 합니다.
 
 입출력 예 #2
 
-- [1, 2, 3, 4, 5, 6, 7, 8, 9]에서 1번 인덱스부터 5번 인덱스까지 2개 간격으로 자른 리스트는 [2, 4, 6]입니다.
+- 2가 한 개뿐이므로 [2]를 return 합니다.
+
+입출력 예 #3
+
+- 2가 배열에 없으므로 [-1]을 return 합니다.
+
+입출력 예 #4
+
+- 2가 있는 인덱스는 1번, 3번, 6번 인덱스이므로 1번부터 6번 인덱스까지의 부분 배열인 [2, 1, 2, 1, 10, 2]를 return 합니다.
 
 ## 풀이
 
 - JavaScript
 
 ```js
-function solution(n, slicer, num_list) {
+function solution(arr) {
     var answer = [];
-    switch (n) {
-        case 1:
-            answer = num_list.slice(0, slicer[1]+1)
-            break
-        case 2:
-            answer = num_list.slice(slicer[0])
-            break
-        case 3:
-            answer = num_list.slice(slicer[0], slicer[1]+1)
-            break
-        default:
-            for (let i=slicer[0]; i <= slicer[1]; i += slicer[2]) {
-                answer.push(num_list[i])
-            }
-            break
-    }
+    const first = arr.indexOf(2)
+    const last = arr.lastIndexOf(2)
+    answer = arr.slice(first, last+1).length ? arr.slice(first, last+1) : [-1]
     return answer;
 }
 ```
@@ -75,15 +60,15 @@ function solution(n, slicer, num_list) {
 - python
 
 ```python
-def solution(n, slicer, num_list):
+def solution(arr):
     answer = []
-    if n == 1:
-        answer = num_list[0:slicer[1]+1]
-    elif n == 2:
-        answer = num_list[slicer[0]:]
-    elif n == 3:
-        answer = num_list[slicer[0]:slicer[1]+1]
-    else:
-        answer = num_list[slicer[0]:slicer[1]+1:slicer[2]]
-    return answer
+    reverse_arr = arr[::-1]
+    
+    if 2 not in arr:
+        return [-1]
+    
+    first = arr.index(2)
+    last = len(arr) - 1 - reverse_arr.index(2)
+    
+    return arr[first:last+1]
 ```
