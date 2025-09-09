@@ -1,0 +1,73 @@
+---
+layout: post
+title: "gettext"
+date: 2025-09-09 10:09:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## gettext
+
+Python에서 다국어를 지원하기 위해 `gettext` 모듈을 사용할 수 있다. `gettext` 모듈은 GNU gettext 긴으을 지원하는 Python 내장 모듈로서, Internationalization (i18N)과 Localization (L10N) 긴으을 제공한다. `gettext` 모듈은 크게 GNU gettext API를 지원하는 함수 형태의 API와 클래스 형태의 API(Class-base API)를 함께 지원한다.
+
+Python에서 달느 언어를 지원하기 위해서, 아래 예제에서처럼 `gettext.translation(domain, localedir, languages)`를 호출하여 translation 객체를 얻은 후 `install()` 메서드를 호출하면 된다. 이 때, domain은 임의의 명칭을 지정할 수 있는데, 이는 번역된 언어 데이터 파일인 `*.mo`(`*.po`) 파일의 이름이 된다. 예를 들어, domain 명이 myapp 이면, Python은 번역된 파일로 myapp.mo 파일을 찾게 된다. `localedir`은 `*.mo` 파일의 위치를 찾는 기본 디렉토리인데, 종합하면 Localization은 `localedir/{언어}/LC_MESSGES/{domain}.mo` 파일을 찾게 된다. 예를 들어, 아래의 경우 `localedir/ko/LC_MESSGES/myapp.mo` 파일이 한국어를 위한 Localization 파일의 위치가 된다.
+
+```python
+import os
+import gettext
+
+lang = "ko"
+localedir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'locales/')
+
+translations = gettext.translation('myapp', localedir=localedir, fallback=True, langueges=[lang])
+translations.install()
+
+_ = translations.gettext
+
+# 아래 문자열 "Hello world"가 번역된 언어로 표현될 것임
+s = _("Hello world")
+print(s)
+```
+
+`translations.install()`은 `_()` 함수를 Python built-in 네임스페이스에 설치하게 된다. `_ = translations.gettext` 문장은 `_`을 `translations.gettext`의 alias로 사용한다는 것을 표시한다. 이러한 기본 셋팅이 완료된 후, Python의 "문자열"을 `_("문자열")`과 같이 변경하면, 해당 문자열이 `*.mo` 파일의 번역 문자열로 변경되어 표시된다. 예를 들어, 위의 `_("Hello world")` 문장은 영문 텍스트 "Hello world"에 상응하는 한글 텍스트를 `localedir/ko/LC_MESSGES/myapp.mo` 파일에서 찾아 가져오게 된다.
+
+
+## Localization 파일 구조
+
+Localization 파일의 구조는 아래 그림에서 보듯이, localization 루트 폴더 하에 언어(en, ko 등) 폴더를 만들고, 그 안에 LC_MESSAGES 라는 서브 폴더를 생성하며, 이 LC_MESSAGES 안에 `*.po / *.mo` 파일을 넣게 된다.
+
+```
+locales/
+    ├── en
+    │   └── LC_MESSAGES
+    │           └── myapp.po
+    └── ko
+        └── LC_MESSAGES
+                └── myapp.po
+```
+
+`*.po` 파일은 영어와 번역어를 가지고 있는 텍스트 파일이다. Python 코드에서 문자열을 `_("문자열")` 처럼 코딩한 후, 아래 명령어를 실행하면 `*.po` 파일을 자동으로 생성할 수 있다. 이 명령은 Python 설치 시 내장되어 있는 `pygettext.py` 모듈(파이썬 설치 폴더의 Tools/i18n 폴더 있음)을 사용한 것으로 `-d` 옵션은 domain 이름을 정하는 것이고 `-o` 옵션은 출력 파일의 위치를 전하는 것이며, 마지막의 `.`은 입력 파일들을 정하는 것으로 현재 폴더 밑의 모든 `*.py` 를 검색하여 문자열을 발췌하게 된다. 여기서 `myapp.pot`은 PO Template 파일을 의미하는 것으로, 이 `.pot` 파일을 각 언어의 LC_MESSAGES 폴더로 copy 하여 사용하면 된다.
+
+```bash
+C> python "C:\Program Files\Python311\Tools\i18n\pygettext.py" -d myapp -o locales/myapp.pot .
+C> copy locales\myapp.pot locales\ko\LC_MESSAGES\myapp.po
+```
+
+`*.po` 파일에서 실제 영어를 다른 언어로 번역하기 위해서는, [Poedit](https://poedit.net/) 등과 같은 번역 도구를 사용하여 번역하면 펀리하다. Poedit 등과 같은 번역 도구에서 텍스트를 번역하고 완료 후 저장하면, 바이너리 파일인 `*.mo` 파일을 자동으로 생성해 준다. 실제 Python 프로그램은 실행 시 `*.mo` 파일을 사용하게 된다.
+
+`*.po` 파일과 관련하여 한 가지 유용한 명령어가 있다. 만약 Python 소스 코드가 변경되어 문자열이 추가되어 수정되었을 경우, 이러한 변경사항들을 기존에 이미 번역되어진 `*.po` 파일과 병합(merge)할 필요가 있는데, 이 떄 아래와 같이 `msgmerge`를 사용할 수 있다. `msgmerge`는 GNU gettext tool 로써 필요한 경우 웹사이트에서 다운받아 사용한다.
+
+
+```bash
+C> python "C:\Program Files\Python311\Tools\i18n\pygettext.py" -d myapp -o locales/myapp.pot .
+C> msgmerge --update --no-fuzzy-matching locales\ko\LC_MESSAGES\myapp.po locales\myapp.pot
+```
+
+
+> 출처: [http://pythonstudy.xyz/python/article/519-Python-Localization](http://pythonstudy.xyz/python/article/519-Python-Localization)
