@@ -1,0 +1,49 @@
+---
+layout: post
+title: "os.path"
+date: 2025-09-17 10:25:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## os.path
+
+`os.path`는 파일과 폴더의 경로를 다루는 데 필요한 여러 가지 기능들을 제공하는 모듈이다.
+
+```python
+import os
+
+def search(dirname):
+	filenames = os.listdir(dirname)
+	for filename in filenames:
+		filepath = os.path.join(dirname, filename)
+		if os.path.isdir(filepath):
+			search(filepath)
+		elif os.path.isfile(filepath):
+			name, ext = os.path.splitext(filepath)
+			if ext == '.py':
+				print(filepath)
+
+search("c:/projects/pylib") # c:/projects/pylib 폴더와 하위 폴더의 모든 .py 파일 출력
+```
+
+입력받은 폴더에 있는 모든 파일과 폴더들을 `os.listdir()`로 가져온다. 그리고 각각을 확인해서 파일이고 확장자가 `.py`면 파일 경로를 출력한다. 만약 폴더라면 그 폴더로 들어가서 다시 `search()` 함수를 호출하여 그 안에서도 파이썬 파일을 찾는다. 이런 방식을 재귀호출이라고 한다.
+
+여기서 사용한 `os` 모듈과 `os.path` 모듈을 정리한 표는 다음과 같다.
+
+| 사용 모듈                    | 설명                                                                                                                                              |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `os.listdir(path)`           | 지정한 폴더 안에 있는 모든 파일과 폴더들의 이름을 리스트로 가져온다.                                                                              |
+| `os.path.join(path, *paths)` | 폴더 경로와 파일명을 올바르게 합쳐서 전체 경로를 만들어준다. 운영체제에 맞는 경로구분자를 자동으로 사용한다. (예: 리눅스/맥은 `/`, 윈도우는 `\\`) |
+| `os.path.isdir(path)`        | 주어진 경로가 폴더인지 확인해서 True/False로 알려준다.                                                                                            |
+| `os.path.isfile(path)`       | 주어진 경로가 파일인지 확인해서 True/False로 알려준다.                                                                                            |
+| `os.splitext(path)`          | 파일 경로를 파일명 부분과 확장자 부분으로 나눠준다. (확장자에는 점(`.`)이 포함된다.)                                                              |
+
+
+> 출처: [https://wikidocs.net/110260](https://wikidocs.net/110260)
