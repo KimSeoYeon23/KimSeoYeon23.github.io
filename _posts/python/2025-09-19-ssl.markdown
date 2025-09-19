@@ -1,0 +1,276 @@
+---
+layout: post
+title: "SSL"
+date: 2025-09-19 10:41:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## SSL
+
+SSL은 socket 모듈로 작성한 서버와 클라이언트 사이의 통신을 안전하게 보호할 때 사용하는 모듈이다. 데이터를 암호화하여 다른 사람이 중간에 가로채더라도 내용을 알 수 없게 만든다.
+
+### SSL 모듈을 사용하면 좋은 경우
+
+- 웹 서버와 안전한 통신이 필요한 경우 (로그인 정보나 개인 정보 전송)
+- 파일 전송이나 데이터베이스 접속 시 보안이 중요한 경우
+- 온라인 쇼핑몰이나 은행 시스템처럼 금융 거래 데이터를 다루는 경우
+
+> SSL(Secure Socket Layer, 보안 소켓 레이어)은 네트워크로 연결된 컴퓨터 간에 인증되고 암호화된 링크를 설정하는 프로토콜이다.
+
+> **공개키 암호화 방식이란?**
+> 
+> 두 개의 열쇠(키)를 사용하여 데이터를 안전하게 주고 받는 방법이다. 공개 키는 누구나 볼 수 있는 열쇠이고, 비밀 키는 서버만 가지고 있는 열쇠이다. 클라이언트가 공개 키로 데이터를 잠그면(암호화), 서버만 가지고 있는 비밀 키로만 열 수 있다(복호화). 이렇게 하면 중간에 누가 데이터를 가로채도 내용을 볼 수 없다.
+
+
+## 서버/클라이언트에 SSL 모듈 사용
+
+SSL 모듈을 사용하면 소켓 서버와 클라이언트 사이의 통신을 쉽게 암호화할 수 있다. 하지만 SSL을 사용하려면 먼저 다음과 같은 인증서 파일들을 만들어야 한다.
+
+- **CA.key**: 인증 기관의 **비밀 키**(다른 인증서를 만들 때 사용하는 개인 키)
+- **CA.pem**: 클라이언트가 서버를 신뢰할 수 있도록 하는 **공개 인증서**(공개키가 포함됨)
+- **server.key**: 서버만 가지고 있는 **비밀 키**
+- **server.crt**: 서버의 신원을 증명하는 **공개 인증서** (서버의 공개키가 포함됨)
+
+CA.key는 공개키가 아니라 **비밀 키**이다. 실제로 공개되는 것은 CA.pem과 server.crt 파일이며, 이 파일들 안에 공개 키가 들어있다. 공개 키 암호화에서 "공개 키"는 누구나 볼 수 있는 키를 의미하지만, .key 파일들은 모두 비밀 키이므로 안전하게 보관해야 한다. CA.pem과 server.crt 둘 다 공개인증서이지만 역할이 다르다.
+
+- CA.pem: "인증기관 인증서" 클라이언트가 "이 서버를 믿어도 될까?"를 판단할 때 사용
+- server.crt: "서버 인증서" 실제 서버의 신원을 증명하고 통신에 사용할 공개 키를 제공
+
+쉽게 말하면, CA.pem은 "신분증 발급 기관의 도장" 이고 server.crt는 "서버의 실제 신분증" 이다. 클라이언트는 먼저 CA.pem으로 발급기관을 확인한 다음, server.crt로 서버의 진짜 신분을 확인한다.
+
+
+## 인증서 생성하기
+
+openssl이라는 도구를 사용하면 이러한 인증서 파일들을 만들 수 있다. openssl은 암호화와 인증서를 다루는 강력한 도구이다.
+
+먼저 openssl을 실행한다.
+
+```bash
+$ openssl
+```
+
+OpenSSL 프롬프트가 나타나면 먼저 다음처럼 `genrsa -out CA.key 2048` 명령으로 CA.key 파일을 생성한다. 이 명령은 2048비트 크기의 RSA 암호화 키를 만든다.
+
+```bash
+OpenSSL> genrsa -out CA.key 2048
+Generating RSA private key, 2048 bit long modulus (2 primes)
+....+++++
+......................................................+++++
+e is 65537 (0x010001)
+OpenSSL>
+```
+
+그리고 다음처럼 `req -x509 -new -nodes -key CA.key -days 365 -out CA.pem` 명령으로 CA.pem 파일을 생성한다. 이 명령은 앞서 만든 CA.key를 사용해서 인증서를 만든다. 각 항목은 대부분 비워둬도 되고, 국가 코드만 KR로 입력한다. 유효 기간은 365일(1년)로 설정한다.
+
+```bash
+OpenSSL> req -x509 -new -nodes -key CA.key -days 365 -out CA.pem
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:KR
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:
+Email Address []:
+OpenSSL>
+```
+
+만약 CA.pem 파일을 생성할 때 다음과 같은 오류가 발생한다면 `/etc/ssl/openssl.cnf` 파일의 RANDFILE 항목을 주석처리한다.
+
+```bash
+Can't load /home/ubuntu/.rnd into RNG
+140351232827840:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/home/ubuntu/.rnd
+```
+
+```bash
+(... 생략 ...)
+#RANDFILE               = $ENV::HOME/.rnd
+(... 생략 ...)
+```
+
+그리고 다음처럼 `genrsa -out server.key 2048` 명령으로 server.key 파일을 생성한다.
+
+```bash
+OpenSSL> genrsa -out server.key 2048
+Generating RSA private key, 2048 bit long modulus (2 primes)
+.........................................................+++++
+...............................................................................................................................................................................+++++
+e is 65537 (0x010001)
+OpenSSL>
+```
+
+server.key 파일을 생성한 후 server.csr 파일을 생성하기 전에 다음처럼 반드시 openssl 프롬프트를 종료하고 다시 시작해야 한다.
+
+```bash
+OpenSSL> quit
+ubuntu@ip-172-26-7-225:~/tmp$ openssl
+OpenSSL>
+```
+
+openssl을 다시 시작하지 않고 server.crt 파일을 생성하려 하면 problem creating object tsa_policy1=1.2.3.4.1과 같은 오류가 발생한다.
+
+이제 다음처럼 `req -new -key server.key -out server.csr` 명령으로 server.csr 파일을 생성한다. 이 파일은 서버 인증서를 요청하는 파일이다. 여기서 가장 중요한 것은 **Common Name** 항목이다. 여기에는 'pylib'라는 이름을 입력했는데, 이 이름은 나중에 클라이언트에서 서버에 접속할 때 반드시 필요하므로 꼭 기억해둔다.
+
+```bash
+OpenSSL> req -new -key server.key -out server.csr
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:KR
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:pylib
+Email Address []:
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+OpenSSL>
+```
+
+마지막으로 `x509 -req -in server.csr -CA CA.pem -CAkey CA.key -CAcreateserial -out server.crt` 명령으로 server.crt 파일을 생성한다. 이 명령은 앞서 만든 server.csr 요청서를 CA 인증서로 서명하여 최종 서버 인증서를 만든다.
+
+```bash
+OpenSSL> x509 -req -in server.csr -CA CA.pem -CAkey CA.key -CAcreateserial -out server.crt
+Signature ok
+subject=C = KR, ST = Some-State, O = Internet Widgits Pty Ltd, CN = pylib
+Getting CA Private Key
+OpenSSL>
+```
+
+
+## HTTPS가 필요한 이유
+
+HTTPS가 아닌 HTTP 프로토콜을 사용하면 브라우저(클라이언트)와 서버 사이에 주고 받는 데이터가 암호화 되지 않는다. 클라이언트와 서버가 데이터를 주고 받는 네트워크 경로는 매우 복잡한데 이 과정에서 누군가(해커)가 데이터를 훔쳐 보는 일은 어렵지 않다. 따라서 네트워크 구간에서 주고 받는 데이터는 반드시 암호화 하여 데이터가 노출되더라도 무슨 내용인지 알 수 없게 해야 한다.
+
+이러한 역할을 하는 것이 바로 HTTP에 SSL(Secured Socket Layer) 기능을 더한 HTTPS 프로토콜이다. 우리가 만든 프로젝트에 HTTPS 프로토콜을 제공하기 위해서는 SSL 인증서가 필요하다. SSL 인증서를 발급받아 Nginx에 적용하면 HTTPS 프로토콜로 서비스를 할 수 있다.
+
+
+## SSL 인증서 발급
+
+SSL 인증서는 인증 기관에서 인증하는 인증서를 발급 받아야 한다. 왜냐하면 브라우저에 이미 SSL 인증을 위한 인증 기관들이 등록되어 있기 때문이다.
+
+> 인증 기관으로 등록되지 않은 기관에서 인증한 인증서는 인정되지 않는다.
+
+대표적인 인증 기관으로는 Comodo, Thawte, GeoTrust, DigiCert 등이 있다. 이러한 인증 기관에서 인증서를 발급 받을 수 있다. 하지만 이러한 인증 기관의 SSL 인증서는 유료이다. (인증서의 가격은 인증 기관별로 다르다.)
+
+
+## Let's Encrypt 인증서 설치
+
+Let's Encrypt는 무료로 SSL 인증서를 발급해준다. 서버에 접속한 후 다음과 같이 certbot을 설치한다.
+
+```bash
+$ sudo apt install certbot
+$ sudo apt install python3-certbot-nginx
+```
+
+그리고 다음처럼 Nginx 웹서버에 사용할 Let's Encrypt의 인증서를 발급한다.
+
+```bash
+ubuntu@jumpto:~$ sudo certbot certonly --nginx
+Saving debug log to /var/log/letsencrypt/letsencrypt.log 
+Plugins selected: Authenticator nginx, Installer nginx 
+Enter email address (used for urgent renewal and security notices) (Enter 'c' to cancel): pahkey@gmail.com
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Please read the Terms of Service at 
+https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf. You must agree in order to register with the ACME server at 
+https://acme-v02.api.letsencrypt.org/directory 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+(A)gree/(C)ancel: a 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Would you be willing to share your email address with the Electronic Frontier 
+Foundation, a founding partner of the Let's Encrypt project and the non-profit 
+organization that develops Certbot? We'd like to send you email about our work 
+encrypting the web, EFF news, campaigns, and ways to support digital freedom. 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+(Y)es/(N)o: y 
+No names were found in your configuration files. Please enter in your domain 
+name(s) (comma and/or space separated) (Enter 'c' to cancel): pybo.kr
+Obtaining a new certificate 
+Performing the following challenges: 
+http-01 challenge for pybo.kr 
+Using default address 80 for authentication. 
+Waiting for verification... 
+(... 생략 ...)
+```
+
+순서대로 이메일주소, 동의함(a), 예(y), 도메인명(예: pybo.kr)을 입력한다. 그러면 다음 위치에 인증서가 생성된다.
+
+```bash
+/etc/letsencrypt/live/pybo.kr/fullchain.pem
+/etc/letsencrypt/live/pybo.kr/privkey.pem
+```
+
+
+## Nginx 설정
+
+이제 설치한 인증서를 Nginx에 적용하기 위해 다음과 같이 myapi 파일을 다음과 같이 수정한다.
+
+```conf
+server { 
+	listen 80; 
+	server_name {domain}; 
+	rewrite ^ https://$server_name$request_uri? permanent; 
+}
+
+server {
+	listen 443 ssl;
+	server_name {domain};
+	
+	ssl_certificate /etc/letsencrypt/live/{domain}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/{domain}/privkey.pem;
+	include /etc/letsencrypt/options-ssl-nginx.conf;
+	
+	location = /favicon.ico { access_log off; log_not_found off; }
+
+	localtion / {
+		access_log /home/ubuntu/projects/myapi/logs/nginx_access.log;
+		error_log /home/ubuntu/projects/myapi/logs/nginx_error.log;
+	
+		include proxy_params;
+		proxy_pass http://unix:/tmp/myapi.sock;
+	}
+}
+```
+
+HTTP 요청(80번 포트)은 HTTPS(443번 포트)로 리다이렉트 하도록 설정했다. 그리고 설치한 SSL 인증서를 적용하기 위해 SSL 관련 설정들을 적용했다.
+
+이와 같이 Nginx 설정을 바꾼 후에 다음과 같이 Nginx를 재시작한다.
+
+```bash
+$ sudo systemctl restart nginx.service
+```
+
+
+## SSL 방화벽 설정
+
+Nginx에 SSL을 적용하면 SSL의 포트인 443번 포트의 방화벽 해제가 필요하다. 다음을 참고하여 443번 포트의 방화벽을 해제한다.
+
+- [https://wikidocs.net/177243#_1](https://wikidocs.net/177243#_1)
+
+![](https://i.imgur.com/5LI58o0.png)
+
+
+> 출처: [https://wikidocs.net/177320](https://wikidocs.net/177320), [https://wikidocs.net/125373](https://wikidocs.net/125373)
