@@ -1,0 +1,374 @@
+---
+layout: post
+title: "패스워드 해싱을 이용한 OAuth2, JWT 토큰을 사용하는 Bearer 인증"
+date: 2025-09-29 09:39:00 +0900
+categories: 
+  - Dev
+  - python
+tag: python
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## JWT
+
+JWT는 "JSON Web Tokens"를 의미한다. JSON 객체를 공백이 없는 긴 문자열로 인코딩하는 표준이며, 다음과 같은 형태이다.
+
+```text
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+
+JWT는 암호화되지 않아 누구든지 토큰에서 정보를 복원할 수 있다. 하지만 JWT는 서명되어 있다. 그래서 자신이 발급한 토큰을 받았을 때, 실제로 자신이 발급한게 맞는지 검증할 수 있다.
+
+만료 기간이 일주일인 토큰을 발행했다고 가정해 본다. 다음 날 사용자가 토큰을 가져왔을 때, 그 사용자가 시스템에 여전히 로그인되어 있다는 것을 알 수 있다.
+일주일 뒤에는 토큰이 만료될 것이고, 사용자는 인가되지 않아 새 토큰을 받기 위해 다시 로그인해야 할 것이다. 만약 사용자(또는 제 3자)가 토큰을 수정하거나 만료일을 변경하면, 서명이 일치하지 않기 때문에 알아챌 수 있을 것이다.
+
+## `PyJWT` 설치
+
+파이썬으로 JWT 토큰을 생성하고 검증하려면 `PyJWT`를 설치해야 한다. 가상환경을 만들고 활성화한 다음 `pyjwt`를 설치한다.
+
+```bash
+$ pip install pyjwt
+#or
+$ uv add pyjwt
+```
+
+> RSA나 ECDSA 같은 전자 서명 알고리즘을 사용하려면, `pyjwt[crypto]`라는 암호화 라이브러리 의존성을 설치해야 한다.
+> 더 자세한 내용은  [PyJWT 설치](https://pyjwt.readthedocs.io/en/latest/installation.html) 에서 확인할 수 있다.
+
+
+## 패스워드 해싱
+
+"해싱(Hashing)"은 어떤 내용(여기서는 패스워드)을 해석할 수 없는 일련의 바이트 집합(단순 문자열)으로 변환하는 것을 의미한다. 동일한 내용(똑같은 패스워드)을 해싱하면 동일한 문자열을 얻는다. 하지만 그 문자열을 다시 패스워드로 되돌릴 수는 없다.
+
+### 패스워드를 해싱하는 이유
+
+데이터베이스를 탈취당하더라도, 침입자는 사용자의 평문 패스워드 대신 해시 값만 얻을 수 있다. 따라서 침입자는 훔친 사용자 패스워드를 다른 시스템에서 활용할 수 없다.(대다수 사용자가 여러 시스템에서 동일한 패스워드를 사용하기 때문에 평문 패스워드가 유출되면 위험하다.)
+
+## `passlib` 설치
+
+PassLib는 패스워드 해시를 다루는 훌륭한 파이썬 패키지이다. 많은 안전한 해시 알고리즘과 도구들을 지원한다. 추천하는 알고리즘은 "Bcrypt"이다.
+
+가상환경을 만들고 활성화한 다음 PassLib와 Bcrypt를 설치한다.
+
+```bash
+$ pip install "passlib[bcrypt]"
+#or
+$ uv add "passlib[bcrypt]"
+```
+
+> `passlib`를 사용하여, Django, Flask의 보안 플러그인이나 다른 도구로 생성한 패스워드를 읽을 수 있도록 설정할 수도 있다.
+> 예를 들다면, FastAPI 애플리케이션과 Django 애플리케이션이 같은 데이터베이스에서 데이터를 공유할 수 있다. 또는 같은 데이터베이스를 사용하여 Django 애플리케이션을 점진적으로 마이그레이션 할 수도 있다.
+> 그리고 사용자는 FastAPI 애플리케이션과 Django 애플리케이션에 동시에 로그인할 수 있다.
+
+
+## 패스워드의 해시와 검증
+
+필요한 도구를 `passlib`에서 임포트한다..
+
+PassLib "컨텍스트(context)"를 생성한다. 이것은 패스워드를 해싱하고 검증하는데 사용한다.
+
+> PassLib 컨텍스트는 다양한 해싱 알고리즘을 사용할 수 있는 기능을 제고하며, 더 이상 사용이 권장되지 않는 오래된 해싱 알고리즘을 검증하는 기능도 포함되어 있다.
+> 예를 들어, 다른 시스템(Django 같은)에서 생성한 패스워드를 읽고 검증할 수 있으며, 새로운 패스워드를 Bcrypt 같은 다른 알고리즘으로 해싱할 수도 있다.
+> 그리고 동시에 그런 모든 알고리즘과 호환성을 유지한다.
+
+사용자로부터 받은 패스워드를 해싱하는 유틸리티 함수를 생성한다. 그리고 받은 패스워드가 저장된 해시와 일치하는지 검증하는 또 다른 유틸리티 함수도 생성한다. 그리고 사용자를 인증하고 반환하는 또 다른 함수도 생성한다.
+
+```python
+from datetime import datetime, timedelta, timezone
+from typing import Annotated
+
+import jwt
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jwt.exceptions import InvalidTokenError
+from passlib.context import CryptContext
+from pydantic import BaseModel
+
+# to get a string like this run:
+# openssl rand -hex 32
+SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+
+fake_users_db = {
+    "johndoe": {
+        "username": "johndoe",
+        "full_name": "John Doe",
+        "email": "johndoe@example.com",
+        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
+        "disabled": False,
+    }
+}
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
+
+
+class User(BaseModel):
+    username: str
+    email: str | None = None
+    full_name: str | None = None
+    disabled: bool | None = None
+
+
+class UserInDB(User):
+    hashed_password: str
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+app = FastAPI()
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+
+def get_user(db, username: str):
+    if username in db:
+        user_dict = db[username]
+        return UserInDB(**user_dict)
+
+
+def authenticate_user(fake_db, username: str, password: str):
+    user = get_user(fake_db, username)
+    if not user:
+        return False
+    if not verify_password(password, user.hashed_password):
+        return False
+    return user
+
+
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = TokenData(username=username)
+    except InvalidTokenError:
+        raise credentials_exception
+    user = get_user(fake_users_db, username=token_data.username)
+    if user is None:
+        raise credentials_exception
+    return user
+
+
+async def get_current_active_user(
+    current_user: Annotated[User, Depends(get_current_user)],
+):
+    if current_user.disabled:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
+
+
+@app.post("/token")
+async def login_for_access_token(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+) -> Token:
+    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return Token(access_token=access_token, token_type="bearer")
+
+
+@app.get("/users/me/", response_model=User)
+async def read_users_me(
+    current_user: Annotated[User, Depends(get_current_active_user)],
+):
+    return current_user
+
+
+@app.get("/users/me/items/")
+async def read_own_items(
+    current_user: Annotated[User, Depends(get_current_active_user)],
+):
+    return [{"item_id": "Foo", "owner": current_user.username}]
+```
+
+
+## JWT 토큰 처리
+
+설치된 모듈을 임포트한다. JWT 토큰 서명에 사용될 임의의 비밀키를 생성한다. 안전한 임의의 비밀키를 생성하려면 다음 명령어를 사용한다.
+
+```bash
+$ openssl rand -hex 32  
+09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
+```
+
+그리고 생성한 비밀키를 복사해 변수 `SECRET_KEY`에 대입한다. JWT 토큰을 서명하는 데 사용될 알고리즘을 위한 변수 `ALGORITHM`을 생성하고 `HS256`으로 설정한다.
+
+토큰 만료 기간을 위한 변수를 생성한다. 응답을 위한 토큰 엔드포인트에 사용될 Pydantic 모델을 정의한다. 새 엑세스 토큰을 생성하기 위한 유틸리티 함수를 생성한다.
+
+```python
+(...생략...)
+
+import jwt
+
+(...생략...)
+
+from jwt.exceptions import InvalidTokenError
+
+(...생략...)
+
+# to get a string like this run:
+# openssl rand -hex 32
+SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+
+(...생략...)
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+(...생략...)
+
+
+
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
+(...생략...)
+
+
+```
+
+
+## 의존성 수정
+
+`get_current_user` 함수를 이전과 동일한 토큰을 받도록 수정하되, 이번에는 JWT 토큰을 사용하도록 한다. 받은 토큰을 디코딩하여 검증한 후 현재 사용자를 반환하다. 토큰이 유효하지 않다면 HTTP 오류를 반환한다.
+
+```python
+
+(...생략...)
+
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+	credentials_exception = HTTPException(
+		status_code=status.HTTP_401_UNAUTHORIZED,
+		detail="Could not validate credentials",
+		headers={"WWW-Authenticate": "Bearer"}
+	)
+	
+	try:
+		payload = jwt.decoed(token, SECRET_KEY, algorithms=[ALGORITM])
+		username = payload.get("sub")
+		if username is None:
+			raise credentials_exception
+		token_data = TokenData(username=username)
+	except InvalidTokenError:
+		raise credentials_exception
+	user = get_user(fakse_users_db, username=token_data.username)
+	if user is None:
+		raise credentials_exception
+	return user
+	
+
+(...생략...)
+
+
+```
+
+
+## `/token` 경로 작업 수정
+
+토큰의 만료 시각을 설정하기 위해 `timedelta`를 생성한다. 실제 JWT 액세스 토큰을 생성하여 반환한다.
+
+```python
+
+(...생략...)
+
+@app.post("/token")
+async def login_for_access_token(
+	form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+) -> Token:
+	user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+	if not user:
+		raise HTTPException(
+			status_code=status.HTTP_401_UNAUTHORIZED,
+			detail="Incorrect username or password",
+			headers={"WWW-Authenticate": "Bearer"}
+		)
+	
+	access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+	access_token = create_access_token(
+		data={"sub": user.username}, expires_delta=access_token_expires
+	)
+	
+	return Token(access_token=access_token, token_type="bearer")
+	
+
+(...생략...)
+
+
+```
+
+
+### JWT "주체(subject)" `sub`에 대한 기술 세부 사항
+
+JWT 명세에 따르면 토큰의 주체를 포함하는 `sub`라는 키가 있다. 사용 여부는 선택사항이지만, 사용자의 식별 정보를 저장할 수 있으므로 이 예제에서는 사용했다. 
+
+JWT는 사용자를 식별하고 사용자가 API를 직접 사용하 수 있도록 허용하는 것 이외에도 다른 용도로 사용될 수도 있다. 예를 들어 "자동차"나 "블로그 게시물"을 식별하는 데 사용할 수 있다. 그리고 "자동차를 운전하다"나 "블로그 게시물을 수정하다" 처럼 해당 엔터티에 대한 권한을 추가할 수 있다.
+
+그 후 이 JWT 토큰을 사용자(또는 봇)에게 제공하면, 그들은 계정을 따로 만들 필요 없이 API가 생성한 JWT 토큰만으로 작업(자동차 운전 또는 블로그 게시물 편집)을 수행할 수 있다.
+
+이러한 개념을 활용하면 JWT는 훨씬 더 복잡한 시나리오에도 사용할 수 있다.
+
+이 경우 여러 엔터티가 동일한 ID를 가질 수 있다. 예를 들어 foo라는 ID를 가진 사용자, 자동차, 블로그 게시물이 있을 수 있다. 그래서 ID 충돌을 방지하기 위해, 사용자의 JWT 토큰을 생성할 때 접두사로 `sub` 키를 추가할 수 있다. 예를 들어 `username:` 을 붙이는 방식이다. 이 예제에서는 `sub` 값이 `username:johndoe`이 될 수 있다.
+
+가장 중요한 점은 `sub` 키는 전체 애플리케이션에서 고유한 식별자가 되어야 하며 문자열이어야 한다는 점이다.
+
+
+> 출처: [https://fastapi.tiangolo.com/ko/tutorial/security/oauth2-jwt/](https://fastapi.tiangolo.com/ko/tutorial/security/oauth2-jwt/)
