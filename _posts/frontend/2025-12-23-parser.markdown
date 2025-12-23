@@ -4,6 +4,7 @@ title:  "[DevLog] PDF 기반 서비스에서 Markdown ↔ HTML 양방향 변환�
 date:   2025-12-23 14:19:29 +0900
 categories: frontend
 comments: true
+published: false
 ---
 
 * this unordered seed list will be replaced by the toc
