@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "[DevLog] PDF 기반 서비스에서 Markdown ↔ HTML 양방향 변환기 구현하기"
+title:  "[DevLog] Unified를 활용한 Markdown ↔ HTML 양방향 변환기 구현하기"
 date:   2025-12-23 14:19:29 +0900
 categories: frontend
 comments: true
@@ -10,116 +10,111 @@ published: false
 * this unordered seed list will be replaced by the toc
 {:toc}
 
-현재 개발 중인 서비스에는 핵심적인 요구사항이 하나 있습니다. 바로 **"PDF 파일의 내용을 추출하여 DB에 저장하고, 이를 웹에서 보여준 뒤 사용자가 편집할 수 있어야 한다"**는 것입니다.
 
-이 과정에서 우리는 데이터 저장 포맷으로 **Markdown**을 선택했습니다. HTML 통째로 DB에 저장하기에는 불필요한 태그가 너무 많아 무겁고, 순수 텍스트만 저장하기에는 서식 정보가 사라지기 때문입니다.
+현재 개발 중인 서비스에서는 **PDF 파일의 내용을 추출하여 DB에 저장하고, 웹에서 보여준 뒤 편집**하는 기능이 필요했습니다.
 
-따라서 프론트엔드단에서는 다음과 같은 **양방향 변환 흐름**이 필요했습니다.
+이 과정에서 우리는 데이터 효율성을 위해 **Markdown** 형식을 저장소로, 사용자 편의성을 위해 **HTML** 형식을 뷰어/에디터로 사용하기로 결정했습니다. 즉, 프론트엔드 단에서 이 두 포맷을 자유자재로 변환하는 파이프라인이 필요해진 것이죠.
 
-1.  **Read (DB → View):** DB에 저장된 마크다운을 가져와 HTML로 변환하여 렌더링
-2.  **Write (Edit → DB):** 사용자가 웹 에디터(HTML)에서 수정한 내용을 다시 마크다운으로 변환하여 저장
-
-오늘은 `unified` 생태계를 활용해 이 순환 구조를 어떻게 구현했는지 공유합니다.
+오늘은 Node.js 생태계의 표준 텍스트 처리 라이브러리인 `unified`를 사용하여 **커스텀 양방향 파서**를 구현한 경험을 공유합니다.
 
 
-## 1. Architecture: 데이터의 여행
+## 1. 기술 스택 (The Stack)
 
-데이터는 다음과 같은 흐름으로 변환됩니다. PDF 파싱 단계에서 추출된 텍스트는 1차적으로 마크다운 형태로 DB에 적재되어 있습니다.
+텍스트 변환을 위해 다음과 같은 `unified` 생태계 라이브러리들을 조합했습니다.
 
-* **조회 시:** `DB (Markdown)` → `Frontend Parser` → `Web View (HTML)`
-* **저장 시:** `Web Editor (HTML)` → `Frontend Parser` → `DB (Markdown)`
-
-이 양방향 통신을 위해 `unified`, `remark`(마크다운 처리), `rehype`(HTML 처리) 라이브러리를 조합하여 유틸리티를 구성했습니다.
+* **Remark**: 마크다운 파서 (Markdown → AST)
+* **Rehype**: HTML 컴파일러 (AST → HTML)
+* **Plugins**: `remark-gfm` (테이블 지원), `rehype-prism-plus` (코드 하이라이팅)
 
 ## 2. Viewer 구현: Markdown to HTML
 
-DB에서 꺼내온 마크다운 텍스트를 브라우저에 보여주는 단계입니다. 단순 변환만 하면 될 것 같지만, PDF에서 추출된 텍스트는 종종 들여쓰기나 특수문자가 엉켜 있는 경우가 많아 **전처리(Pre-processing)**가 필수적이었습니다.
+DB에 저장된 마크다운을 브라우저에 렌더링하는 단계입니다. 단순히 라이브러리만 돌리면 될 것 같지만, **PDF에서 추출한 텍스트**라는 특성상 전처리(Pre-processing)가 필수적이었습니다.
 
-### 🛠️ 커스텀 전처리 전략
+### 🛠️ 핵심 로직: 커스텀 전처리
 
-PDF 파싱 데이터 특성상 인용구(`>`) 포맷이 불규칙하게 들어오는 경우가 있었습니다. 이를 `unified` 파이프라인에 태우기 전에 정규식과 문자열 조작으로 깔끔하게 정리해 주는 과정을 먼저 거쳤습니다.
+PDF 파싱 과정에서 인용문(`>`)이나 특수문자가 깨져서 들어오는 경우가 많았습니다. 이를 파서에 넣기 전에 정규식과 문자열 조작으로 먼저 다듬어주는 전략을 취했습니다.
 
 ```javascript
-export const convertMarkdownToHtml = (markDownText) => {
-  if (!markDownText) return '';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+// ... 기타 플러그인 import
 
-  // 1. PDF 데이터 클렌징: 불필요한 백슬래시 제거
-  const cleanedText = markDownText.replace(/\\/g, '');
+export const convertMarkdownToHtml = (markdownText) => {
+  if (!markdownText) return '';
 
-  // 2. 인용문 구조 정규화: > 문법을 감지하여 강제로 <blockquote> 태그 입히기
-  // (PDF에서 줄바꿈이 깨져서 오는 인용문들을 올바르게 렌더링하기 위함)
+  // 1. 전처리: PDF 아티팩트 제거 및 인용문 구조 정규화
+  // 라이브러리가 해석하기 힘든 깨진 인용문(>) 구조를 강제로 <blockquote> 태그로 변환
   const processQuotes = (text) => {
     const lines = text.split('\n');
     let inQuote = false;
     let result = '';
     let quoteContent = '';
 
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+    for (const line of lines) {
       if (line.trim().startsWith('>')) {
-        // 인용문 시작 또는 계속
         inQuote = true;
-        quoteContent = '';
-        quoteContent += line.replace(/^>\s*/, '') + '\n'
+        quoteContent += line.replace(/^>\s*/, '') + '\n';
       } else {
-        // 인용문이 끝남
         if (inQuote) {
           result += `<blockquote><p>${quoteContent}</p></blockquote>\n`;
           inQuote = false;
+          quoteContent = '';
         }
         result += line + '\n';
       }
     }
-
-    // 마지막 인용문 처리
+    // 마지막 줄 처리
     if (inQuote) {
       result += `<blockquote><p>${quoteContent}</p></blockquote>\n`;
     }
-
     return result;
   };
 
+  const cleanedText = markdownText.replace(/\\/g, ''); // 불필요한 백슬래시 제거
   const processedText = processQuotes(cleanedText);
 
-  // 3. Unified 파이프라인 실행
+  // 2. Unified 파이프라인 실행
   const result = unified()
-    .use(markdown) // MD 파싱
-    .use(remarkGfm, { singleTilde: false }) // 테이블, 취소선 등 지원
-    .use(remark2rehype, { allowDangerousHtml: true }) // 전처리된 HTML 태그 허용
+    .use(remarkParse) // MD 파싱
+    .use(remarkGfm)   // GitHub Flavored Markdown 지원
+    .use(remarkRehype, { allowDangerousHtml: true }) // 전처리된 HTML 태그 허용
     .use(rehypePrismPlus) // 코드 블럭 하이라이팅
-    .use(rehypeExternalLinks)
-    .use(html, { allowDangerousHtml: true })
+    .use(rehypeStringify, { allowDangerousHtml: true })
     .processSync(processedText);
 
   return result.value;
-}
+};
 ```
-
-이 과정을 거치면 PDF에서 갓 추출된 거친 마크다운 데이터가 웹에서 보기 좋은 깔끔한 HTML로 렌더링 됩니다.
 
 ## 3. Editor 구현: HTML to Markdown
 
-사용자가 브라우저 상의 에디터(ContentEditable 영역 등)에서 오타를 수정하거나 내용을 추가하면, 그 결과물은 **HTML** 형태가 됩니다. 이를 다시 DB에 넣을 때는 규칙성을 가진 **Markdown**으로 되돌려야 합니다.
+사용자가 웹 에디터(WYSIWYG)에서 내용을 수정한 뒤 저장 버튼을 누르면, HTML을 다시 깔끔한 마크다운으로 변환하여 DB에 저장해야 합니다.
 
-이때는 `rehype-parse`(HTML 읽기)와 `rehype2remark`(마크다운으로 변환) 플러그인을 사용하여 역방향 파이프라인을 구축했습니다.
+이때는 역방향 파이프라인(`rehype` → `remark`)을 사용합니다.
 
 ```javascript
+import rehypeParse from 'rehype-parse';
+import rehypeRemark from 'rehype-remark';
+import remarkStringify from 'remark-stringify';
+
 export const convertHtmlToMarkdown = async (htmlText) => {
   const result = await unified()
     .use(rehypeParse, { fragment: true }) // HTML 조각 파싱
-    .use(rehype2remark) // 핵심: HTML AST를 Markdown AST로 변환
-    .use(remarkGfm, { singleTilde: false }) // GFM 문법 유지
+    .use(rehypeRemark) // 핵심: HTML AST -> Markdown AST 변환
+    .use(remarkGfm)
     .use(remarkStringify, {
-      fences: true, // 코드 블럭은 ``` 사용
-      bullet: '-',  // 리스트는 - 사용
+      fences: true, // 코드 블럭에 ``` 사용
+      bullet: '-',  // 리스트 아이템에 - 사용
     })
-    .process(htmlText)
+    .process(htmlText);
 
-  return result.value
-}
+  return result.value;
+};
 ```
 
-이렇게 하면 사용자가 `<b>굵게</b>` 처리한 텍스트는 DB에 `**굵게**`로, `<ul><li>목록</li></ul>`은 `- 목록`으로 깔끔하게 변환되어 저장됩니다.
+이렇게 하면 사용자가 작성한 `<b>Bold</b>` 태그는 `**Bold**`로, `<li>List</li>` 태그는 `- List`로 자동 변환되어 저장됩니다.
 
 
 ## 📝 마치며
