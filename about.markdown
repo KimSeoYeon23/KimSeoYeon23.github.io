@@ -27,7 +27,8 @@ AI 플랫폼과 데이터 분석 도구를 개발하는 회사에서 프론트�
         - UX Heatmap
         - Journey Map
         - Forum
-        - Beeagle
+        - Knitlog
+        - BAX
         - Back Office
     - Tech Stack
         - Front
