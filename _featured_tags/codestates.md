@@ -5,7 +5,7 @@ title: CodeStates
 slug: codestates
 category: Dev
 sidebar: true
-order: 10
+order: 11
 description: >
    CodeStates BootCamp Study
 ---

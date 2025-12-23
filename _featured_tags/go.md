@@ -5,7 +5,7 @@ title: Go
 slug: go
 category: Dev
 sidebar: true
-order: 6
+order: 7
 description: >
    Golang Study
 ---
