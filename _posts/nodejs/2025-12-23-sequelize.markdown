@@ -239,7 +239,7 @@ db.Comment.belongsTo(db.User, { foreignKey: 'commenter', sourceKey: 'id'});
 
 이제 Node 서버를 실행시켜보도록 한다. 서버를 실행시키면 시퀄라이즈가 스스로 SQL문을 실행시켜주는데, 자세히 읽어보면 **IF NOT EXISTS**라고 되어 있는데, 만약 위에서 정의한 테이블들이 존재하지 않을 시에는 자동적으로 위의 테이블들을 생성해주게 된다.
 
-![[99.Atteachment/image 1 3.png|image 1 3.png]]
+![](https://i.imgur.com/v1xvAYQ.png)
 
   
 

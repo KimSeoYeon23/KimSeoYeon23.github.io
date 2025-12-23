@@ -53,7 +53,8 @@ npm install
 
 ## Express 구조 뜯어보기
 
-![[99.Atteachment/image 8.png|image 8.png]]
+![](https://i.imgur.com/Z1dWDIm.png)
+
 
 - bin/www
     - http 모듈에 express 모듈을 연결하며, 포트를 지정할 수 있다.
