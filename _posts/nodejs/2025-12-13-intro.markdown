@@ -1,0 +1,77 @@
+---
+layout: post
+title:  "fnm이란?
+date:   2025-12-23 11:15:00 +0900
+categories: 
+  - Dev
+  - node
+tag: node
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+> Chrome V8 Javascript 엔진으로 빌드된 Javascript 런타임(프로그래밍 언어가 동작하는 환경)
+
+> Javascript 엔진
+> 
+> javascript 문법을 해석하고 그것을 실제로 동작시켜줄 수 있는 엔진
+
+  
+
+- 웹브라우저에서는 html, css, javascript만 동작한다. html, css javscript로만 개발을 하게 되면 과정이 비효율적이기 때문에 개발을 도와주는 모듈을 설치한다. 모듈들은 브라우저에서 직접 동작할 수 없기 때문에 node.js환경에서 html, css, javascript로 변환을 해줘야 한다. node.js 환경에서 javascript 프로그래밍 언어로 변환을 만들어 줄 수 있다. 변환된 결과를 html, css, javascript로 만들어서 브라우저에서 동작을 시켜준다.
+
+  
+
+### NPM(Node Package Manager)
+
+- 전 세계의 개발자들이 만든 다양한 기능(패키지, 모듈)들을 관리
+- npm install을 통해서 npm 생태계에 있는 어떠한 패키지를 프로젝트에 설치해서 활용할 수 있다.
+- 패키지를 다른 말로 모듈 혹은 기능이라고 할 수 있다.
+- package.json 생성
+    
+    ```JavaScript
+    npm init or npm init -y
+    ```
+    
+- 버전의 숫자 의미
+    
+    ```JavaScript
+    Major.Minor.Patch
+    ^4.17.21
+    ```
+    
+    - ^
+        - Major 버전 안에서 가장 최신 버전으로 업데이트 가능 즉, 기존 버전과 호환이 가능한 선 안에서 가장 최신 버전으로 업데이트 가능
+    - ~
+        - Minor 버전 안에서 가장 최신 버전으로 업데이트 가능, Major, Minor는 건들지 않고 Patch 버전만 업데이트한다.
+    - Major
+        - 기존 버전과 호환되지 않는 새로운 버전.
+    - Minor
+        - 기존 버전과 호환되는 기능이 추가된 버전.
+    - Patch
+        - 기존 버전과 호환되는 버그 및 오타 등이 수정된 버전
+    - package.json 에 ^가 없으면 정확하게 설치된 버전만 사용하겠다는 것으로 명시가 바뀐다.
+- `npm info [패키지]`
+    - 현재 설치된 패키지의 정보를 볼 수 있다.
+
+  
+
+### package-lock.json 이란?
+
+> [!important] 프로젝트에 설치된 노드 모듈들의 의존성 트리를 기록하고 있음.
+
+- `package.json`에서는 버전정보를 저장할 때 `version range`를 사용한다.
+    - ex) `"sass": "^1.54.3",`
+    - version range란?
+        - 정 버전이 아니라 **버전의 범위**를 의미
+- `package-lock.json` 은 npm이 `node_modules` 트리 또는 `package.json`이 수정될 때 자동으로 생성이 된다.
+- `package-lock.json`이 존재할 때에는 `package.json`을 사용하 `node_modules`를 생성하지않고 `package-lock.json`을 사용하여 `node_modules`를 생성한다.
+    - 더 정확한 버전의 패키지를 내려받기 위함
+- `package-lock.json`은 `package.json`으로는 부족한 정보를 도와주는 파일이다. 따라서 생성된 package-lock.json 파일은 소스 저장소에 꼭 같이 커밋해야 한다.
+    - 다른 팀원이 이 프로젝트를 처음 pull 받아서 `npm install` 을 했을 때 개발 당시의 동일한 버전의 모듈들이 설치됨을 보장하기 위함
+- `package-lock.json` 파일은 의존성 트리에 대한 정보를 모두 가지고 있습니다.
+- `package-lock.json` 파일은 `node_modules` 없이 배포하는 경우 반드시 필요합니다.
+
+  
