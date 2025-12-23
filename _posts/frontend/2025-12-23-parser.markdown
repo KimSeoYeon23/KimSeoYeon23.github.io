@@ -120,32 +120,6 @@ export const convertHtmlToMarkdown = async (htmlText) => {
 
 이렇게 하면 사용자가 `<b>굵게</b>` 처리한 텍스트는 DB에 `**굵게**`로, `<ul><li>목록</li></ul>`은 `- 목록`으로 깔끔하게 변환되어 저장됩니다.
 
-## 4. 엣지 케이스 핸들링 (Date & Entities)
-
-서비스 운영상 필요한 날짜 포맷팅과 특수문자 처리도 유틸리티에 포함했습니다.
-
-* **Timezone 이슈:** 서버 데이터(UTC)를 한국 사용자에 맞게 보여주기 위해 KST(+9시간) 오프셋을 직접 계산하여 적용했습니다.
-* **HTML Entity:** PDF 추출 과정이나 에디터에서 발생할 수 있는 `&nbsp;`, `&lt;` 등의 엔티티 코드를 원래 문자로 복원하는 `unescape` 로직을 추가하여 데이터 무결성을 높였습니다.
-
-```javascript
-// KST 시간 보정 및 포맷팅
-export const formatDate = (dateStr, type = null) => {
-  const date = new Date(dateStr)
-  const TIME_ZONE = 9 * 60 * 60 * 1000 // 9시간 (KST)
-  
-  if (Object.prototype.toString.call(date) !== '[object Date]' || isNaN(date)) {
-    return ''
-  }
-
-  if (type === 'yyyy-mm-dd') {
-    return new Date(date.getTime() + TIME_ZONE)
-        .toISOString()
-        .replace('T', ' ')
-        .slice(0, -5)
-  }
-  // ... (기타 포맷 처리)
-}
-```
 
 ## 📝 마치며
 
