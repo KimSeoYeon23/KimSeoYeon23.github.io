@@ -1,0 +1,166 @@
+---
+layout: post
+title:  "fnm이란?
+date:   2025-12-23 11:19:00 +0900
+categories: 
+  - Dev
+  - node
+tag: node
+comments: true
+---
+
+* this unordered seed list will be replaced by the toc
+{:toc}
+
+## fnm이란?
+fnm은 Fast Node Manager의 약어로 Node.js 버전 관리 도구 중 하나이다. fnm은 빠르고 간단한 CLI 도구로, 다양한 Node.js 버전을 쉽게 설치하고 관리할 수 있다. 제작자가 fnm을 만든 계기는 `nvm`이 너무 느려서였다고 한다. `nvm`에 영향을 받아서인지 `nvm`과 비슷한 인터페이스를 가지고 있다. `fnm`의 장점은 다음과 같다.
+
+- cross-platform 지원
+	- nvm은 window를 지원하지 않음(nvm-windows를 사용해야함)
+		- nvm이 window를 지원할 수 없는 이유는 nvm이 bash script이기 때문
+	- nvm에 비해서 속도가 빠름
+		- rust로 쓰여져있다.
+	- volta와 같이 프로젝트에 진입하면 자동으로 node version 변환 가능
+	- 설치와 구성이 nvm보다 쉬움
+
+
+## fnm 설치
+
+다음 명령어를 실행하여 fnm을 설치할 수 있다.
+
+```bash
+curl -fsSL <https://github.com/Schniz/fnm/raw/master/.ci/install.sh> | bash
+
+# or
+
+brew install fnm
+```
+
+terminal에서 ~/.zshrc를 수정한다.
+
+```bash
+# zhsrc 프로파일 열기
+open ~/.zshrc
+# 아래 코드 추가 
+eval "$(fnm env --use-on-cd)"
+```
+
+이제 다시 terminal을 실행하거나 `source ~/.zshrc`를 실행한다.
+
+## fnm 사용하기
+
+fnm을 사용하면 다양한 Node.js 버전을 설치하고 각 프로젝트에 맞는 버전을 사용할 수 있다.
+
+### fnm install
+
+`install` 명령어를 통해서 특정 node version을 다운받는다. 소숫점을 붙이지 않고 정수형태로 입력하면 lts를 다운받는다.
+
+```bash
+fnm install {Node.js version}
+
+# 14 lts 다운
+fnm install 14
+```
+
+### fnm use
+
+`use` 명령어로 사용하고 싶은 Node version을 선택한다. 로컬에 해당하는 Node version이 없다면 다운받을 것인지 fnm이 물어본다.
+
+```bash
+fnm use {Node.js version}
+```
+
+![](https://i.imgur.com/jeJkdwH.png)
+
+
+### fnm default
+
+default로 사용하고 싶은 node version을 선택한다.
+
+```bash
+fnm default {Node.js version}
+```
+
+
+### fnm ls-remote
+
+설치할 수 있는 Node.js 버전을 검색한다.
+
+```bash
+fnm ls-remote
+```
+
+
+### fnm ls
+
+로컬 컴퓨터에 설치되어 있는 Node.js 버전을 검색한다.
+
+```bash
+fnm ls
+```
+
+## 프로젝트에 진입하면 node version 자동으로 변경하기
+
+volta에서는 `volta pin {Node.js version}` 명령어를 통해서 같은 기능을 제공한다.
+fnm은 터미널 현재 위치가 변경될 때마다 자동으로 `.node-version` 이나 `.nvmrc` 파일을 참조해서 `nvm use` 커맨드를 실행한다.
+
+즉, `.node-version`에 버전을 명시하면 프로젝트마다 자동으로 node-version을 설정하는 것이 가능하다.
+
+```bash
+$ node --version                                                                 v18.19.0
+node --version > .node-version
+```
+
+
+
+## 속도 비교
+
+nvm이 속도가 느리다고 하여 얼마나 느린지 측정해보았다.
+
+아래는 측정 방법이다.
+
+zsh는 측정용 프로파일링 모듈을 가지고 있다. [zprof](https://zsh.sourceforge.io/Doc/Release/Zsh-Modules.html#The-zsh_002fzprof-Module)라는 모듈인데, `.zshrc` 파일에 설정만 해두면 사용할 수 있다.
+
+1. `~/.zshrc` 파일 가장 상단에 `zmodload zsh/zprof`를 적는다.
+2. 그리고 가장 하단에 `zprof`라고 적는다. (이는 세션이 시작될 때 zprof 명령어를 실행한다는 의미와 같다.)
+3. 세션 로드가 완료되면 `time zsh -i -c echo` 명령어를 사용해 측정 결과를 얻는다.
+
+
+### nvm
+
+![](https://i.imgur.com/3NRzzHa.png)
+
+터미널 전체 로드 중 약 82.86&가 nvm을 동작시키는데 사용되었다.
+
+![](https://i.imgur.com/LtD1S7c.png)
+
+하단에는 최종적으로 1.673s가 걸렸다고 표현되고 있다.
+
+
+### fnm
+
+![](https://i.imgur.com/oDDl1vf.png)
+
+터미널 전체 로드 중 약 6%가 사용되었다.
+
+![](https://i.imgur.com/SVbGGdL.png)
+
+총 걸린 시간은 0.941s다. total 기준으로는 속도가 **약 1.78배 빨라졌고**, 시간은 **44% 단축**되었다. 나의 경우는 큰 차이는 없지만 nvm에 비해 fnm이 빠르긴 한 거 같다. 
+
+
+### nvm, fnm, volta
+
+|    |nvm|fnm|Volta|
+|---|---|---|---|
+|크로스 플랫폼|O|O|O|
+|env file(.nvmrc)|O|O|X|
+|언어|Shell|Rust|Rust|
+|버전 자동 설정|.nvmrc|.nvmrc, .node-version|package.json > volta|
+|속도|가장 느림|빠름|가장 빠름|
+|패키지 매니저|npm|npm|npm, yarn, pnpm|
+|터미널 멈춤 여부|O|O|X|
+
+
+> 출처: <br/>
+> [https://velog.io/@keumky1/fnm%EC%9C%BC%EB%A1%9C-Node-Version%EC%9D%84-%EA%B4%80%EB%A6%AC%ED%95%98%EC%9E%90](https://velog.io/@keumky1/fnm%EC%9C%BC%EB%A1%9C-Node-Version%EC%9D%84-%EA%B4%80%EB%A6%AC%ED%95%98%EC%9E%90) <br/>
+> [https://pozafly.github.io/node/node-version-manager/](https://pozafly.github.io/node/node-version-manager/)
